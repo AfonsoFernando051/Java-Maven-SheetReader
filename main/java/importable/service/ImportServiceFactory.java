@@ -6,7 +6,7 @@ import importable.config.TipoPlanilhaImportacaoEnum;
 /**
  * Factory for import services
  */
-public class ImportacaoServiceFactory {
+public class ImportServiceFactory {
   
   @SuppressWarnings("unchecked")
   public static <T> ImportService<T> getService(Class<T> entityClass) {

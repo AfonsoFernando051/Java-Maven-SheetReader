@@ -1,12 +1,19 @@
 package importable.run;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import importable.config.PlanilhaModel;
+import importable.config.TipoPlanilhaImportacaoEnum;
 import importable.model.customer.Customer;
 import importable.model.product.Product;
 import importable.old.OldCustomerImporter;
 import importable.old.OldProductImporter;
+import importable.service.ImportService;
+import importable.service.ImportServiceFactory;
+import importable.service.PlanilhaImportConfigManager;
 
 public class Main {
 	
@@ -17,8 +24,30 @@ public class Main {
              .getResourceAsStream("products.xlsx");
 	 
     public static void main(String[] args) {
+    	
     	  readDataWithoutDesignPatterns();
-	}
+    	  
+    	  readDataWithtDesignPatterns();
+    }
+
+	private static void readDataWithtDesignPatterns() {
+
+		for (TipoPlanilhaImportacaoEnum sheet : TipoPlanilhaImportacaoEnum.values()) {
+			PlanilhaImportConfigManager planilhasManager = new PlanilhaImportConfigManager();
+			ImportService<?> service = ImportServiceFactory.getServiceByType(sheet);
+			HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> planilhaModel = service.generatePlanilhaModel();
+			planilhasManager.setPlanilhas(planilhaModel);
+			service.importBringInsertDataManySheet(planilhasManager,
+					 service.getBytesManager(),
+	        		t ->{
+	        			ArrayList<?> arrayList = t.get(sheet);
+	        			for (Object object : arrayList) {
+	        				System.out.println(object.toString());
+	        			}
+	        		});
+		}
+		
+      }
 
 	private static void readDataWithoutDesignPatterns() {
 		try {

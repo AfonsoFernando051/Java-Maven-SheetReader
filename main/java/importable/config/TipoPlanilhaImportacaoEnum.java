@@ -5,10 +5,6 @@ package importable.config;
  */
 public enum TipoPlanilhaImportacaoEnum {
 
-  /**
-   * Generic Sheets
-   */
-  GERAL,
 
   /**
    * Customers Sheets

@@ -2,6 +2,7 @@ package importable.service;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,6 +48,15 @@ public abstract class AbstractImportSheetService<T> implements ImportService<T> 
    */
   private HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> planilhas = new HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel>();
 
+  public SaveBytesManager getBytesManager() {
+		InputStream stream = getStream();
+		SaveBytesManager bytesController = new SaveBytesManager();
+		bytesController.setBytes(stream);
+		return bytesController;
+	}
+
+	protected abstract InputStream getStream();
+  
   /**
    * @param planilhaImportConfigManager - Gerencia dados do form
    * @param bytesController             - Gerencia input stream
