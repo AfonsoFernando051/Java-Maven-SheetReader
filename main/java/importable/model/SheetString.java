@@ -14,14 +14,14 @@ public class SheetString
   /**
    * @return {@link #valor}
    */
-  public String getValor() {
+  public String getValue() {
     return valor;
   }
 
   /**
    * @param valor atualiza {@link #valor}.
    */
-  public void setValor(String valor) {
+  public void setValue(String valor) {
     this.valor = valor;
   }
 

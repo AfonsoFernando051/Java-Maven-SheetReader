@@ -25,7 +25,7 @@ public class Main {
 	 
     public static void main(String[] args) {
     	
-    	  readDataWithoutDesignPatterns();
+//    	  readDataWithoutDesignPatterns();
     	  
     	  readDataWithtDesignPatterns();
     }
@@ -44,6 +44,7 @@ public class Main {
 	        			for (Object object : arrayList) {
 	        				System.out.println(object.toString());
 	        			}
+	        			System.out.println("\n");
 	        		});
 		}
 		

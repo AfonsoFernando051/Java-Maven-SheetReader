@@ -1,5 +1,6 @@
 package importable.model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.function.Function;
 
@@ -113,7 +114,7 @@ public abstract class GenericImportModel<T>
       return safeCast(sheet, SheetValor.class).getValue().toBigInteger()
           .toString();
     } else if (sheet instanceof SheetString) {
-      return safeCast(sheet, SheetString.class).getValor();
+      return safeCast(sheet, SheetString.class).getValue();
     }
     return null;
   }
@@ -152,5 +153,29 @@ public abstract class GenericImportModel<T>
 	     return row.getCelulaByIdentificador(columnIdentifier) != null ? 
 	         Integer.valueOf(row.getCelulaByIdentificador(columnIdentifier).getValue().toString()) : null;
 	 }
+  protected LocalDate getLocalDateValue(RowData row, String columnIdentifier) {
+	    if (row.getCelulaByIdentificador(columnIdentifier) == null) {
+	        return null;
+	    }
+	    
+	    Object value = row.getCelulaByIdentificador(columnIdentifier).getValue();
+	    
+	    if (value == null) {
+	        return null;
+	    }
+	    
+	    if (value instanceof SheetData) {
+	        SheetData sheetData = (SheetData) value;
+	        return sheetData.getValue() instanceof LocalDate ? (LocalDate) sheetData.getValue() : null;
+	    }
+	    
+	    if (value instanceof LocalDate) {
+	        return (LocalDate) value;
+	    }
+	    
+	   
+	    
+	    return null;
+	}
 
 }

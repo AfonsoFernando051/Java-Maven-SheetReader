@@ -1,14 +1,15 @@
 package importable.model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.function.Function;
 
 import importable.model.product.Product;
-import importable.service.SheetDataUtils;
+import importable.translator.Translator;
 import importable.utils.ProcessamentoArquivoException;
 
 /**
- * @author fernando.dias
+ * @author Fernando Dias
  */
 public class ProductImportationModel extends GenericImportModel<Product> {
 
@@ -22,21 +23,18 @@ public class ProductImportationModel extends GenericImportModel<Product> {
 	     return (row) -> {
 	         Product product = criarInstancia();
 	         
-	         // Using column identifiers instead of indices
-	         product.setId(getLongValue(row, "ID"));
-	         product.setName(getStringValue(row, "Name"));
-	         product.setCategory(getStringValue(row, "Category"));
-	         product.setPrice(getDoubleValue(row, "Price"));
-	         product.setQuantity(getIntegerValue(row, "Quantity"));
-	         
-	         Double excelDate = getDoubleValue(row, "RegistrationDate");
+	         product.setId(getLongValue(row, Translator.ID));
+	         product.setName(getStringValue(row, Translator.NAME));
+	         product.setCategory(getStringValue(row, Translator.CATEGORY));
+	         product.setPrice(getDoubleValue(row, Translator.PRICE));
+	         product.setQuantity(getIntegerValue(row, Translator.QUANTITY));
+	            
+	         LocalDate excelDate = getLocalDateValue(row, Translator.REGISTRATION_DATE);
 	         if (excelDate != null) {
-	             product.setRegistrationDate(SheetDataUtils.excelSerialToLocalDate(excelDate));
+	             product.setRegistrationDate(excelDate);
 	         }
 	         
-	         if (product.getId() != null && product.getName() != null) {
-	             modelos.add(product);
-	         }
+	         modelos.add(product);
 	         
 	         return modelos;
 	     };
