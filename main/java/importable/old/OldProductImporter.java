@@ -22,6 +22,7 @@ public class OldProductImporter {
    */
   public static List<Product> importarDadosPlanilha(String abaPlanilha,
                                      boolean possuiCabecalho,
+                                     String colunaID,
                                      String colunaNome,
                                      String colunaPreco,
                                      String colunaCategoria,
@@ -33,6 +34,7 @@ public class OldProductImporter {
       XSSFSheet planilha = workXssf.getSheetAt(abaIndex);
       Iterator<Row> rowIterator = planilha.iterator();
       List<Product> products = new ArrayList<Product>();
+      final int POS_ID = ((byte) colunaID.toUpperCase().toCharArray()[0]) - 65;
       final int POS_NOME = ((byte) colunaNome.toUpperCase().toCharArray()[0]) - 65;
       final int POS_PRECO = ((byte) colunaPreco.toUpperCase().toCharArray()[0]) - 65;
       final int POS_CATEGORIA = ((byte) colunaCategoria.toUpperCase().toCharArray()[0]) - 65;
@@ -47,7 +49,9 @@ public class OldProductImporter {
         while (cellIterator.hasNext()) {
           Cell cell = cellIterator.next();
           int columnIndex = cell.getColumnIndex();
-          if (columnIndex == POS_NOME) {
+          if (columnIndex == POS_ID) {
+              product.setId((long)cell.getNumericCellValue());
+          } else if (columnIndex == POS_NOME) {
             product.setName(cell.getStringCellValue());
           } else if (columnIndex == POS_PRECO) {
             product.setPrice(cell.getNumericCellValue());

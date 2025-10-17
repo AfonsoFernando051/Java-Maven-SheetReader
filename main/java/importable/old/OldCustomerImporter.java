@@ -21,9 +21,11 @@ public class OldCustomerImporter {
    */
 	public static List<Customer> importarDadosPlanilha(String abaPlanilha,
                                      boolean possuiCabecalho,
+                                     String colunaID,
                                      String colunaNome,
                                      String colunaEmail,
                                      String colunaCidade,
+                                     String colunaState,
                                      byte[] buf) {
     try {
       ByteArrayInputStream inputStream = new ByteArrayInputStream(buf);
@@ -32,9 +34,11 @@ public class OldCustomerImporter {
       XSSFSheet planilha = workXssf.getSheetAt(abaIndex);
       Iterator<Row> rowIterator = planilha.iterator();
       List<Customer> customers = new ArrayList<Customer>();
+      final int POS_ID = ((byte) colunaID.toUpperCase().toCharArray()[0]) - 65;
       final int POS_NOME = ((byte) colunaNome.toUpperCase().toCharArray()[0]) - 65;
       final int POS_EMAIL = ((byte) colunaEmail.toUpperCase().toCharArray()[0]) - 65;
       final int POS_CIDADE = ((byte) colunaCidade.toUpperCase().toCharArray()[0]) - 65;
+      final int POS_STATE = ((byte) colunaState.toUpperCase().toCharArray()[0]) - 65;
 
       while (rowIterator.hasNext()) {
         Row row = rowIterator.next();
@@ -46,12 +50,16 @@ public class OldCustomerImporter {
         while (cellIterator.hasNext()) {
           Cell cell = cellIterator.next();
           int columnIndex = cell.getColumnIndex();
-          if (columnIndex == POS_NOME) {
+          if (columnIndex == POS_ID) {
+        	customer.setId((long)cell.getNumericCellValue());
+          } else if (columnIndex == POS_NOME) {
             customer.setName(cell.getStringCellValue());
           } else if (columnIndex == POS_EMAIL) {
             customer.setEmail(cell.getStringCellValue());
           } else if (columnIndex == POS_CIDADE) {
             customer.setCity(cell.getStringCellValue());
+          } else if (columnIndex == POS_STATE) {
+        	  customer.setState(cell.getStringCellValue());
           }
         }
         customers.add(customer);

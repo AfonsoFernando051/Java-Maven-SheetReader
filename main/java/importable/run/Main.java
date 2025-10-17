@@ -21,7 +21,7 @@ public class Main {
             }
             byte[] customerFile = customerStream.readAllBytes();
             List<Customer> customers = OldCustomerImporter.importarDadosPlanilha(
-                    "0", true, "B", "D", "F", customerFile);
+                    "0", true, "A","B", "D", "F","G", customerFile);
             System.out.println("Clientes importados:");
             for (Object c : customers) {
                 System.out.println(c);
@@ -36,7 +36,7 @@ public class Main {
             }
             byte[] productFile = productStream.readAllBytes();
             List<Product> products = OldProductImporter.importarDadosPlanilha(
-                    "0", true, "B", "D", "C", productFile);
+                    "0", true,"A", "B", "D", "C", productFile);
             System.out.println("\nProdutos importados:");
             for (Object p : products) {
                 System.out.println(p);
