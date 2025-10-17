@@ -5,39 +5,36 @@ import java.util.function.Function;
 
 import importable.model.customer.Customer;
 import importable.service.SheetDataUtils;
+import importable.utils.ProcessamentoArquivoException;
 
 /**
  * Model class for importing Customer data from Excel spreadsheet using column identifiers
  */
-public class CustomerImportationModel implements InterfacePlanilhaModel<Customer> {
+public class CustomerImportationModel extends GenericImportModel<Customer> {
 
-    @Override
-    public Customer criarInstancia() {
-        return new Customer();
-    }
+    public CustomerImportationModel(Class<Customer> tipo) {
+		super(tipo);
+	}
 
-    @Override
-    public Function<RowData, ArrayList<Customer>> createModelsByRow() {
+	@Override
+    public Function<RowData, ArrayList<Customer>> processRow() {
         ArrayList<Customer> modelos = new ArrayList<Customer>();
         return (row) -> {
             Customer customer = criarInstancia();
             
-            // Using column identifiers from the spreadsheet header
-            customer.setId(getLongValueByIdentifier(row, "ID"));
-            customer.setName(getStringValueByIdentifier(row, "Name"));
-            customer.setCpf(getStringValueByIdentifier(row, "CPF"));
-            customer.setEmail(getStringValueByIdentifier(row, "Email"));
+            customer.setId(getLongValue(row, "ID"));
+            customer.setName(getStringValue(row, "Name"));
+            customer.setCpf(getStringValue(row, "CPF"));
+            customer.setEmail(getStringValue(row, "Email"));
             
-            // BirthDate conversion from Excel serial date
-            Double excelBirthDate = getDoubleValueByIdentifier(row, "BirthDate");
+            Double excelBirthDate = getDoubleValue(row, "BirthDate");
             if (excelBirthDate != null) {
                 customer.setBirthDate(SheetDataUtils.excelSerialToLocalDate(excelBirthDate));
             }
             
-            customer.setCity(getStringValueByIdentifier(row, "City"));
-            customer.setState(getStringValueByIdentifier(row, "State"));
+            customer.setCity(getStringValue(row, "City"));
+            customer.setState(getStringValue(row, "State"));
             
-            // Only add if we have the essential fields
             if (customer.getId() != null && customer.getName() != null && customer.getCpf() != null) {
                 modelos.add(customer);
             }
@@ -46,38 +43,8 @@ public class CustomerImportationModel implements InterfacePlanilhaModel<Customer
         };
     }
     
-    private Long getLongValueByIdentifier(RowData row, String columnIdentifier) {
-        if (row.getCelulaByIdentificador(columnIdentifier) == null || 
-            row.getCelulaByIdentificador(columnIdentifier).getValue() == null) {
-            return null;
-        }
-        try {
-            String value = row.getCelulaByIdentificador(columnIdentifier).getValue().toString();
-            return value.isEmpty() ? null : Long.valueOf(value);
-        } catch (NumberFormatException e) {
-            return null;
-        }
-    }
-    
-    private String getStringValueByIdentifier(RowData row, String columnIdentifier) {
-        if (row.getCelulaByIdentificador(columnIdentifier) == null || 
-            row.getCelulaByIdentificador(columnIdentifier).getValue() == null) {
-            return null;
-        }
-        String value = row.getCelulaByIdentificador(columnIdentifier).getValue().toString();
-        return value.isEmpty() ? null : value.trim();
-    }
-    
-    private Double getDoubleValueByIdentifier(RowData row, String columnIdentifier) {
-        if (row.getCelulaByIdentificador(columnIdentifier) == null || 
-            row.getCelulaByIdentificador(columnIdentifier).getValue() == null) {
-            return null;
-        }
-        try {
-            String value = row.getCelulaByIdentificador(columnIdentifier).getValue().toString();
-            return value.isEmpty() ? null : Double.valueOf(value);
-        } catch (NumberFormatException e) {
-            return null;
-        }
-    }
+	@Override
+	public void validate(Customer object, RowData row) throws ProcessamentoArquivoException {
+		
+	}
 }

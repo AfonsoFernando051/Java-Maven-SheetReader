@@ -5,19 +5,19 @@ import java.util.function.Function;
 
 import importable.model.product.Product;
 import importable.service.SheetDataUtils;
+import importable.utils.ProcessamentoArquivoException;
 
 /**
  * @author fernando.dias
  */
-public class ProductImportationModel implements InterfacePlanilhaModel<Product> {
+public class ProductImportationModel extends GenericImportModel<Product> {
+
+	 public ProductImportationModel(Class<Product> tipo) {
+		super(tipo);
+	}
 
 	 @Override
-	 public Product criarInstancia() {
-	     return new Product();
-	 }
-
-	 @Override
-	 public Function<RowData, ArrayList<Product>> createModelsByRow() {
+	 public Function<RowData, ArrayList<Product>> processRow() {
 	     ArrayList<Product> modelos = new ArrayList<Product>();
 	     return (row) -> {
 	         Product product = criarInstancia();
@@ -41,24 +41,11 @@ public class ProductImportationModel implements InterfacePlanilhaModel<Product> 
 	         return modelos;
 	     };
 	 }
+
+	@Override
+	public void validate(Product object, RowData row) throws ProcessamentoArquivoException {
+		
+	}
+
 	 
-	 private Long getLongValue(RowData row, String columnIdentifier) {
-	     return row.getCelulaByIdentificador(columnIdentifier) != null ? 
-	         Long.valueOf(row.getCelulaByIdentificador(columnIdentifier).getValue().toString()) : null;
-	 }
-	 
-	 private String getStringValue(RowData row, String columnIdentifier) {
-	     return row.getCelulaByIdentificador(columnIdentifier) != null ? 
-	         row.getCelulaByIdentificador(columnIdentifier).getValue().toString() : null;
-	 }
-	 
-	 private Double getDoubleValue(RowData row, String columnIdentifier) {
-	     return row.getCelulaByIdentificador(columnIdentifier) != null ? 
-	         Double.valueOf(row.getCelulaByIdentificador(columnIdentifier).getValue().toString()) : null;
-	 }
- 
-	 private Integer getIntegerValue(RowData row, String columnIdentifier) {
-	     return row.getCelulaByIdentificador(columnIdentifier) != null ? 
-	         Integer.valueOf(row.getCelulaByIdentificador(columnIdentifier).getValue().toString()) : null;
-	 }
 }

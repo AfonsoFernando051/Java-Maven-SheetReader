@@ -25,7 +25,7 @@ import importable.utils.SaveBytesManager;
  * @author Fernando Dias
  * @param <T> - Tipo a ser importado
  */
-public abstract class AbstractImportarPlanilhaService<T> {
+public abstract class AbstractImportSheetService<T> implements ImportService<T> {
 
   /**
    * Dados extraidos do formulario
@@ -41,11 +41,6 @@ public abstract class AbstractImportarPlanilhaService<T> {
    * Modelo de Importação
    */
   private PlanilhaModel planilhaAtual;
-
-  /**
-   * Total de Eventos importados
-   */
-  private long totalItensImportados = 0;
 
   /**
    * Modelo de Importação
@@ -97,11 +92,6 @@ public abstract class AbstractImportarPlanilhaService<T> {
     try {
       configurarDadosPlanilha(planilhaImportConfigManager, bytesController);
       HashMap<TipoPlanilhaImportacaoEnum, ArrayList<T>> dados = getDadosByPlanilhas();
-      Set<TipoPlanilhaImportacaoEnum> keySet = dados.keySet();
-      for (TipoPlanilhaImportacaoEnum tipoPlanilhaImportacaoEnum : keySet) {
-        totalItensImportados += dados.get(tipoPlanilhaImportacaoEnum)
-            .stream().count();
-      }
       bytesController.closeFileData();
       callback.accept(dados);
     } catch (EncryptedDocumentException | IOException e) {
@@ -133,34 +123,6 @@ public abstract class AbstractImportarPlanilhaService<T> {
       e.printStackTrace();
     }
 
-  }
-
-  /**
-   * @return {@link #totalItensImportados}
-   */
-  public long getTotalItensImportados() {
-    return totalItensImportados;
-  }
-
-  /**
-   * Zera qtd itens importados
-   */
-  public void zerarTotalItensImportados() {
-    this.totalItensImportados = 0;
-  }
-
-  /**
-   * @param totalItensImportados atualiza {@link #totalItensImportados}.
-   */
-  public void setTotalItensImportados(long totalItensImportados) {
-    this.totalItensImportados = totalItensImportados;
-  }
-
-  /**
-   * Incrementa os itens importados
-   */
-  public void incrementarItensImportados() {
-    this.totalItensImportados += 1;
   }
 
   /**

@@ -6,27 +6,17 @@ package importable.config;
 public enum TipoPlanilhaImportacaoEnum {
 
   /**
-   * Planilhas de qualquer tipo
+   * Generic Sheets
    */
   GERAL,
 
   /**
-   * Planilhas de liberações
+   * Customers Sheets
    */
-  LIBERACAO,
+  CUSTOMERS,
 
   /**
-   * Planilhas de encargos
+   * Products Sheets
    */
-  ENCARGOS,
-
-  /**
-   * Planilhas de eventos
-   */
-  EVENTOS,
-
-  /**
-   * Planilhas de Cesta De Índices
-   */
-  CESTA_INDICES;
+  PRODUCTS;
 }

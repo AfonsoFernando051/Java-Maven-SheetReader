@@ -14,7 +14,7 @@ public abstract class GenericImportModel<T>
   implements ImportModelValidator<T>, InterfacePlanilhaModel<T> {
 
   /**
-   * Generico
+   * Generic
    */
   private final Class<T> tipo;
 
@@ -132,5 +132,25 @@ public abstract class GenericImportModel<T>
             sheet.getColuna(),      
             sheet.getTituloColuna());
   }
+  
+  protected Long getLongValue(RowData row, String columnIdentifier) {
+	     return row.getCelulaByIdentificador(columnIdentifier) != null ? 
+	         Long.valueOf(row.getCelulaByIdentificador(columnIdentifier).getValue().toString()) : null;
+	 }
+	 
+  protected String getStringValue(RowData row, String columnIdentifier) {
+	     return row.getCelulaByIdentificador(columnIdentifier) != null ? 
+	         row.getCelulaByIdentificador(columnIdentifier).getValue().toString() : null;
+	 }
+	 
+  protected Double getDoubleValue(RowData row, String columnIdentifier) {
+	     return row.getCelulaByIdentificador(columnIdentifier) != null ? 
+	         Double.valueOf(row.getCelulaByIdentificador(columnIdentifier).getValue().toString()) : null;
+	 }
+
+  protected Integer getIntegerValue(RowData row, String columnIdentifier) {
+	     return row.getCelulaByIdentificador(columnIdentifier) != null ? 
+	         Integer.valueOf(row.getCelulaByIdentificador(columnIdentifier).getValue().toString()) : null;
+	 }
 
 }

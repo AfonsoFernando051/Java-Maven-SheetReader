@@ -3,9 +3,7 @@ package importable.service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
-import java.time.LocalDate;
 import java.util.Locale;
-import java.util.Optional;
 
 import importable.model.SheetValor;
 
@@ -44,7 +42,8 @@ public class ImportacaoServiceUtil {
     }
 
     BigDecimal valorFormatado = valor.setScale(2, RoundingMode.HALF_UP);
-    NumberFormat formatoMoeda = NumberFormat
+    @SuppressWarnings("deprecation")
+	NumberFormat formatoMoeda = NumberFormat
         .getNumberInstance(new Locale("pt", "BR"));
     formatoMoeda.setMinimumFractionDigits(2);
     formatoMoeda.setMaximumFractionDigits(2);

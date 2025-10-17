@@ -139,7 +139,6 @@ public class SheetFactory {
     return format.contains("dd") || format.contains("mm")
         || format.contains("yyyy") || format.contains("hh")
         || format.matches("m/d/yy(?:yy)?");
-    /* || format.equals("general") && isLikelyDateValue(cell) */
   }
 
   /**
@@ -158,25 +157,7 @@ public class SheetFactory {
                                                                // 23:59:59
   }
 
-  /**
-   * @param cell -> celula
-   * @return true se for data
-   */
-  private static boolean isLikelyDateValue(Cell cell) {
-    double value = cell.getNumericCellValue();
-    return value > 0 && value < 100000
-        && (value % 1 == 0 || hasTimeComponents(value));
-  }
 
-  /**
-   * @param value -> valor
-   * @return true se for data
-   */
-  private static boolean hasTimeComponents(double value) {
-    double timePart = value - Math.floor(value);
-    return timePart >= 0.00069444 && timePart <= 0.999988426; // 01:00 a
-                                                              // 23:59:59
-  }
 
   /**
    * @param data   - importada

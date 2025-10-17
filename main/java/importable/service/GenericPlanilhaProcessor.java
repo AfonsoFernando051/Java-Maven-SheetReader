@@ -16,7 +16,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import importable.config.PlanilhaModel;
-import importable.model.AnaliseProjecaoModelTest;
 import importable.model.CelulaData;
 import importable.model.ImportableSheet;
 import importable.model.InterfacePlanilhaModel;
@@ -430,12 +429,5 @@ public class GenericPlanilhaProcessor<T>
     return coluna.toString();
   }
 
-  @Override
-  public AnaliseProjecaoModelTest criarModelo(Row row, LocalDate data,
-                                              BigDecimal valor,
-                                              String natureza,
-                                              CelulaData celula) {
-    return null;
-  }
 
 }
