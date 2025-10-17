@@ -55,7 +55,7 @@ public class SheetFactory {
           }
           SheetValor sheetValor = new SheetValor();
           sheetValor.setValue(number);
-          sheetValor.setNumeroLinha(numeroLinha);
+          sheetValor.setLineNumber(numeroLinha);
           sheetValor.setColuna(getColunaLetra(cell.getColumnIndex()));
           sheetValor.setTituloColuna(titulo);
           return sheetValor;
@@ -69,14 +69,14 @@ public class SheetFactory {
         BigDecimal number = new BigDecimal(cellValue.replace(",", "."));
         SheetValor sheetValor = new SheetValor();
         sheetValor.setValue(number);
-        sheetValor.setNumeroLinha(numeroLinha);
+        sheetValor.setLineNumber(numeroLinha);
         sheetValor.setColuna(getColunaLetra(cell.getColumnIndex()));
         sheetValor.setTituloColuna(titulo);
         return sheetValor;
       } catch (NumberFormatException e) {
         SheetString sheetString = new SheetString();
         sheetString.setValor(cellValue);
-        sheetString.setNumeroLinha(numeroLinha);
+        sheetString.setLineNumber(numeroLinha);
         sheetString.setColuna(getColunaLetra(cell.getColumnIndex()));
         sheetString.setTituloColuna(titulo);
         return sheetString;
@@ -163,7 +163,6 @@ public class SheetFactory {
    * @return true se for data
    */
   private static boolean isLikelyDateValue(Cell cell) {
-    // Verificação adicional para valores "genéricos"
     double value = cell.getNumericCellValue();
     return value > 0 && value < 100000
         && (value % 1 == 0 || hasTimeComponents(value));
@@ -190,7 +189,7 @@ public class SheetFactory {
                                           String titulo, int linha) {
     SheetData sheetData = new SheetData();
     sheetData.setValue(data);
-    sheetData.setNumeroLinha(linha);
+    sheetData.setLineNumber(linha);
     sheetData.setColuna(getColunaLetra(cell.getColumnIndex()));
     sheetData.setTituloColuna(titulo);
     return sheetData;

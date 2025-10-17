@@ -3,6 +3,7 @@ package importable.model;
 import java.util.ArrayList;
 import java.util.function.Function;
 
+import importable.translator.Translator;
 import importable.utils.ProcessamentoArquivoException;
 
 /**
@@ -50,20 +51,19 @@ public abstract class GenericImportModel<T>
         return modelos;
 
       } catch (ProcessamentoArquivoException e) {
-//        log.warn("Erro de processamento na linha {}: {}",
-//                 row.getNumeroLinha(), e.getMessage());
-        throw e;
+    	  String mensagem =  String
+          .format("Erro de processamento na linha {}: {}",
+                 row.getNumeroLinha(), e.getMessage());
+    	  throw new ProcessamentoArquivoException(mensagem, e);
       } catch (ClassCastException e) {
         String mensagem = String
             .format("Erro de tipo inesperado ao processar linha %d: %s",
                     row.getNumeroLinha(), e.getMessage());
-//        log.error(mensagem, e);
         throw new ProcessamentoArquivoException(mensagem, e);
       } catch (Exception e) {
         String mensagem = String
             .format("Erro inesperado ao processar linha %d: %s",
                     row.getNumeroLinha(), e.getMessage());
-//        log.error(mensagem, e);
         throw new ProcessamentoArquivoException(mensagem, e);
       }
     };
@@ -97,7 +97,7 @@ public abstract class GenericImportModel<T>
         .format("Erro de tipo na planilha: esperado %s, encontrado %s na linha %d, coluna %s, título %s.",
                 expectedClass.getSimpleName(),
                 celula.getClass().getSimpleName(),
-                abstractSheet.getNumeroLinha(), abstractSheet.getColuna(),
+                abstractSheet.getLineNumber(), abstractSheet.getColuna(),
                 abstractSheet.getTituloColuna()));
   }
 
@@ -127,10 +127,10 @@ public abstract class GenericImportModel<T>
   @SuppressWarnings("unchecked")
   public String buildNullObjMsg(ImportableSheet<?> importableSheet) {
     AbstractSheet<T> sheet = (AbstractSheet<T>) importableSheet;
-//    return Translator.REFERENCIA_NAO_ENCONTRADA_MSG,
-//                        sheet.getNumeroLinha(), sheet.getColuna(),
-//                        sheet.getTituloColuna();
-    return "";
+    return String.format(Translator.REFERENCE_NOT_FOUND_MESSAGE,
+            sheet.getLineNumber(),  
+            sheet.getColuna(),      
+            sheet.getTituloColuna());
   }
 
 }

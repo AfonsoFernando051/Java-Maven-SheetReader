@@ -2,19 +2,20 @@ package importable.model;
 
 /**
  * @author Fernando Dias
- * @param <T> Tipo do valor armazenado
+ * @param <T> Kind of value
  */
 public abstract class AbstractSheet<T>
   implements ImportableSheet<T> {
+	
   /**
-   * Data da análise.
+   * Value from sheet
    */
   private T value;
 
   /**
-   * Número da linha da planilha.
+   * Number of Line
    */
-  private int numeroLinha;
+  private int lineNumber;
 
   /**
    * Coluna da planilha.
@@ -43,17 +44,17 @@ public abstract class AbstractSheet<T>
   }
 
   /**
-   * @return {@link #numeroLinha}
+   * @return {@link #lineNumber}
    */
-  public int getNumeroLinha() {
-    return numeroLinha;
+  public int getLineNumber() {
+	return lineNumber;
   }
 
   /**
-   * @param numeroLinha atualiza {@link #numeroLinha}.
+   * @return {@link #lineNumber}
    */
-  public void setNumeroLinha(int numeroLinha) {
-    this.numeroLinha = numeroLinha;
+  public void setLineNumber(int lineNumber) {
+	 this.lineNumber = lineNumber;
   }
 
   /**
@@ -86,7 +87,7 @@ public abstract class AbstractSheet<T>
 
   @Override
   public String toString() {
-    return "AbstractSheet [value=" + value + ", numeroLinha=" + numeroLinha
+    return "AbstractSheet [value=" + value + ", numeroLinha=" + lineNumber
         + ", coluna=" + coluna + ", tituloColuna=" + tituloColuna + "]";
   }
 }
