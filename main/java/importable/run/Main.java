@@ -9,41 +9,37 @@ import importable.old.OldCustomerImporter;
 import importable.old.OldProductImporter;
 
 public class Main {
-
+	
+	static InputStream customerStream = Main.class.getClassLoader()
+            .getResourceAsStream("customers.xlsx");
+	
+	static InputStream productStream = Main.class.getClassLoader()
+             .getResourceAsStream("products.xlsx");
+	 
     public static void main(String[] args) {
-        try {
-            // Importação de Customer via classloader
-            InputStream customerStream = Main.class.getClassLoader()
-                    .getResourceAsStream("customers.xlsx");
-            if (customerStream == null) {
-                System.out.println("Arquivo customers.xlsx não encontrado!");
-                return;
-            }
-            byte[] customerFile = customerStream.readAllBytes();
-            List<Customer> customers = OldCustomerImporter.importarDadosPlanilha(
-                    "0", true, "A","B", "D", "F","G", customerFile);
-            System.out.println("Clientes importados:");
-            for (Object c : customers) {
-                System.out.println(c);
-            }
+    	  readDataWithoutDesignPatterns();
+	}
 
-            // Importação de Product via classloader
-            InputStream productStream = Main.class.getClassLoader()
-                    .getResourceAsStream("products.xlsx");
-            if (productStream == null) {
-                System.out.println("Arquivo products.xlsx não encontrado!");
-                return;
-            }
-            byte[] productFile = productStream.readAllBytes();
-            List<Product> products = OldProductImporter.importarDadosPlanilha(
-                    "0", true,"A", "B", "D", "C", productFile);
-            System.out.println("\nProdutos importados:");
-            for (Object p : products) {
-                System.out.println(p);
-            }
+	private static void readDataWithoutDesignPatterns() {
+		try {
+              byte[] customerFile = customerStream.readAllBytes();
+              List<Customer> customers = OldCustomerImporter.importarDadosPlanilha(
+                      "0", true, "A","B", "D", "F","G", customerFile);
+              System.out.println("Clientes importados:");
+              for (Object c : customers) {
+                  System.out.println(c);
+              }
+              
+              byte[] productFile = productStream.readAllBytes();
+              List<Product> products = OldProductImporter.importarDadosPlanilha(
+                      "0", true,"A", "B", "D", "C", productFile);
+              System.out.println("\nProdutos importados:");
+              for (Object p : products) {
+                  System.out.println(p);
+              }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+          } catch (Exception e) {
+              e.printStackTrace();
+          }
+	}
 }
