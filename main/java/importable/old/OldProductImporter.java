@@ -18,8 +18,9 @@ public class OldProductImporter {
 
   /**
    * Importação de dados da planilha de produtos
+ * @return 
    */
-  public static void importarDadosPlanilha(String abaPlanilha,
+  public static List<Product> importarDadosPlanilha(String abaPlanilha,
                                      boolean possuiCabecalho,
                                      String colunaNome,
                                      String colunaPreco,
@@ -31,7 +32,7 @@ public class OldProductImporter {
       int abaIndex = Character.getNumericValue(abaPlanilha.charAt(0));
       XSSFSheet planilha = workXssf.getSheetAt(abaIndex);
       Iterator<Row> rowIterator = planilha.iterator();
-      List<Product> produtos = new ArrayList<Product>();
+      List<Product> products = new ArrayList<Product>();
       final int POS_NOME = ((byte) colunaNome.toUpperCase().toCharArray()[0]) - 65;
       final int POS_PRECO = ((byte) colunaPreco.toUpperCase().toCharArray()[0]) - 65;
       final int POS_CATEGORIA = ((byte) colunaCategoria.toUpperCase().toCharArray()[0]) - 65;
@@ -54,12 +55,13 @@ public class OldProductImporter {
             product.setCategory(cell.getStringCellValue());
           }
         }
-        produtos.add(product);
+        products.add(product);
       }
-
       workXssf.close();
+      return products;
     } catch (EncryptedDocumentException | IOException e) {
       e.printStackTrace();
     }
+    return null;
   }
 }

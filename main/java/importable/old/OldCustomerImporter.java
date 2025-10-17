@@ -19,7 +19,7 @@ public class OldCustomerImporter {
   /**
    * Importação de dados da planilha de clientes
    */
-	public static void importarDadosPlanilha(String abaPlanilha,
+	public static List<Customer> importarDadosPlanilha(String abaPlanilha,
                                      boolean possuiCabecalho,
                                      String colunaNome,
                                      String colunaEmail,
@@ -31,7 +31,7 @@ public class OldCustomerImporter {
       int abaIndex = Character.getNumericValue(abaPlanilha.charAt(0));
       XSSFSheet planilha = workXssf.getSheetAt(abaIndex);
       Iterator<Row> rowIterator = planilha.iterator();
-      List<Customer> clientes = new ArrayList<Customer>();
+      List<Customer> customers = new ArrayList<Customer>();
       final int POS_NOME = ((byte) colunaNome.toUpperCase().toCharArray()[0]) - 65;
       final int POS_EMAIL = ((byte) colunaEmail.toUpperCase().toCharArray()[0]) - 65;
       final int POS_CIDADE = ((byte) colunaCidade.toUpperCase().toCharArray()[0]) - 65;
@@ -54,12 +54,14 @@ public class OldCustomerImporter {
             customer.setCity(cell.getStringCellValue());
           }
         }
-        clientes.add(customer);
+        customers.add(customer);
       }
 
       workXssf.close();
+      return customers;
     } catch (EncryptedDocumentException | IOException e) {
       e.printStackTrace();
     }
+	return null;
   }
 }
