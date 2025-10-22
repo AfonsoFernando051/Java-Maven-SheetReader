@@ -1,153 +1,188 @@
------
+# 📘 **Java-Maven-SheetReader: Refactoring Case Study with Design Patterns**
 
------
+> *Academic Case Study: Evaluating the Impact of Design Patterns on Software Quality*
 
-# SheetReader - A Generic Java Sheet Import Library
+---
 
-SheetReader is a lightweight, annotation-driven Java library designed to import data from spreadsheet files (`.xlsx`, `.xls`) into a list of Plain Old Java Objects (POJOs).
+## 🧩 **1. Project Overview**
 
-It leverages Java Annotations and Reflection to create a highly decoupled and reusable solution, eliminating the need for boilerplate code for each data model you need to import. 🚀
+**SheetReader** was developed as a case study to evaluate how applying **object-oriented design patterns** affects **software quality, maintainability, and scalability** in Java systems.
 
-## The Problem It Solves
+The project implements two distinct versions of the same functionality — reading and importing Excel spreadsheets:
 
-Traditionally, importing data from spreadsheets into a Java application involves writing specific, repetitive code for each type of object (e.g., `Product`, `Customer`, `Invoice`). This approach leads to several issues:
+* **Original Version:** procedural logic, monolithic “God Classes,” and high coupling.
+* **Refactored Version:** restructured using **design patterns** (Template Method, Factory Method, Strategy), focusing on **modularity and extensibility**.
 
-  * **Tight Coupling:** The import logic is tightly coupled to the structure of the specific Java class. Any change in the class requires a change in the importer.
-  * **Boilerplate Code:** Most of the code for reading rows and cells is repeated for every different object type.
-  * **Low Reusability:** The importer for `Product` cannot be used to import `Customer` data.
-  * **Difficult Maintenance:** Managing dozens of different importers becomes complex and error-prone.
+---
 
-SheetReader solves this by inverting the responsibility. Instead of the importer knowing the object, the **object itself declares how it should be populated** from a spreadsheet.
+## 🧱 **2. System Architecture**
 
------
+### 🔹 **Original Version**
 
-## Key Features
+* Core classes: `OldProductImporter`, `OldCustomerImporter`
+* Procedural structure with high redundancy
+* Lack of abstraction and separation of responsibilities
 
-  * **Annotation-Driven:** Simply annotate your model classes and their fields to map them to spreadsheet columns.
-  * **Generic and Type-Safe:** The core engine works with any Java class (`<T>`) and returns a type-safe `List<T>`.
-  * **Highly Decoupled:** The library has no direct dependency on your project's domain models.
-  * **Reduces Boilerplate:** Write the import logic once. The library handles the file I/O, iteration, and object instantiation dynamically.
-  * **Easy to Use:** The API is simple and requires minimal configuration.
+### 🔹 **Refactored Version**
 
------
+* Design Patterns Implemented:
 
-## Installation
+  * **Template Method** → defines generic import workflow (`AbstractImportSheetService`, `GenericPlanilhaProcessor`)
+  * **Factory Method** → dynamic instantiation of import services (`ImportServiceFactory`)
+  * **Strategy** → flexible model and validation strategies (`CustomerImportationModel`, `ProductImportationModel`)
+* Modular and interface-driven design, fully extensible.
 
-To use SheetReader in your Maven project, you first need to add the **Apache POI** dependency to handle Excel files.
+📂 **Main Packages**
 
-Add the following to your `pom.xml`:
-
-```xml
-<dependencies>
-    <dependency>
-        <groupId>org.apache.poi</groupId>
-        <artifactId>poi-ooxml</artifactId>
-        <version>5.2.5</version>
-    </dependency>
-</dependencies>
+```
+importable.config       → Configuration and enums
+importable.model        → Domain models (POJOs)
+importable.service      → Import services and factories
+importable.utils        → File utilities and I/O handlers
+importable.old          → Legacy procedural version
 ```
 
------
+---
 
-## How to Use
+## ⚙️ **3. Tools Used**
 
-Using the library involves three simple steps:
+| Tool              | Purpose                                         |
+| ----------------- | ----------------------------------------------- |
+| **CKJM Extended** | Class-level metrics (WMC, CBO, RFC, LCOM, etc.) |
+| **SonarQube**     | Holistic quality and maintainability analysis   |
+| **Maven**         | Dependency and build management                 |
+| **Apache POI**    | Excel spreadsheet processing                    |
+| **Java 17**       | Programming language used                       |
 
-### Step 1: Annotate Your Model Class (POJO)
+---
 
-First, define your Java object and use the `@Importable` and `@Annotation` annotations to map its fields to the spreadsheet columns.
+## 📊 **4. Results and Discussion**
 
-  * `@Importable`: A marker annotation placed on the class to identify it as a target for the reader.
-  * `@Annotation(columnIndex)`: Placed on each field that should be populated. `columnIndex` corresponds to the 0-based index of the column in the spreadsheet.
+### 4.1. **CKJM Class-Level Metrics Analysis**
 
-**Example: `Product.java`**
+Static analysis using **CKJM-Extended** focused on Coupling (CBO, RFC), Cohesion (LCOM), and Complexity (WMC).
 
-```java
-package com.yourproject.model;
+| Metric (Focus)               | Original Version | Refactored Version | Change | Quality Impact                     |
+| ---------------------------- | ---------------- | ------------------ | ------ | ---------------------------------- |
+| **CBO (Coupling)**           | 6.00             | 4.85               | -19.2% | ✅ Reduced coupling                 |
+| **RFC (Response for Class)** | 29.00            | 17.59              | -39.3% | ✅ Lower response complexity        |
+| **LCOM (Lack of Cohesion)**  | 1.00             | 23.85              | +2285% | ⚠️ Needs qualitative analysis      |
+| **WMC (Complexity)**         | 2.00             | 6.64               | +232%  | ⚠️ Increased due to modularization |
 
-import importable.Importable;
-import importable.Annotation;
+📌 **Interpretation:**
+The refactored version significantly reduced coupling but increased the number of classes — distributing complexity more evenly.
+The “Original Version” contained **God Classes** like `OldProductImporter` (WMC=72.5), which inflated metrics artificially.
+The new architecture follows the **Single Responsibility Principle (SRP)**, resulting in higher maintainability and logical cohesion.
 
-@Importable // Marks this class as eligible for import
-public class Product {
+---
 
-    @Annotation(columnIndex = 0) // Maps this field to the first column (A)
-    private String name;
+### 4.2. **SonarQube Quality Analysis**
 
-    @Annotation(columnIndex = 1) // Maps this field to the second column (B)
-    private Double price;
-    
-    @Annotation(columnIndex = 2) // Maps this field to the third column (C)
-    private Integer stock;
+Holistic analysis using **SonarQube** validated the CKJM findings:
 
-    // Getters, Setters, and Constructors are required for the library to work
-    // ...
-}
+| Metric (SonarQube)             | Original (299 LOC) | Refactored (1.8k LOC) |
+| ------------------------------ | ------------------ | --------------------- |
+| **Security (Vulnerabilities)** | A (0 Issues)       | A (0 Issues)          |
+| **Maintainability**            | E (Critical)       | A (Excellent)         |
+| **Technical Debt**             | 23 min             | 77 min                |
+
+📌 **Interpretation:**
+Despite being **six times larger**, the refactored version achieved the **highest possible maintainability rating (A)**.
+The original version, while smaller, was densely packed with “Code Smells” and structural problems, receiving a **critical rating (E)**.
+
+---
+
+### 4.3. **Scalability Simulation**
+
+A scalability test simulated system growth from **2 to 10 importers**, estimating the impact on complexity and technical debt.
+
+| Metric (Project Total)      | Original (2 imports) | Original (10 imports) | Refactored (2 imports) | Refactored (10 imports) |
+| --------------------------- | -------------------- | --------------------- | ---------------------- | ----------------------- |
+| **Total Complexity (WMC)**  | ~153                 | ~765                  | ~285                   | ~365                    |
+| **Maintainability (Sonar)** | E                    | E                     | A                      | A                       |
+| **Technical Debt**          | 23 min               | ~115 min              | 77 min                 | ~101 min                |
+
+📌 **Interpretation:**
+The procedural version **does not scale** — complexity grows exponentially.
+In contrast, the refactored version maintains **linear complexity growth**, keeping maintainability at an **A rating**.
+Even with more importers, total technical debt remains **lower** than the procedural system, proving the **long-term payoff of good architecture**.
+
+---
+
+## 🧮 **5. Conclusion**
+
+This study quantitatively demonstrates the positive impact of **design patterns** on software structure and maintainability.
+
+* **CBO (-19%) and RFC (-39%)**: significant reduction in coupling and response complexity.
+* **WMC and LCOM** increases are expected — complexity was **distributed**, not accumulated.
+* **SonarQube** confirms: maintainability improved from **E (Critical)** to **A (Excellent)**.
+* The **scalability simulation** shows that the refactored architecture supports sustainable growth, whereas the original design becomes unmaintainable.
+
+🔹 **Final Statement:**
+
+> The initial investment in design patterns yields long-term benefits — resulting in a system that is more **modular, cohesive, extensible, and maintainable**.
+
+---
+
+## 📘 **6. CKJM Metric Definitions**
+
+| Metric   | Description                                            | Desirable  | Interpretation                      |
+| -------- | ------------------------------------------------------ | ---------- | ----------------------------------- |
+| **CBO**  | Coupling Between Objects — number of dependent classes | Low        | Fewer external dependencies         |
+| **LCOM** | Lack of Cohesion of Methods — measures class focus     | Low        | High cohesion and SRP adherence     |
+| **RFC**  | Response For Class — number of callable methods        | Low        | Lower complexity, simpler classes   |
+| **WMC**  | Weighted Methods per Class — total complexity          | Low        | Easier to understand and maintain   |
+| **DIT**  | Depth of Inheritance Tree                              | Medium     | Good reuse without deep hierarchies |
+| **NOC**  | Number of Children                                     | Low–Medium | Indicates reuse through inheritance |
+| **Ca**   | Afferent Coupling — classes depending on this one      | Medium     | Indicates central or core classes   |
+| **Ce**   | Efferent Coupling — classes this one depends on        | Low        | Indicates independence              |
+| **NPM**  | Number of Public Methods                               | Low        | Smaller, simpler interfaces         |
+| **LOC**  | Lines of Code                                          | Low        | Simpler and smaller codebase        |
+
+---
+
+## 🧰 **7. How to Run**
+
+### 🖥️ **Requirements**
+
+* Java 17+
+* Maven 3.9+
+* Apache POI (included via Maven)
+
+### ▶️ **Commands**
+
+```bash
+# Clone repository
+git clone https://github.com/AfonsoFernando051/Java-Maven-SheetReader.git
+cd Java-Maven-SheetReader
+
+# Build
+mvn clean package
+
+# Run refactored version
+java -cp target/SheetReader-1.0.jar importable.run.Main
+
+# Run original version (without design patterns)
+java -cp target/SheetReader-1.0.jar importable.old.OldProductImporter
 ```
 
-### Step 2: Prepare Your Spreadsheet
+---
 
-Create an Excel file (`.xlsx`) where the data matches the column mapping defined in your POJO.
+## 📈 **8. CKJM Metric Trends**
 
-**Example: `products.xlsx`**
-| A | B | C |
-| :--- | :--- | :--- |
-| Laptop | 1200.50 | 50 |
-| Mouse | 25.00 | 300 |
-| Keyboard | 75.99 | 150 |
+| Metric   | Trend                           |
+| -------- | ------------------------------- |
+| **CBO**  | 🔻 Reduced coupling             |
+| **RFC**  | 🔻 Reduced response complexity  |
+| **LCOM** | 🔺 Higher due to modularization |
+| **WMC**  | 🔺 Distributed complexity       |
 
-### Step 3: Run the Reader
+---
 
-Use the `Reader` class to execute the import. Pass the file path and the `.class` object of your model.
+## 👨‍💻 **9. Author**
 
-**Example: `Main.java`**
+**Afonso Fernando Afonso**
+Developed as part of an academic case study for a **Bachelor’s Thesis (TCC)**.
+📎 GitHub: [@AfonsoFernando051](https://github.com/AfonsoFernando051)
 
-```java
-import java.util.List;
-import importable.Reader;
-import com.yourproject.model.Product;
-import importable.exception.SheetReaderException;
 
-public class Main {
-    public static void main(String[] args) {
-        Reader reader = new Reader();
-        String filePath = "path/to/your/products.xlsx";
-
-        try {
-            // The magic happens here!
-            List<Product> productList = reader.read(filePath, Product.class);
-
-            System.out.println("Successfully imported " + productList.size() + " products.");
-            for (Product product : productList) {
-                System.out.println("Name: " + product.getName() + ", Price: " + product.getPrice());
-            }
-
-        } catch (SheetReaderException e) {
-            System.err.println("Failed to read the sheet: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-}
-```
-
------
-
-## Architectural Concepts 🏛️
-
-This library is a practical demonstration of software design principles that promote code quality.
-
-#### 1\. Decoupling via Annotations and Reflection
-
-The core strength of this design is its **extremely low coupling**. The `Reader` component does not know that a `Product` class exists. It is only programmed to look for classes marked with `@Importable` and fields marked with `@Annotation`.
-
-By using the **Java Reflection API**, the `Reader` can inspect any class at runtime, discover its annotations, create a new instance, and set its fields dynamically. This means you can add hundreds of new importable classes to your project **without ever modifying a single line of code** in the `SheetReader` library, perfectly illustrating the **Open-Closed Principle**.
-
-#### 2\. High Cohesion
-
-Cohesion is improved because the responsibility for defining the data mapping is placed directly within the domain model itself. The `Product` class is now the single source of truth for how its fields map to spreadsheet columns. The `Reader` class also has high cohesion, as its only responsibility is the technical process of reading a file and using reflection to populate objects.
-
-#### 3\. Generics for Reusability and Type Safety
-
-The use of Generics (`<T>`) in the `read(String filePath, Class<T> clazz)` method is fundamental. It allows the same `read` method to be used for any type of object while providing compile-time type safety. The method returns a `List<Product>` when passed `Product.class`, and a `List<Customer>` when passed `Customer.class`, ensuring the client code is clean and safe.
-
------
