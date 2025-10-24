@@ -16,6 +16,7 @@ import importable.model.order.Order;
 import importable.model.product.Product;
 import importable.model.shipment.Shipment;
 import importable.model.supplier.Supplier;
+import importable.model.task.Task;
 import importable.old.OldAssetImporter;
 import importable.old.OldCustomerImporter;
 import importable.old.OldEmployeeImporter;
@@ -24,6 +25,7 @@ import importable.old.OldOrderImporter;
 import importable.old.OldProductImporter;
 import importable.old.OldShipmentImporter;
 import importable.old.OldSupplierImporter;
+import importable.old.OldTaskImporter;
 import importable.service.ImportService;
 import importable.service.ImportServiceFactory;
 import importable.service.PlanilhaImportConfigManager;
@@ -161,8 +163,20 @@ public class Main {
 				System.out.println(a);
 			}
 
-			System.out.println();
-		} catch (Exception e) {
+			InputStream taskStream = Main.class.getClassLoader()
+					.getResourceAsStream("tasks.xlsx");
+			byte[] taskFile = taskStream.readAllBytes();
+			// Mapeamento: ID(A), ProjectID(B), Desc(C), Assignee(D), Prio(E), Data(F)
+			List<Task> tasks = OldTaskImporter.importarDadosPlanilha(
+					"0", true, "A", "B", "C", "D", "E", "F", taskFile);
+			
+			System.out.println("\nTasks imported: " + tasks.size());
+			for (Object t : tasks) {
+				System.out.println(t);
+			}
+			// === FIM DA ADIÇÃO (EXEMPLO 8) ===
+
+			System.out.println();		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
