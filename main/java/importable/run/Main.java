@@ -8,6 +8,7 @@ import java.util.Scanner; // 1. Import the Scanner class
 
 import importable.config.PlanilhaModel;
 import importable.config.TipoPlanilhaImportacaoEnum;
+import importable.model.asset.CompanyAsset;
 import importable.model.customer.Customer;
 import importable.model.employee.Employee;
 import importable.model.inventory.Inventory;
@@ -15,6 +16,7 @@ import importable.model.order.Order;
 import importable.model.product.Product;
 import importable.model.shipment.Shipment;
 import importable.model.supplier.Supplier;
+import importable.old.OldAssetImporter;
 import importable.old.OldCustomerImporter;
 import importable.old.OldEmployeeImporter;
 import importable.old.OldInventoryImporter;
@@ -131,7 +133,6 @@ public class Main {
 
 			InputStream inventoryStream = Main.class.getClassLoader().getResourceAsStream("inventory.xlsx");
 			byte[] inventoryFile = inventoryStream.readAllBytes();
-			// Mapeamento: ProductID(A), WarehouseID(B), Quantidade(C), Localizacao(D)
 			List<Inventory> inventory = OldInventoryImporter.importarDadosPlanilha("0", true, "A", "B", "C", "D",
 					inventoryFile);
 
@@ -142,7 +143,6 @@ public class Main {
 			InputStream shipmentStream = Main.class.getClassLoader()
 					.getResourceAsStream("shipments.xlsx");
 			byte[] shipmentFile = shipmentStream.readAllBytes();
-			// Mapeamento: ID(A), OrderID(B), Carrier(C), Tracking(D), Status(E), Data(F)
 			List<Shipment> shipments = OldShipmentImporter.importarDadosPlanilha(
 					"0", true, "A", "B", "C", "D", "E", "F", shipmentFile);
 			
@@ -150,7 +150,16 @@ public class Main {
 			for (Object s : shipments) {
 				System.out.println(s);
 			}
-			// === FIM DA ADIÇÃO (EXEMPLO 6) ===
+			InputStream assetStream = Main.class.getClassLoader()
+					.getResourceAsStream("assets.xlsx");
+			byte[] assetFile = assetStream.readAllBytes();
+			List<CompanyAsset> assets = OldAssetImporter.importarDadosPlanilha(
+					"0", true, "A", "B", "C", "D", "E", "F", assetFile);
+			
+			System.out.println("\nCompany Assets imported: " + assets.size());
+			for (Object a : assets) {
+				System.out.println(a);
+			}
 
 			System.out.println();
 		} catch (Exception e) {
