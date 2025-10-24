@@ -39,6 +39,5 @@ public class ShipmentImportationMapper extends GenericImportMapper<Shipment> {
 
 	@Override
 	public void validate(Shipment object, RowData row) throws ProcessamentoArquivoException {
-		// Validações
 	}
 }

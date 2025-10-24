@@ -89,7 +89,7 @@ public class ModelConfigFactory {
 		case TASKS:
 			return MainDP.class.getClassLoader().getResourceAsStream("tasks.xlsx");
 		case WAREHOUSES:
-			return MainDP.class.getClassLoader().getResourceAsStream("warehouses.xlsx");
+			return MainDP.class.getClassLoader().getResourceAsStream("warehouse.xlsx");
 		default:
 			throw new IllegalArgumentException("Serviço não encontrado para o tipo: " + tipo);
 		}
