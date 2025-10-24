@@ -13,12 +13,14 @@ import importable.model.employee.Employee;
 import importable.model.inventory.Inventory;
 import importable.model.order.Order;
 import importable.model.product.Product;
+import importable.model.shipment.Shipment;
 import importable.model.supplier.Supplier;
 import importable.old.OldCustomerImporter;
 import importable.old.OldEmployeeImporter;
 import importable.old.OldInventoryImporter;
 import importable.old.OldOrderImporter;
 import importable.old.OldProductImporter;
+import importable.old.OldShipmentImporter;
 import importable.old.OldSupplierImporter;
 import importable.service.ImportService;
 import importable.service.ImportServiceFactory;
@@ -127,20 +129,31 @@ public class Main {
 				System.out.println(o);
 			}
 
-			InputStream inventoryStream = Main.class.getClassLoader()
-					.getResourceAsStream("inventory.xlsx");
+			InputStream inventoryStream = Main.class.getClassLoader().getResourceAsStream("inventory.xlsx");
 			byte[] inventoryFile = inventoryStream.readAllBytes();
 			// Mapeamento: ProductID(A), WarehouseID(B), Quantidade(C), Localizacao(D)
-			List<Inventory> inventory = OldInventoryImporter.importarDadosPlanilha(
-					"0", true, "A", "B", "C", "D", inventoryFile);
-			
+			List<Inventory> inventory = OldInventoryImporter.importarDadosPlanilha("0", true, "A", "B", "C", "D",
+					inventoryFile);
+
 			System.out.println("\nInventory items imported: " + inventory.size());
 			for (Object i : inventory) {
 				System.out.println(i);
 			}
-			// === FIM DA ADIÇÃO (EXEMPLO 4) ===
+			InputStream shipmentStream = Main.class.getClassLoader()
+					.getResourceAsStream("shipments.xlsx");
+			byte[] shipmentFile = shipmentStream.readAllBytes();
+			// Mapeamento: ID(A), OrderID(B), Carrier(C), Tracking(D), Status(E), Data(F)
+			List<Shipment> shipments = OldShipmentImporter.importarDadosPlanilha(
+					"0", true, "A", "B", "C", "D", "E", "F", shipmentFile);
+			
+			System.out.println("\nShipments imported: " + shipments.size());
+			for (Object s : shipments) {
+				System.out.println(s);
+			}
+			// === FIM DA ADIÇÃO (EXEMPLO 6) ===
 
-			System.out.println();		} catch (Exception e) {
+			System.out.println();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
