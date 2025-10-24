@@ -1,19 +1,20 @@
-package importable.model;
+package importable.mapper;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.function.Function;
 
 import importable.model.customer.Customer;
+import importable.model.row.RowData;
 import importable.translator.Translator;
 import importable.utils.ProcessamentoArquivoException;
 
 /**
  * Model class for importing Customer data from Excel spreadsheet using column identifiers
  */
-public class CustomerImportationModel extends GenericImportModel<Customer> {
+public class CustomerImportationMapper extends GenericImportMapper<Customer> {
 
-    public CustomerImportationModel(Class<Customer> tipo) {
+    public CustomerImportationMapper(Class<Customer> tipo) {
 		super(tipo);
 	}
 

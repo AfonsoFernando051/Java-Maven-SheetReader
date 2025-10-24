@@ -3,8 +3,8 @@ package importable.service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import importable.model.SheetData;
-import importable.model.SheetValor;
+import importable.model.sheet.SheetData;
+import importable.model.sheet.SheetValor;
 
 /**
  * @author Fernando Dias

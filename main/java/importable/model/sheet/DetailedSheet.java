@@ -1,4 +1,4 @@
-package importable.model;
+package importable.model.sheet;
 
 /**
  * Container que armazena uma célula da planilha junto com seus metadados
@@ -11,7 +11,7 @@ package importable.model;
  *
  * @author Fernando Dias
  */
-public class CelulaData {
+public class DetailedSheet {
 
   /**
    * Identificador da Célula
@@ -30,7 +30,7 @@ public class CelulaData {
    * @param sheetData     a célula da planilha (não pode ser nula)
    * @throws IllegalArgumentException se cell for nulo
    */
-  public CelulaData(String identificador, ImportableSheet<?> sheetData) {
+  public DetailedSheet(String identificador, ImportableSheet<?> sheetData) {
     if (sheetData == null) {
       throw new IllegalArgumentException("Célula não pode ser nula");
     }

@@ -1,6 +1,9 @@
-package importable.model;
+package importable.model.row;
 
 import java.util.ArrayList;
+
+import importable.model.sheet.DetailedSheet;
+import importable.model.sheet.ImportableSheet;
 
 /**
  * Classe criada para abstrair a ideia de linha de uma planilha, de forma que
@@ -19,7 +22,7 @@ public class RowData {
   /**
    * Lista de celulas da linhas
    */
-  ArrayList<CelulaData> celulas = new ArrayList<CelulaData>();
+  ArrayList<DetailedSheet> celulas = new ArrayList<DetailedSheet>();
 
   /**
    * Obtém o número da linha na planilha (baseado em 1).
@@ -42,21 +45,21 @@ public class RowData {
   /**
    * @param celula -> Adicionada na lista de celulas
    */
-  public void addCelula(CelulaData celula) {
+  public void addCelula(DetailedSheet celula) {
     this.celulas.add(celula);
   }
 
   /**
    * @return {@link #celulas}
    */
-  public ArrayList<CelulaData> getCelulas() {
+  public ArrayList<DetailedSheet> getCelulas() {
     return celulas;
   }
 
   /**
    * @param celulas atualiza {@link #celulas}.
    */
-  public void setCelulas(ArrayList<CelulaData> celulas) {
+  public void setCelulas(ArrayList<DetailedSheet> celulas) {
     this.celulas = celulas;
   }
 
@@ -65,7 +68,7 @@ public class RowData {
    * @return valor da celula por identificador
    */
   public ImportableSheet<?> getCelulaByIdentificador(String identificador) {
-    for (CelulaData celulaData : celulas) {
+    for (DetailedSheet celulaData : celulas) {
       if (celulaData.getIdentificador().equals(identificador)) {
         return celulaData.getSheetData();
       }
@@ -85,7 +88,7 @@ public class RowData {
       return false;
     }
 
-    for (CelulaData celula : celulas) {
+    for (DetailedSheet celula : celulas) {
       if (identificador.equals(celula.getIdentificador())) {
         return true;
       }

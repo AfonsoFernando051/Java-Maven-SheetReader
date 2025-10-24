@@ -1,4 +1,4 @@
-package importable.service;
+package importable.service.factory;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -10,11 +10,11 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DateUtil;
 
-import importable.model.ImportableSheet;
-import importable.model.SheetData;
-import importable.model.SheetLong;
-import importable.model.SheetString;
-import importable.model.SheetValor;
+import importable.model.sheet.ImportableSheet;
+import importable.model.sheet.SheetData;
+import importable.model.sheet.SheetLong;
+import importable.model.sheet.SheetString;
+import importable.model.sheet.SheetValor;
 
 /**
  * @author Fernando Dias

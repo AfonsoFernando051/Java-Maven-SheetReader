@@ -29,10 +29,10 @@ import importable.old.OldSupplierImporter;
 import importable.old.OldTaskImporter;
 import importable.old.OldWarehouseImporter;
 import importable.service.ImportService;
-import importable.service.ImportServiceFactory;
 import importable.service.PlanilhaImportConfigManager;
+import importable.service.factory.ImportServiceFactory;
 
-public class Main {
+public class OriginalMain {
 
 	public static void main(String[] args) {
 		try (Scanner scanner = new Scanner(System.in)) {
@@ -44,7 +44,7 @@ public class Main {
 				System.out.println("0 - Exit");
 				System.out.print("Enter your choice: ");
 
-				String choice = scanner.nextLine(); // 4. Read user input
+				String choice = scanner.nextLine(); 
 
 				switch (choice) {
 				case "1":
@@ -57,7 +57,7 @@ public class Main {
 					break;
 				case "0":
 					System.out.println("Exiting the application. Goodbye!");
-					return; // Exit the main method
+					return;
 				default:
 					System.out.println("Invalid option! Please try again.");
 					break;
@@ -88,7 +88,7 @@ public class Main {
 	private static void readDataWithoutDesignPatterns() {
 		System.out.println("--- Using static methods with hardcoded values. Very rigid. ---");
 		try {
-			InputStream customerStream = Main.class.getClassLoader().getResourceAsStream("customers.xlsx");
+			InputStream customerStream = OriginalMain.class.getClassLoader().getResourceAsStream("customers.xlsx");
 			byte[] customerFile = customerStream.readAllBytes();
 			List<Customer> customers = OldCustomerImporter.importarDadosPlanilha("0", true, "A", "B", "D", "F", "G",
 					customerFile);
@@ -97,7 +97,7 @@ public class Main {
 				System.out.println(c);
 			}
 
-			InputStream productStream = Main.class.getClassLoader().getResourceAsStream("products.xlsx");
+			InputStream productStream = OriginalMain.class.getClassLoader().getResourceAsStream("products.xlsx");
 			byte[] productFile = productStream.readAllBytes();
 			List<Product> products = OldProductImporter.importarDadosPlanilha("0", true, "A", "B", "D", "C",
 					productFile);
@@ -106,7 +106,7 @@ public class Main {
 				System.out.println(p);
 			}
 			System.out.println();
-			InputStream supplierStream = Main.class.getClassLoader().getResourceAsStream("suppliers.xlsx");
+			InputStream supplierStream = OriginalMain.class.getClassLoader().getResourceAsStream("suppliers.xlsx");
 			byte[] supplierFile = supplierStream.readAllBytes();
 			List<Supplier> suppliers = OldSupplierImporter.importarDadosPlanilha("0", true, "A", "B", "D", "E", "G",
 					supplierFile);
@@ -116,7 +116,7 @@ public class Main {
 				System.out.println(s);
 			}
 
-			InputStream employeeStream = Main.class.getClassLoader().getResourceAsStream("employees.xlsx");
+			InputStream employeeStream = OriginalMain.class.getClassLoader().getResourceAsStream("employees.xlsx");
 			byte[] employeeFile = employeeStream.readAllBytes();
 			List<Employee> employees = OldEmployeeImporter.importarDadosPlanilha("0", true, "A", "B", "C", "D", "E",
 					"F", employeeFile);
@@ -126,7 +126,7 @@ public class Main {
 				System.out.println(e);
 			}
 
-			InputStream orderStream = Main.class.getClassLoader().getResourceAsStream("orders.xlsx");
+			InputStream orderStream = OriginalMain.class.getClassLoader().getResourceAsStream("orders.xlsx");
 			byte[] orderFile = orderStream.readAllBytes();
 			List<Order> orders = OldOrderImporter.importarDadosPlanilha("0", true, "A", "B", "C", "D", "E", orderFile);
 
@@ -135,7 +135,7 @@ public class Main {
 				System.out.println(o);
 			}
 
-			InputStream inventoryStream = Main.class.getClassLoader().getResourceAsStream("inventory.xlsx");
+			InputStream inventoryStream = OriginalMain.class.getClassLoader().getResourceAsStream("inventory.xlsx");
 			byte[] inventoryFile = inventoryStream.readAllBytes();
 			List<Inventory> inventory = OldInventoryImporter.importarDadosPlanilha("0", true, "A", "B", "C", "D",
 					inventoryFile);
@@ -144,7 +144,7 @@ public class Main {
 			for (Object i : inventory) {
 				System.out.println(i);
 			}
-			InputStream shipmentStream = Main.class.getClassLoader().getResourceAsStream("shipments.xlsx");
+			InputStream shipmentStream = OriginalMain.class.getClassLoader().getResourceAsStream("shipments.xlsx");
 			byte[] shipmentFile = shipmentStream.readAllBytes();
 			List<Shipment> shipments = OldShipmentImporter.importarDadosPlanilha("0", true, "A", "B", "C", "D", "E",
 					"F", shipmentFile);
@@ -153,7 +153,7 @@ public class Main {
 			for (Shipment s : shipments) {
 				System.out.println(s);
 			}
-			InputStream assetStream = Main.class.getClassLoader().getResourceAsStream("assets.xlsx");
+			InputStream assetStream = OriginalMain.class.getClassLoader().getResourceAsStream("assets.xlsx");
 			byte[] assetFile = assetStream.readAllBytes();
 			List<CompanyAsset> assets = OldAssetImporter.importarDadosPlanilha("0", true, "A", "B", "C", "D", "E", "F",
 					assetFile);
@@ -163,7 +163,7 @@ public class Main {
 				System.out.println(a);
 			}
 
-			InputStream taskStream = Main.class.getClassLoader().getResourceAsStream("tasks.xlsx");
+			InputStream taskStream = OriginalMain.class.getClassLoader().getResourceAsStream("tasks.xlsx");
 			byte[] taskFile = taskStream.readAllBytes();
 			// Mapeamento: ID(A), ProjectID(B), Desc(C), Assignee(D), Prio(E), Data(F)
 			List<Task> tasks = OldTaskImporter.importarDadosPlanilha("0", true, "A", "B", "C", "D", "E", "F", taskFile);
@@ -172,7 +172,7 @@ public class Main {
 			for (Task t : tasks) {
 				System.out.println(t);
 			}
-			InputStream warehouseStream = Main.class.getClassLoader().getResourceAsStream("warehouses.xlsx");
+			InputStream warehouseStream = OriginalMain.class.getClassLoader().getResourceAsStream("warehouses.xlsx");
 			byte[] warehouseFile = warehouseStream.readAllBytes();
 			List<Warehouse> warehouses = OldWarehouseImporter.importarDadosPlanilha("0", true, "A", "B", "C", "D",
 					warehouseFile);

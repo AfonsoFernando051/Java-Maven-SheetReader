@@ -18,7 +18,8 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 import importable.config.PlanilhaModel;
 import importable.config.TipoPlanilhaImportacaoEnum;
-import importable.model.InterfacePlanilhaModel;
+import importable.mapper.InterfacePlanilhaMapper;
+import importable.service.factory.ModelConfigFactory;
 import importable.utils.ProcessamentoArquivoException;
 import importable.utils.SaveBytesManager;
 
@@ -150,7 +151,7 @@ public  class ImportSheetService<T> implements ImportService<T> {
 			setPlanilhaAtual(entry.getValue());
 
 			try (Workbook workbook = generateWorkbook()) {
-				InterfacePlanilhaModel<T> modelConfig = getModelConfig(tipo);
+				InterfacePlanilhaMapper<T> modelConfig = getModelConfig(tipo);
 				GenericPlanilhaProcessor<T> processor = new GenericPlanilhaProcessor<>(modelConfig);
 				resultados.put(tipo, processor.processar(workbook, getPlanilhaAtual()));
 			} catch (ProcessamentoArquivoException e) {
@@ -166,8 +167,8 @@ public  class ImportSheetService<T> implements ImportService<T> {
 	 * @return configuração de modelo
 	 */
 	@SuppressWarnings("unchecked")
-	InterfacePlanilhaModel<T> getModelConfig(TipoPlanilhaImportacaoEnum tipo) {
-		return (InterfacePlanilhaModel<T>) ModelConfigFactory.getModelConfig(tipo);
+	InterfacePlanilhaMapper<T> getModelConfig(TipoPlanilhaImportacaoEnum tipo) {
+		return (InterfacePlanilhaMapper<T>) ModelConfigFactory.getModelConfig(tipo);
 	}
 
 	/**

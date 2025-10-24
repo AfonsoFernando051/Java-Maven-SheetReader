@@ -1,5 +1,6 @@
-package importable.model;
+package importable.mapper;
 
+import importable.model.row.RowData;
 import importable.utils.ProcessamentoArquivoException;
 
 /**

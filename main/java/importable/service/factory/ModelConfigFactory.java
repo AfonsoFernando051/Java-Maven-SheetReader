@@ -1,16 +1,16 @@
-package importable.service;
+package importable.service.factory;
 
 import java.io.InputStream;
 import java.util.HashMap;
 
 import importable.config.PlanilhaModel;
 import importable.config.TipoPlanilhaImportacaoEnum;
-import importable.model.CustomerImportationModel;
-import importable.model.InterfacePlanilhaModel;
-import importable.model.ProductImportationModel;
+import importable.mapper.CustomerImportationMapper;
+import importable.mapper.InterfacePlanilhaMapper;
+import importable.mapper.ProductImportationMapper;
 import importable.model.customer.Customer;
 import importable.model.product.Product;
-import importable.run.Main;
+import importable.run.MainDP;
 import importable.translator.Translator;
 
 public class ModelConfigFactory {
@@ -19,12 +19,12 @@ public class ModelConfigFactory {
 	 * @param tipo de planilha
 	 * @return configuração de modelo
 	 */
-	public static InterfacePlanilhaModel<?> getModelConfig(TipoPlanilhaImportacaoEnum tipo) {
+	public static InterfacePlanilhaMapper<?> getModelConfig(TipoPlanilhaImportacaoEnum tipo) {
 		switch (tipo) {
 		case PRODUCTS:
-			return (InterfacePlanilhaModel<?>) new ProductImportationModel(Product.class);
+			return (InterfacePlanilhaMapper<?>) new ProductImportationMapper(Product.class);
 		case CUSTOMERS:
-			return (InterfacePlanilhaModel<?>) new CustomerImportationModel(Customer.class);
+			return (InterfacePlanilhaMapper<?>) new CustomerImportationMapper(Customer.class);
 		default:
 			throw new IllegalArgumentException("Serviço não encontrado para o tipo: " + tipo);
 		}
@@ -37,9 +37,9 @@ public class ModelConfigFactory {
 	public static InputStream getResourceAsStream(TipoPlanilhaImportacaoEnum tipo) {
 		switch (tipo) {
 		case PRODUCTS:
-			return Main.class.getClassLoader().getResourceAsStream("customers.xlsx");
+			return MainDP.class.getClassLoader().getResourceAsStream("products.xlsx");
 		case CUSTOMERS:
-			return Main.class.getClassLoader().getResourceAsStream("products.xlsx");
+			return MainDP.class.getClassLoader().getResourceAsStream("customers.xlsx");
 		default:
 			throw new IllegalArgumentException("Serviço não encontrado para o tipo: " + tipo);
 		}

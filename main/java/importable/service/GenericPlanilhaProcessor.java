@@ -16,10 +16,11 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import importable.config.PlanilhaModel;
-import importable.model.CelulaData;
-import importable.model.ImportableSheet;
-import importable.model.InterfacePlanilhaModel;
-import importable.model.RowData;
+import importable.mapper.InterfacePlanilhaMapper;
+import importable.model.row.RowData;
+import importable.model.sheet.DetailedSheet;
+import importable.model.sheet.ImportableSheet;
+import importable.service.factory.SheetFactory;
 import importable.translator.Translator;
 import importable.utils.ProcessamentoArquivoException;
 
@@ -36,7 +37,7 @@ public class GenericPlanilhaProcessor<T>
   /**
    * Modelo de configuração de importação
    */
-  private final InterfacePlanilhaModel<T> modelConfig;
+  private final InterfacePlanilhaMapper<T> modelConfig;
 
   /**
    * Mapa com titulos de colunas
@@ -46,7 +47,7 @@ public class GenericPlanilhaProcessor<T>
   /**
    * @param modelConfig - odelo de configuração de importação
    */
-  public GenericPlanilhaProcessor(InterfacePlanilhaModel<T> modelConfig) {
+  public GenericPlanilhaProcessor(InterfacePlanilhaMapper<T> modelConfig) {
     this.modelConfig = modelConfig;
   }
 
@@ -92,7 +93,7 @@ public class GenericPlanilhaProcessor<T>
             && celulaMatches(cell, colunaIndex)) {
           ImportableSheet<?> sheet = SheetFactory
               .create(cell, titulo, row.getRowNum() + 1);
-          CelulaData celula = new CelulaData(colunaKey, sheet);
+          DetailedSheet celula = new DetailedSheet(colunaKey, sheet);
           linha.setNumeroLinha(row.getRowNum() + 1);
           linha.addCelula(celula);
         }

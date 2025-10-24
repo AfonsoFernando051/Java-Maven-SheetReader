@@ -1,13 +1,15 @@
-package importable.model;
+package importable.mapper;
 
 import java.util.ArrayList;
 import java.util.function.Function;
+
+import importable.model.row.RowData;
 
 /**
  * @author Fernando Dias
  * @param <T> -> Tipo genérico
  */
-public interface InterfacePlanilhaModel<T> {
+public interface InterfacePlanilhaMapper<T> {
 
   /**
    * @return instancia concreta de modelo de planilha

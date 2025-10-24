@@ -1,9 +1,15 @@
-package importable.model;
+package importable.mapper;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.function.Function;
 
+import importable.model.row.RowData;
+import importable.model.sheet.AbstractSheet;
+import importable.model.sheet.ImportableSheet;
+import importable.model.sheet.SheetData;
+import importable.model.sheet.SheetString;
+import importable.model.sheet.SheetValor;
 import importable.translator.Translator;
 import importable.utils.ProcessamentoArquivoException;
 
@@ -11,8 +17,8 @@ import importable.utils.ProcessamentoArquivoException;
  * @author Fernando Dias
  * @param <T> -> Tipo a ser alterado em subclasses
  */
-public abstract class GenericImportModel<T>
-  implements ImportModelValidator<T>, InterfacePlanilhaModel<T> {
+public abstract class GenericImportMapper<T>
+  implements ImportModelValidator<T>, InterfacePlanilhaMapper<T> {
 
   /**
    * Generic
@@ -23,7 +29,7 @@ public abstract class GenericImportModel<T>
   /**
    * @param tipo a ser manipulado
    */
-  public GenericImportModel(Class<T> tipo) {
+  public GenericImportMapper(Class<T> tipo) {
     this.tipo = tipo;
   }
 
