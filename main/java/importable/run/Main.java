@@ -17,6 +17,7 @@ import importable.model.product.Product;
 import importable.model.shipment.Shipment;
 import importable.model.supplier.Supplier;
 import importable.model.task.Task;
+import importable.model.warehouse.Warehouse;
 import importable.old.OldAssetImporter;
 import importable.old.OldCustomerImporter;
 import importable.old.OldEmployeeImporter;
@@ -26,6 +27,7 @@ import importable.old.OldProductImporter;
 import importable.old.OldShipmentImporter;
 import importable.old.OldSupplierImporter;
 import importable.old.OldTaskImporter;
+import importable.old.OldWarehouseImporter;
 import importable.service.ImportService;
 import importable.service.ImportServiceFactory;
 import importable.service.PlanilhaImportConfigManager;
@@ -142,41 +144,47 @@ public class Main {
 			for (Object i : inventory) {
 				System.out.println(i);
 			}
-			InputStream shipmentStream = Main.class.getClassLoader()
-					.getResourceAsStream("shipments.xlsx");
+			InputStream shipmentStream = Main.class.getClassLoader().getResourceAsStream("shipments.xlsx");
 			byte[] shipmentFile = shipmentStream.readAllBytes();
-			List<Shipment> shipments = OldShipmentImporter.importarDadosPlanilha(
-					"0", true, "A", "B", "C", "D", "E", "F", shipmentFile);
-			
+			List<Shipment> shipments = OldShipmentImporter.importarDadosPlanilha("0", true, "A", "B", "C", "D", "E",
+					"F", shipmentFile);
+
 			System.out.println("\nShipments imported: " + shipments.size());
-			for (Object s : shipments) {
+			for (Shipment s : shipments) {
 				System.out.println(s);
 			}
-			InputStream assetStream = Main.class.getClassLoader()
-					.getResourceAsStream("assets.xlsx");
+			InputStream assetStream = Main.class.getClassLoader().getResourceAsStream("assets.xlsx");
 			byte[] assetFile = assetStream.readAllBytes();
-			List<CompanyAsset> assets = OldAssetImporter.importarDadosPlanilha(
-					"0", true, "A", "B", "C", "D", "E", "F", assetFile);
-			
+			List<CompanyAsset> assets = OldAssetImporter.importarDadosPlanilha("0", true, "A", "B", "C", "D", "E", "F",
+					assetFile);
+
 			System.out.println("\nCompany Assets imported: " + assets.size());
-			for (Object a : assets) {
+			for (CompanyAsset a : assets) {
 				System.out.println(a);
 			}
 
-			InputStream taskStream = Main.class.getClassLoader()
-					.getResourceAsStream("tasks.xlsx");
+			InputStream taskStream = Main.class.getClassLoader().getResourceAsStream("tasks.xlsx");
 			byte[] taskFile = taskStream.readAllBytes();
 			// Mapeamento: ID(A), ProjectID(B), Desc(C), Assignee(D), Prio(E), Data(F)
-			List<Task> tasks = OldTaskImporter.importarDadosPlanilha(
-					"0", true, "A", "B", "C", "D", "E", "F", taskFile);
-			
+			List<Task> tasks = OldTaskImporter.importarDadosPlanilha("0", true, "A", "B", "C", "D", "E", "F", taskFile);
+
 			System.out.println("\nTasks imported: " + tasks.size());
-			for (Object t : tasks) {
+			for (Task t : tasks) {
 				System.out.println(t);
 			}
-			// === FIM DA ADIÇÃO (EXEMPLO 8) ===
+			InputStream warehouseStream = Main.class.getClassLoader().getResourceAsStream("warehouses.xlsx");
+			byte[] warehouseFile = warehouseStream.readAllBytes();
+			List<Warehouse> warehouses = OldWarehouseImporter.importarDadosPlanilha("0", true, "A", "B", "C", "D",
+					warehouseFile);
 
-			System.out.println();		} catch (Exception e) {
+			System.out.println("\nWarehouses imported: " + warehouses.size());
+			for (Warehouse w : warehouses) {
+				System.out.println(w);
+			}
+
+			System.out.println();
+			System.out.println();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
