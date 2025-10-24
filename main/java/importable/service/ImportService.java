@@ -18,7 +18,7 @@ public interface ImportService<T> {
 	                                             SaveBytesManager bytesController,
 	                                             Consumer<HashMap<TipoPlanilhaImportacaoEnum, ArrayList<T>>> callback);
 
-	public HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> generatePlanilhaModel();
+	public HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> generatePlanilhaModel(TipoPlanilhaImportacaoEnum tipo);
 	
-	 public SaveBytesManager getBytesManager();
+	 public SaveBytesManager getBytesManager(TipoPlanilhaImportacaoEnum tipo);
 }

@@ -39,8 +39,8 @@ public class Main {
 			while (true) {
 				System.out.println("=============================================");
 				System.out.println("Choose the import method:");
-				System.out.println("1 - WITH Design Patterns (Flexible & Maintainable) ✨");
-				System.out.println("2 - WITHOUT Design Patterns (Rigid & Hardcoded) ⚙️");
+				System.out.println("1 - WITH Design Patterns (Flexible & Maintainable)");
+				System.out.println("2 - WITHOUT Design Patterns (Rigid & Hardcoded)");
 				System.out.println("0 - Exit");
 				System.out.print("Enter your choice: ");
 
@@ -72,9 +72,9 @@ public class Main {
 		for (TipoPlanilhaImportacaoEnum sheet : TipoPlanilhaImportacaoEnum.values()) {
 			PlanilhaImportConfigManager planilhasManager = new PlanilhaImportConfigManager();
 			ImportService<?> service = ImportServiceFactory.getServiceByType(sheet);
-			HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> planilhaModel = service.generatePlanilhaModel();
+			HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> planilhaModel = service.generatePlanilhaModel(sheet);
 			planilhasManager.setPlanilhas(planilhaModel);
-			service.importBringInsertDataManySheet(planilhasManager, service.getBytesManager(), t -> {
+			service.importBringInsertDataManySheet(planilhasManager, service.getBytesManager(sheet), t -> {
 				ArrayList<?> arrayList = t.get(sheet);
 				System.out.println("--- Imported " + arrayList.size() + " records from " + sheet.name() + " ---");
 				for (Object object : arrayList) {
@@ -182,7 +182,6 @@ public class Main {
 				System.out.println(w);
 			}
 
-			System.out.println();
 			System.out.println();
 		} catch (Exception e) {
 			e.printStackTrace();
