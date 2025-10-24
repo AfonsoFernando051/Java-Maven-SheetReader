@@ -5,7 +5,6 @@ package importable.config;
  */
 public enum TipoPlanilhaImportacaoEnum {
 
-
   /**
    * Customers Sheets
    */
@@ -14,5 +13,45 @@ public enum TipoPlanilhaImportacaoEnum {
   /**
    * Products Sheets
    */
-  PRODUCTS;
+  PRODUCTS,
+
+  /**
+   * Suppliers Sheets
+   */
+  SUPPLIERS,
+
+  /**
+   * Employees Sheets
+   */
+  EMPLOYEES,
+
+  /**
+   * Orders Sheets
+   */
+  ORDERS,
+
+  /**
+   * Inventory Sheets
+   */
+  INVENTORY,
+
+  /**
+   * Shipments Sheets
+   */
+  SHIPMENTS,
+
+  /**
+   * Company Assets Sheets
+   */
+  ASSETS, // Adicionado (para CompanyAsset)
+
+  /**
+   * Project Tasks Sheets
+   */
+  TASKS,
+
+  /**
+   * Warehouses Sheets
+   */
+  WAREHOUSES;
 }
