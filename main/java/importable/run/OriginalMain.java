@@ -74,14 +74,13 @@ public class OriginalMain {
 			ImportService<?> service = ImportServiceFactory.getServiceByType(sheet);
 			HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> planilhaModel = service.generatePlanilhaModel(sheet);
 			planilhasManager.setPlanilhas(planilhaModel);
-			service.importBringInsertDataManySheet(planilhasManager, service.getBytesManager(sheet), t -> {
-				ArrayList<?> arrayList = t.get(sheet);
-				System.out.println("--- Imported " + arrayList.size() + " records from " + sheet.name() + " ---");
-				for (Object object : arrayList) {
-					System.out.println(object.toString());
-				}
-				System.out.println();
-			});
+			HashMap<TipoPlanilhaImportacaoEnum, ?> result = service.importBringInsertDataManySheet(planilhasManager, service.getBytesManager(sheet));
+			ArrayList<?> arrayList = (ArrayList<?>) result.get(sheet);
+			System.out.println("--- Imported " + arrayList.size() + " records from " + sheet.name() + " ---");
+			for (Object object : arrayList) {
+				System.out.println(object.toString());
+			}
+			System.out.println();
 		}
 	}
 

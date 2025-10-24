@@ -9,16 +9,17 @@ import importable.config.TipoPlanilhaImportacaoEnum;
 import importable.utils.SaveBytesManager;
 
 public interface ImportService<T> {
-	
+
 	public void importBringDataManySheet(PlanilhaImportConfigManager planilhaImportConfigManager,
-	                                       SaveBytesManager bytesController,
-	                                       Consumer<HashMap<TipoPlanilhaImportacaoEnum, ArrayList<T>>> callback);
-	  
-	public void importBringInsertDataManySheet(PlanilhaImportConfigManager planilhaImportConfigManager,
-	                                             SaveBytesManager bytesController,
-	                                             Consumer<HashMap<TipoPlanilhaImportacaoEnum, ArrayList<T>>> callback);
+			SaveBytesManager bytesController, Consumer<HashMap<TipoPlanilhaImportacaoEnum, ArrayList<T>>> callback);
+
+	public void importBringInsertDataManySheetByCallback(PlanilhaImportConfigManager planilhaImportConfigManager,
+			SaveBytesManager bytesController, Consumer<HashMap<TipoPlanilhaImportacaoEnum, ArrayList<T>>> callback);
 
 	public HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> generatePlanilhaModel(TipoPlanilhaImportacaoEnum tipo);
-	
-	 public SaveBytesManager getBytesManager(TipoPlanilhaImportacaoEnum tipo);
+
+	public SaveBytesManager getBytesManager(TipoPlanilhaImportacaoEnum tipo);
+
+	public HashMap<TipoPlanilhaImportacaoEnum, ArrayList<T>> importBringInsertDataManySheet(PlanilhaImportConfigManager planilhaImportConfigManager,SaveBytesManager bytesController);
+
 }

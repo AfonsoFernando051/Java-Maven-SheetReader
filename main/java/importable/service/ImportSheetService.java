@@ -123,7 +123,7 @@ public  class ImportSheetService<T> implements ImportService<T> {
 	 * @param bytesController             - Gerencia input stream
 	 * @param callback                    - ato de refresh em grid
 	 */
-	public void importBringInsertDataManySheet(PlanilhaImportConfigManager planilhaImportConfigManager,
+	public void importBringInsertDataManySheetByCallback(PlanilhaImportConfigManager planilhaImportConfigManager,
 			SaveBytesManager bytesController, Consumer<HashMap<TipoPlanilhaImportacaoEnum, ArrayList<T>>> callback) {
 		try {
 			configurarDadosPlanilha(planilhaImportConfigManager, bytesController);
@@ -140,6 +140,32 @@ public  class ImportSheetService<T> implements ImportService<T> {
 
 	}
 
+	/**
+	 * Importação de dados da planilha
+	 *
+	 * @param planilhaImportConfigManager - Gerencia dados do form
+	 * @param bytesController             - Gerencia input stream
+	 * @param callback                    - ato de refresh em grid
+	 * @return 
+	 */
+	public HashMap<TipoPlanilhaImportacaoEnum, ArrayList<T>> importBringInsertDataManySheet(PlanilhaImportConfigManager planilhaImportConfigManager,
+			SaveBytesManager bytesController) {
+		try {
+			configurarDadosPlanilha(planilhaImportConfigManager, bytesController);
+			HashMap<TipoPlanilhaImportacaoEnum, ArrayList<T>> dados = getDadosByPlanilhas();
+			Set<TipoPlanilhaImportacaoEnum> keySet = dados.keySet();
+			for (TipoPlanilhaImportacaoEnum tipoPlanilhaImportacaoEnum : keySet) {
+				insertDadosPlanilha(dados.get(tipoPlanilhaImportacaoEnum));
+			}
+			bytesController.closeFileData();
+			return dados;
+		} catch (EncryptedDocumentException | IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+	
 	/**
 	 * @throws IOException exceção de InputStream
 	 * @return planilhas mapeadas por tipos
