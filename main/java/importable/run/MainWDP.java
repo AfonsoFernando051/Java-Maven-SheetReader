@@ -3,22 +3,28 @@ package importable.run;
 import java.io.InputStream;
 import java.util.List;
 
+import importable.model.Address;
 import importable.model.CompanyAsset;
 import importable.model.Customer;
 import importable.model.Employee;
+import importable.model.FinancialTransaction;
 import importable.model.Inventory;
 import importable.model.Order;
 import importable.model.Product;
+import importable.model.Project;
 import importable.model.Shipment;
 import importable.model.Supplier;
 import importable.model.Task;
 import importable.model.Warehouse;
+import importable.old.OldAddressImporter;
 import importable.old.OldAssetImporter;
 import importable.old.OldCustomerImporter;
 import importable.old.OldEmployeeImporter;
+import importable.old.OldFinancialTransactionImporter;
 import importable.old.OldInventoryImporter;
 import importable.old.OldOrderImporter;
 import importable.old.OldProductImporter;
+import importable.old.OldProjectImporter;
 import importable.old.OldShipmentImporter;
 import importable.old.OldSupplierImporter;
 import importable.old.OldTaskImporter;
@@ -127,6 +133,36 @@ public class MainWDP {
 				System.out.println(w);
 			}
 
+			InputStream addressStream = MainWDP.class.getClassLoader().getResourceAsStream("address.xlsx");
+			byte[] addressFile = addressStream.readAllBytes();
+			List<Address> addresses = OldAddressImporter.importarDadosPlanilha("0", true, "A", "B", "C", "D", "E", "F", "G",
+					addressFile);
+
+			System.out.println("\nAddresses imported: " + addresses.size());
+			for (Address a : addresses) {
+				System.out.println(a);
+			}
+
+			InputStream projectStream = MainWDP.class.getClassLoader().getResourceAsStream("projects.xlsx");
+			byte[] projectFile = projectStream.readAllBytes();
+			List<Project> projects = OldProjectImporter.importarDadosPlanilha("0", true, "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O",
+					projectFile);
+
+			System.out.println("\nProjects imported: " + projects.size());
+			for (Project p : projects) {
+				System.out.println(p);
+			}
+
+			InputStream transactionStream = MainWDP.class.getClassLoader().getResourceAsStream("financial-transaction.xlsx");
+			byte[] transactionFile = transactionStream.readAllBytes();
+			List<FinancialTransaction> transactions = OldFinancialTransactionImporter.importarDadosPlanilha("0", true, "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q",
+					transactionFile);
+
+			System.out.println("\nFinancial Transactions imported: " + transactions.size());
+			for (FinancialTransaction ft : transactions) {
+				System.out.println(ft);
+			}
+			
 			System.out.println();
 		} catch (Exception e) {
 			e.printStackTrace();
