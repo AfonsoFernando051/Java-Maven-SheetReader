@@ -1,12 +1,15 @@
 package importable.service.factory;
 
 import importable.config.TipoPlanilhaImportacaoEnum;
+import importable.model.Address;
 import importable.model.CompanyAsset;
 import importable.model.Customer;
 import importable.model.Employee;
+import importable.model.FinancialTransaction;
 import importable.model.Inventory;
 import importable.model.Order;
 import importable.model.Product;
+import importable.model.Project;
 import importable.model.Shipment;
 import importable.model.Supplier;
 import importable.model.Task;
@@ -41,6 +44,12 @@ public class ImportServiceFactory {
 			return (ImportService<T>) new ImportSheetService<Task>();
 		} else if (entityClass.equals(importable.model.Warehouse.class)) {
 			return (ImportService<T>) new ImportSheetService<Warehouse>();
+		}else if (entityClass.equals(importable.model.Address.class)) {
+			return (ImportService<T>) new ImportSheetService<Address>();
+		}else if (entityClass.equals(importable.model.FinancialTransaction.class)) {
+			return (ImportService<T>) new ImportSheetService<FinancialTransaction>();
+		}else if (entityClass.equals(importable.model.Project.class)) {
+			return (ImportService<T>) new ImportSheetService<Project>();
 		}
 		throw new IllegalArgumentException("Serviço não encontrado para a classe: " + entityClass);
 	}
@@ -67,6 +76,12 @@ public class ImportServiceFactory {
 			return (ImportService<?>) new ImportSheetService<Task>();
 		case WAREHOUSES:
 			return (ImportService<?>) new ImportSheetService<Warehouse>();
+		case ADDRESS:
+			return (ImportService<?>) new ImportSheetService<Address>();
+		case FINANCIALTRANSACTION:
+			return (ImportService<?>) new ImportSheetService<FinancialTransaction>();
+		case PROJECT:
+			return (ImportService<?>) new ImportSheetService<Project>();
 		default:
 			throw new IllegalArgumentException("Serviço não encontrado para o tipo: " + tipo);
 		}

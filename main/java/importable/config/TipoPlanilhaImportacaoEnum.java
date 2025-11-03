@@ -43,7 +43,7 @@ public enum TipoPlanilhaImportacaoEnum {
   /**
    * Company Assets Sheets
    */
-  ASSETS, // Adicionado (para CompanyAsset)
+  ASSETS,
 
   /**
    * Project Tasks Sheets
@@ -53,5 +53,20 @@ public enum TipoPlanilhaImportacaoEnum {
   /**
    * Warehouses Sheets
    */
-  WAREHOUSES;
+  WAREHOUSES,
+  
+  /**
+   * Project Tasks Sheets
+   */
+  ADDRESS,
+  
+  /**
+   * Project Tasks Sheets
+   */
+  FINANCIALTRANSACTION,
+  
+  /**
+   * Project Tasks Sheets
+   */
+  PROJECT;
 }

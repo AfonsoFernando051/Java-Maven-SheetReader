@@ -5,24 +5,30 @@ import java.util.HashMap;
 
 import importable.config.PlanilhaModel;
 import importable.config.TipoPlanilhaImportacaoEnum;
+import importable.mapper.AddressImportationMapper;
 // Imports dos Mappers
 import importable.mapper.AssetImportationMapper;
 import importable.mapper.CustomerImportationMapper;
 import importable.mapper.EmployeeImportationMapper;
+import importable.mapper.FinancialTransactionImportationMapper;
 import importable.mapper.InterfacePlanilhaMapper;
 import importable.mapper.InventoryImportationMapper;
 import importable.mapper.OrderImportationMapper;
 import importable.mapper.ProductImportationMapper;
+import importable.mapper.ProjectImportationMapper;
 import importable.mapper.ShipmentImportationMapper;
 import importable.mapper.SupplierImportationMapper;
 import importable.mapper.TaskImportationMapper;
 import importable.mapper.WarehouseImportationMapper;
+import importable.model.Address;
 import importable.model.CompanyAsset;
 import importable.model.Customer;
 import importable.model.Employee;
+import importable.model.FinancialTransaction;
 import importable.model.Inventory;
 import importable.model.Order;
 import importable.model.Product;
+import importable.model.Project;
 import importable.model.Shipment;
 import importable.model.Supplier;
 import importable.model.Task;
@@ -59,6 +65,12 @@ public class ModelConfigFactory {
 			return (InterfacePlanilhaMapper<?>) new TaskImportationMapper(Task.class);
 		case WAREHOUSES:
 			return (InterfacePlanilhaMapper<?>) new WarehouseImportationMapper(Warehouse.class);
+		case ADDRESS:
+			return (InterfacePlanilhaMapper<?>) new AddressImportationMapper(Address.class);
+		case FINANCIALTRANSACTION:
+			return (InterfacePlanilhaMapper<?>) new FinancialTransactionImportationMapper(FinancialTransaction.class);
+		case PROJECT:
+			return (InterfacePlanilhaMapper<?>) new ProjectImportationMapper(Project.class);
 		default:
 			throw new IllegalArgumentException("Serviço não encontrado para o tipo: " + tipo);
 		}
@@ -90,6 +102,12 @@ public class ModelConfigFactory {
 			return MainDP.class.getClassLoader().getResourceAsStream("tasks.xlsx");
 		case WAREHOUSES:
 			return MainDP.class.getClassLoader().getResourceAsStream("warehouses.xlsx");
+		case ADDRESS:
+			return MainDP.class.getClassLoader().getResourceAsStream("address.xlsx");
+		case FINANCIALTRANSACTION:
+			return MainDP.class.getClassLoader().getResourceAsStream("financial-transaction.xlsx");
+		case PROJECT:
+			return MainDP.class.getClassLoader().getResourceAsStream("projects.xlsx");
 		default:
 			throw new IllegalArgumentException("Serviço não encontrado para o tipo: " + tipo);
 		}
@@ -121,6 +139,17 @@ public class ModelConfigFactory {
 			return mapTasks();
 		case WAREHOUSES:
 			return mapWarehouses();
+			
+		// --- INÍCIO DAS ADIÇÕES ---
+		// Adiciona os cases para os novos tipos de planilha
+		case ADDRESS:
+			return mapAddress();
+		case FINANCIALTRANSACTION:
+			return mapFinancialTransaction();
+		case PROJECT:
+			return mapProject();
+		// --- FIM DAS ADIÇÕES ---
+			
 		default:
 			throw new IllegalArgumentException("Serviço não encontrado para o tipo: " + tipo);
 		}
@@ -303,5 +332,94 @@ public class ModelConfigFactory {
 		planilhaMap.put(TipoPlanilhaImportacaoEnum.WAREHOUSES, planilha);
 		return planilhaMap;
 	}
+
+	
+	// --- INÍCIO DOS NOVOS MÉTODOS DE MAPEAMENTO ---
+	
+	/**
+	 * Mapeia as colunas da planilha de Endereços (address.xlsx) para as chaves do Translator.
+	 * Baseado na imagem 'image_056e8d.png'.
+	 */
+	private static HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> mapAddress() {
+		HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> planilhaMap = new HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel>();
+		PlanilhaModel planilha = new PlanilhaModel();
+		planilha.setNomeIdentificador("0 - " + TipoPlanilhaImportacaoEnum.ADDRESS.name());
+		planilha.setTipoLogico(TipoPlanilhaImportacaoEnum.ADDRESS);
+
+		planilha.addColunaEValor(Translator.LOGRADOURO, "A");
+		planilha.addColunaEValor(Translator.NUMERO, "B");
+		planilha.addColunaEValor(Translator.COMPLEMENTO, "C");
+		planilha.addColunaEValor(Translator.BAIRRO, "D");
+		planilha.addColunaEValor(Translator.CIDADE, "E");
+		planilha.addColunaEValor(Translator.ESTADO, "F");
+		planilha.addColunaEValor(Translator.CEP, "G");
+
+		planilhaMap.put(TipoPlanilhaImportacaoEnum.ADDRESS, planilha);
+		return planilhaMap;
+	}
+	
+	/**
+	 * Mapeia as colunas da planilha de Transações Financeiras (financial-transaction.xlsx) para as chaves do Translator.
+	 * Baseado na imagem 'image_056f81.png'.
+	 */
+	private static HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> mapFinancialTransaction() {
+		HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> planilhaMap = new HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel>();
+		PlanilhaModel planilha = new PlanilhaModel();
+		planilha.setNomeIdentificador("0 - " + TipoPlanilhaImportacaoEnum.FINANCIALTRANSACTION.name());
+		planilha.setTipoLogico(TipoPlanilhaImportacaoEnum.FINANCIALTRANSACTION);
+
+		planilha.addColunaEValor(Translator.ID, "A");
+		planilha.addColunaEValor(Translator.TYPE, "B");
+		planilha.addColunaEValor(Translator.CATEGORY, "C");
+		planilha.addColunaEValor(Translator.DESCRIPTION, "D");
+		planilha.addColunaEValor(Translator.AMOUNT, "E");
+		planilha.addColunaEValor(Translator.CURRENCY, "F");
+		planilha.addColunaEValor(Translator.TRANSACTION_DATE, "G");
+		planilha.addColunaEValor(Translator.PAYMENT_METHOD, "H");
+		planilha.addColunaEValor(Translator.STATUS, "I");
+		planilha.addColunaEValor(Translator.SOURCE_ACCOUNT, "J");
+		planilha.addColunaEValor(Translator.DESTINATION_ACCOUNT, "K");
+		planilha.addColunaEValor(Translator.REFERENCE_NUMBER, "L");
+		planilha.addColunaEValor(Translator.RELATED_ENTITY_ID, "M");
+		planilha.addColunaEValor(Translator.RELATED_ENTITY_TYPE, "N");
+		planilha.addColunaEValor(Translator.NOTES, "O");
+		planilha.addColunaEValor(Translator.CREATED_BY, "P");
+		planilha.addColunaEValor(Translator.RECORDED_DATE, "Q");
+
+		planilhaMap.put(TipoPlanilhaImportacaoEnum.FINANCIALTRANSACTION, planilha);
+		return planilhaMap;
+	}
+	
+	/**
+	 * Mapeia as colunas da planilha de Projetos (projects.xlsx) para as chaves do Translator.
+	 * Baseado na imagem 'image_056eab.png'.
+	 */
+	private static HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> mapProject() {
+		HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> planilhaMap = new HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel>();
+		PlanilhaModel planilha = new PlanilhaModel();
+		planilha.setNomeIdentificador("0 - " + TipoPlanilhaImportacaoEnum.PROJECT.name());
+		planilha.setTipoLogico(TipoPlanilhaImportacaoEnum.PROJECT);
+
+		planilha.addColunaEValor(Translator.ID, "A");
+		planilha.addColunaEValor(Translator.NAME, "B");
+		planilha.addColunaEValor(Translator.DESCRIPTION, "C");
+		planilha.addColunaEValor(Translator.PROJECT_MANAGER, "D");
+		planilha.addColunaEValor(Translator.STATUS, "E");
+		planilha.addColunaEValor(Translator.PRIORITY, "F");
+		planilha.addColunaEValor(Translator.START_DATE, "G");
+		planilha.addColunaEValor(Translator.EXPECTED_END_DATE, "H");
+		planilha.addColunaEValor(Translator.ACTUAL_END_DATE, "I");
+		planilha.addColunaEValor(Translator.ALLOCATED_BUDGET, "J");
+		planilha.addColunaEValor(Translator.ACTUAL_SPENT, "K");
+		planilha.addColunaEValor(Translator.CLIENT, "L");
+		planilha.addColunaEValor(Translator.CATEGORY, "M");
+		planilha.addColunaEValor(Translator.COMPLETION_PERCENTAGE, "N");
+		planilha.addColunaEValor(Translator.RISK_LEVEL, "O");
+
+		planilhaMap.put(TipoPlanilhaImportacaoEnum.PROJECT, planilha);
+		return planilhaMap;
+	}
+	
+	// --- FIM DOS NOVOS MÉTODOS DE MAPEAMENTO ---
 
 }

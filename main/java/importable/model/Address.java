@@ -71,5 +71,11 @@ public class Address {
 		this.cep = cep;
 	}
 
+	@Override
+	public String toString() {
+		return "Address [logradouro=" + logradouro + ", numero=" + numero + ", complemento=" + complemento + ", bairro="
+				+ bairro + ", cidade=" + cidade + ", estado=" + estado + ", cep=" + cep + "]";
+	}
+
 
 }
