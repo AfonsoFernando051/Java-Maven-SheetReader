@@ -3,8 +3,8 @@ package importable.mapper;
 import java.util.ArrayList;
 import java.util.function.Function;
 
+import importable.model.Warehouse;
 import importable.model.row.RowData;
-import importable.model.warehouse.Warehouse;
 import importable.translator.Translator;
 import importable.utils.ProcessamentoArquivoException;
 

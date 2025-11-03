@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.function.Function;
 
-import importable.model.order.Order;
+import importable.model.Order;
 import importable.model.row.RowData;
 import importable.translator.Translator;
 import importable.utils.ProcessamentoArquivoException;

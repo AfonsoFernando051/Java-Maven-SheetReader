@@ -8,12 +8,12 @@ import java.util.List;
 
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.CellType; // Importante para checar o tipo da célula
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import importable.model.employee.Employee; // Importe o novo modelo
+import importable.model.Employee;
 
 public class OldEmployeeImporter {
 

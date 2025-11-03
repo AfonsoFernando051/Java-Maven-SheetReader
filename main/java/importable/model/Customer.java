@@ -1,4 +1,4 @@
-package importable.model.customer;
+package importable.model;
 
 
 import java.time.LocalDate;

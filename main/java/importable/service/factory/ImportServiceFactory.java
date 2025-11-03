@@ -1,16 +1,16 @@
 package importable.service.factory;
 
 import importable.config.TipoPlanilhaImportacaoEnum;
-import importable.model.asset.CompanyAsset;
-import importable.model.customer.Customer;
-import importable.model.employee.Employee;
-import importable.model.inventory.Inventory;
-import importable.model.order.Order;
-import importable.model.product.Product;
-import importable.model.shipment.Shipment;
-import importable.model.supplier.Supplier;
-import importable.model.task.Task;
-import importable.model.warehouse.Warehouse;
+import importable.model.CompanyAsset;
+import importable.model.Customer;
+import importable.model.Employee;
+import importable.model.Inventory;
+import importable.model.Order;
+import importable.model.Product;
+import importable.model.Shipment;
+import importable.model.Supplier;
+import importable.model.Task;
+import importable.model.Warehouse;
 import importable.service.ImportService;
 import importable.service.ImportSheetService;
 
@@ -21,25 +21,25 @@ public class ImportServiceFactory {
 
 	@SuppressWarnings("unchecked")
 	public static <T> ImportService<T> getService(Class<T> entityClass) {
-		if (entityClass.equals(importable.model.product.Product.class)) {
+		if (entityClass.equals(importable.model.Product.class)) {
 			return (ImportService<T>) new ImportSheetService<Product>();
-		} else if (entityClass.equals(importable.model.customer.Customer.class)) {
+		} else if (entityClass.equals(importable.model.Customer.class)) {
 			return (ImportService<T>) new ImportSheetService<Customer>();
-		} else if (entityClass.equals(importable.model.supplier.Supplier.class)) {
+		} else if (entityClass.equals(importable.model.Supplier.class)) {
 			return (ImportService<T>) new ImportSheetService<Supplier>();
-		} else if (entityClass.equals(importable.model.employee.Employee.class)) {
+		} else if (entityClass.equals(importable.model.Employee.class)) {
 			return (ImportService<T>) new ImportSheetService<Employee>();
-		} else if (entityClass.equals(importable.model.order.Order.class)) {
+		} else if (entityClass.equals(importable.model.Order.class)) {
 			return (ImportService<T>) new ImportSheetService<Order>();
-		} else if (entityClass.equals(importable.model.inventory.Inventory.class)) {
+		} else if (entityClass.equals(importable.model.Inventory.class)) {
 			return (ImportService<T>) new ImportSheetService<Inventory>();
-		} else if (entityClass.equals(importable.model.shipment.Shipment.class)) {
+		} else if (entityClass.equals(importable.model.Shipment.class)) {
 			return (ImportService<T>) new ImportSheetService<Shipment>();
-		} else if (entityClass.equals(importable.model.asset.CompanyAsset.class)) {
+		} else if (entityClass.equals(importable.model.CompanyAsset.class)) {
 			return (ImportService<T>) new ImportSheetService<CompanyAsset>();
-		} else if (entityClass.equals(importable.model.task.Task.class)) {
+		} else if (entityClass.equals(importable.model.Task.class)) {
 			return (ImportService<T>) new ImportSheetService<Task>();
-		} else if (entityClass.equals(importable.model.warehouse.Warehouse.class)) {
+		} else if (entityClass.equals(importable.model.Warehouse.class)) {
 			return (ImportService<T>) new ImportSheetService<Warehouse>();
 		}
 		throw new IllegalArgumentException("Serviço não encontrado para a classe: " + entityClass);

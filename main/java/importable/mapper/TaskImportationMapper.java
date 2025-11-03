@@ -4,8 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.function.Function;
 
+import importable.model.Task;
 import importable.model.row.RowData;
-import importable.model.task.Task;
 import importable.translator.Translator;
 import importable.utils.ProcessamentoArquivoException;
 

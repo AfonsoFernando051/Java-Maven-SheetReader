@@ -25,13 +25,17 @@ public class MainDP {
 			planilhasManager.setPlanilhas(planilhaModel);
 			
 			HashMap<TipoPlanilhaImportacaoEnum, ?> result = service.importBringInsertDataManySheet(planilhasManager, service.getBytesManager(sheet));
-			ArrayList<?> arrayList = (ArrayList<?>) result.get(sheet);
-			System.out.println("--- Imported " + arrayList.size() + " records from " + sheet.name() + " ---");
-			for (Object object : arrayList) {
-				System.out.println(object.toString());
-			}
-			System.out.println();
+			readResult(sheet, result);
 		}
+	}
+
+	private static void readResult(TipoPlanilhaImportacaoEnum sheet, HashMap<TipoPlanilhaImportacaoEnum, ?> result) {
+		ArrayList<?> arrayList = (ArrayList<?>) result.get(sheet);
+		System.out.println("--- Imported " + arrayList.size() + " records from " + sheet.name() + " ---");
+		for (Object object : arrayList) {
+			System.out.println(object.toString());
+		}
+		System.out.println();
 	}
 }
 

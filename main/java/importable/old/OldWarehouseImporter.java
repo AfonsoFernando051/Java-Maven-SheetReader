@@ -12,7 +12,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import importable.model.warehouse.Warehouse; // Importe o novo modelo
+import importable.model.Warehouse;
 
 public class OldWarehouseImporter {
 

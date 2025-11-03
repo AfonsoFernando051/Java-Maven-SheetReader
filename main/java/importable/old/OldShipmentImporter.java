@@ -13,7 +13,7 @@ import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import importable.model.shipment.Shipment; // Importe o novo modelo
+import importable.model.Shipment;
 
 public class OldShipmentImporter {
 

@@ -1,4 +1,4 @@
-package importable.model.inventory;
+package importable.model;
 
 /**
  * Represents an inventory item, linking a product to a warehouse and quantity.

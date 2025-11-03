@@ -1,4 +1,4 @@
-package importable.model.asset;
+package importable.model;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

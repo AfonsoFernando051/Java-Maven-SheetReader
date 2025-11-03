@@ -1,4 +1,4 @@
-package importable.model.warehouse;
+package importable.model;
 
 /**
  * Represents a warehouse location. Can be mapped from spreadsheet data (e.g.,

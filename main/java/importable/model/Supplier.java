@@ -1,4 +1,4 @@
-package importable.model.supplier;
+package importable.model;
 
 /**
  * Represents a supplier entity.
