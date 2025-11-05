@@ -139,23 +139,17 @@ public class ModelConfigFactory {
 			return mapTasks();
 		case WAREHOUSES:
 			return mapWarehouses();
-			
-		// --- INÍCIO DAS ADIÇÕES ---
-		// Adiciona os cases para os novos tipos de planilha
 		case ADDRESS:
 			return mapAddress();
 		case FINANCIALTRANSACTION:
 			return mapFinancialTransaction();
 		case PROJECT:
 			return mapProject();
-		// --- FIM DAS ADIÇÕES ---
 			
 		default:
 			throw new IllegalArgumentException("Serviço não encontrado para o tipo: " + tipo);
 		}
 	}
-
-	// --- MÉTODOS DE MAPEAMENTO PRIVADOS ---
 
 	private static HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> mapCustomers() {
 		HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> planilhaMap = new HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel>();
@@ -163,12 +157,9 @@ public class ModelConfigFactory {
 		planilha.setNomeIdentificador("0 - " + TipoPlanilhaImportacaoEnum.CUSTOMERS.name());
 		planilha.setTipoLogico(TipoPlanilhaImportacaoEnum.CUSTOMERS);
 
-		// Mapeamento baseado no OldCustomerImporter: "A", "B", "D", "F", "G"
 		planilha.addColunaEValor(Translator.ID, "A");
 		planilha.addColunaEValor(Translator.NAME, "B");
-		// planilha.addColunaEValor(Translator.CPF, "C"); // Não estava no seu Old
 		planilha.addColunaEValor(Translator.EMAIL, "D");
-		// planilha.addColunaEValor(Translator.BIRTH_DATE, "E"); // Não estava no seu Old
 		planilha.addColunaEValor(Translator.CITY, "F");
 		planilha.addColunaEValor(Translator.STATE, "G");
 
@@ -182,13 +173,10 @@ public class ModelConfigFactory {
 		planilha.setNomeIdentificador("0 - " + TipoPlanilhaImportacaoEnum.PRODUCTS.name());
 		planilha.setTipoLogico(TipoPlanilhaImportacaoEnum.PRODUCTS);
 
-		// Mapeamento baseado no OldProductImporter: "A", "B", "D", "C"
 		planilha.addColunaEValor(Translator.ID, "A");
 		planilha.addColunaEValor(Translator.NAME, "B");
-		planilha.addColunaEValor(Translator.PRICE, "D"); // Preço era D
-		planilha.addColunaEValor(Translator.CATEGORY, "C"); // Categoria era C
-		// planilha.addColunaEValor(Translator.QUANTITY, "E"); // Não estava no seu Old
-		// planilha.addColunaEValor(Translator.REGISTRATION_DATE, "F"); // Não estava no seu Old
+		planilha.addColunaEValor(Translator.PRICE, "D"); 
+		planilha.addColunaEValor(Translator.CATEGORY, "C");
 
 		planilhaMap.put(TipoPlanilhaImportacaoEnum.PRODUCTS, planilha);
 		return planilhaMap;
@@ -200,12 +188,11 @@ public class ModelConfigFactory {
 		planilha.setNomeIdentificador("0 - " + TipoPlanilhaImportacaoEnum.SUPPLIERS.name());
 		planilha.setTipoLogico(TipoPlanilhaImportacaoEnum.SUPPLIERS);
 
-		// Mapeamento baseado no OldSupplierImporter: "A", "B", "D", "E", "G"
 		planilha.addColunaEValor(Translator.ID, "A");
-		planilha.addColunaEValor(Translator.COMPANY_NAME, "B"); // Assumindo Translator.COMPANY_NAME
-		planilha.addColunaEValor(Translator.CONTACT_PERSON, "D"); // Assumindo Translator.CONTACT_PERSON
+		planilha.addColunaEValor(Translator.COMPANY_NAME, "B"); 
+		planilha.addColunaEValor(Translator.CONTACT_PERSON, "D"); 
 		planilha.addColunaEValor(Translator.EMAIL, "E");
-		planilha.addColunaEValor(Translator.ADDRESS, "G"); // Assumindo Translator.ADDRESS
+		planilha.addColunaEValor(Translator.ADDRESS, "G"); 
 
 		planilhaMap.put(TipoPlanilhaImportacaoEnum.SUPPLIERS, planilha);
 		return planilhaMap;
@@ -217,13 +204,12 @@ public class ModelConfigFactory {
 		planilha.setNomeIdentificador("0 - " + TipoPlanilhaImportacaoEnum.EMPLOYEES.name());
 		planilha.setTipoLogico(TipoPlanilhaImportacaoEnum.EMPLOYEES);
 
-		// Mapeamento baseado no OldEmployeeImporter: "A", "B", "C", "D", "E", "F"
 		planilha.addColunaEValor(Translator.ID, "A");
 		planilha.addColunaEValor(Translator.NAME, "B");
 		planilha.addColunaEValor(Translator.EMAIL, "C");
-		planilha.addColunaEValor(Translator.DEPARTMENT, "D"); // Assumindo Translator.DEPARTMENT
-		planilha.addColunaEValor(Translator.POSITION, "E"); // Assumindo Translator.POSITION
-		planilha.addColunaEValor(Translator.HIRE_DATE, "F"); // Assumindo Translator.HIRE_DATE
+		planilha.addColunaEValor(Translator.DEPARTMENT, "D"); 
+		planilha.addColunaEValor(Translator.POSITION, "E"); 
+		planilha.addColunaEValor(Translator.HIRE_DATE, "F");
 
 		planilhaMap.put(TipoPlanilhaImportacaoEnum.EMPLOYEES, planilha);
 		return planilhaMap;
@@ -235,11 +221,10 @@ public class ModelConfigFactory {
 		planilha.setNomeIdentificador("0 - " + TipoPlanilhaImportacaoEnum.ORDERS.name());
 		planilha.setTipoLogico(TipoPlanilhaImportacaoEnum.ORDERS);
 
-		// Mapeamento baseado no OldOrderImporter: "A", "B", "C", "D", "E"
-		planilha.addColunaEValor(Translator.ORDER_ID, "A"); // Assumindo Translator.ORDER_ID
-		planilha.addColunaEValor(Translator.CUSTOMER_ID, "B"); // Assumindo Translator.CUSTOMER_ID
-		planilha.addColunaEValor(Translator.ORDER_DATE, "C"); // Assumindo Translator.ORDER_DATE
-		planilha.addColunaEValor(Translator.TOTAL_VALUE, "D"); // Assumindo Translator.TOTAL_VALUE
+		planilha.addColunaEValor(Translator.ORDER_ID, "A");
+		planilha.addColunaEValor(Translator.CUSTOMER_ID, "B");
+		planilha.addColunaEValor(Translator.ORDER_DATE, "C");
+		planilha.addColunaEValor(Translator.TOTAL_VALUE, "D"); 
 		planilha.addColunaEValor(Translator.STATUS, "E");
 
 		planilhaMap.put(TipoPlanilhaImportacaoEnum.ORDERS, planilha);
@@ -252,11 +237,10 @@ public class ModelConfigFactory {
 		planilha.setNomeIdentificador("0 - " + TipoPlanilhaImportacaoEnum.INVENTORY.name());
 		planilha.setTipoLogico(TipoPlanilhaImportacaoEnum.INVENTORY);
 
-		// Mapeamento baseado no OldInventoryImporter: "A", "B", "C", "D"
-		planilha.addColunaEValor(Translator.PRODUCT_ID, "A"); // Assumindo Translator.PRODUCT_ID
-		planilha.addColunaEValor(Translator.WAREHOUSE_ID, "B"); // Assumindo Translator.WAREHOUSE_ID
+		planilha.addColunaEValor(Translator.PRODUCT_ID, "A"); 
+		planilha.addColunaEValor(Translator.WAREHOUSE_ID, "B"); 
 		planilha.addColunaEValor(Translator.QUANTITY, "C");
-		planilha.addColunaEValor(Translator.LOCATION_CODE, "D"); // Assumindo Translator.LOCATION_CODE
+		planilha.addColunaEValor(Translator.LOCATION_CODE, "D"); 
 
 		planilhaMap.put(TipoPlanilhaImportacaoEnum.INVENTORY, planilha);
 		return planilhaMap;
@@ -269,13 +253,12 @@ public class ModelConfigFactory {
 		planilha.setNomeIdentificador("0 - " + TipoPlanilhaImportacaoEnum.SHIPMENTS.name());
 		planilha.setTipoLogico(TipoPlanilhaImportacaoEnum.SHIPMENTS);
 
-		// Mapeamento baseado no OldShipmentImporter: "A", "B", "C", "D", "E", "F"
-		planilha.addColunaEValor(Translator.SHIPMENT_ID, "A"); // Assumindo Translator.SHIPMENT_ID
+		planilha.addColunaEValor(Translator.SHIPMENT_ID, "A"); 
 		planilha.addColunaEValor(Translator.ORDER_ID, "B");
-		planilha.addColunaEValor(Translator.CARRIER, "C"); // Assumindo Translator.CARRIER
-		planilha.addColunaEValor(Translator.TRACKING_CODE, "D"); // Assumindo Translator.TRACKING_CODE
+		planilha.addColunaEValor(Translator.CARRIER, "C");
+		planilha.addColunaEValor(Translator.TRACKING_CODE, "D");
 		planilha.addColunaEValor(Translator.STATUS, "E");
-		planilha.addColunaEValor(Translator.ESTIMATED_DELIVERY_DATE, "F"); // Assumindo Translator.ESTIMATED_DELIVERY_DATE
+		planilha.addColunaEValor(Translator.ESTIMATED_DELIVERY_DATE, "F");
 
 		planilhaMap.put(TipoPlanilhaImportacaoEnum.SHIPMENTS, planilha);
 		return planilhaMap;
@@ -287,12 +270,11 @@ public class ModelConfigFactory {
 		planilha.setNomeIdentificador("0 - " + TipoPlanilhaImportacaoEnum.ASSETS.name());
 		planilha.setTipoLogico(TipoPlanilhaImportacaoEnum.ASSETS);
 
-		// Mapeamento baseado no OldAssetImporter: "A", "B", "C", "D", "E", "F"
-		planilha.addColunaEValor(Translator.ASSET_TAG, "A"); // Assumindo Translator.ASSET_TAG
+		planilha.addColunaEValor(Translator.ASSET_TAG, "A"); 
 		planilha.addColunaEValor(Translator.DESCRIPTION, "B");
 		planilha.addColunaEValor(Translator.CATEGORY, "C");
-		planilha.addColunaEValor(Translator.EMPLOYEE_ID, "D"); // Assumindo Translator.EMPLOYEE_ID
-		planilha.addColunaEValor(Translator.PURCHASE_DATE, "E"); // Assumindo Translator.PURCHASE_DATE
+		planilha.addColunaEValor(Translator.EMPLOYEE_ID, "D");
+		planilha.addColunaEValor(Translator.PURCHASE_DATE, "E"); 
 		planilha.addColunaEValor(Translator.STATUS, "F");
 
 		planilhaMap.put(TipoPlanilhaImportacaoEnum.ASSETS, planilha);
@@ -305,13 +287,12 @@ public class ModelConfigFactory {
 		planilha.setNomeIdentificador("0 - " + TipoPlanilhaImportacaoEnum.TASKS.name());
 		planilha.setTipoLogico(TipoPlanilhaImportacaoEnum.TASKS);
 
-		// Mapeamento baseado no OldTaskImporter: "A", "B", "C", "D", "E", "F"
-		planilha.addColunaEValor(Translator.TASK_ID, "A"); // Assumindo Translator.TASK_ID
-		planilha.addColunaEValor(Translator.PROJECT_ID, "B"); // Assumindo Translator.PROJECT_ID
+		planilha.addColunaEValor(Translator.TASK_ID, "A"); 
+		planilha.addColunaEValor(Translator.PROJECT_ID, "B"); 
 		planilha.addColunaEValor(Translator.DESCRIPTION, "C");
-		planilha.addColunaEValor(Translator.ASSIGNEE_ID, "D"); // Assumindo Translator.ASSIGNEE_ID
-		planilha.addColunaEValor(Translator.PRIORITY, "E"); // Assumindo Translator.PRIORITY
-		planilha.addColunaEValor(Translator.DUE_DATE, "F"); // Assumindo Translator.DUE_DATE
+		planilha.addColunaEValor(Translator.ASSIGNEE_ID, "D");
+		planilha.addColunaEValor(Translator.PRIORITY, "E");
+		planilha.addColunaEValor(Translator.DUE_DATE, "F"); 
 
 		planilhaMap.put(TipoPlanilhaImportacaoEnum.TASKS, planilha);
 		return planilhaMap;
@@ -323,7 +304,6 @@ public class ModelConfigFactory {
 		planilha.setNomeIdentificador("0 - " + TipoPlanilhaImportacaoEnum.WAREHOUSES.name());
 		planilha.setTipoLogico(TipoPlanilhaImportacaoEnum.WAREHOUSES);
 
-		// Mapeamento baseado no OldWarehouseImporter: "A", "B", "C", "D"
 		planilha.addColunaEValor(Translator.WAREHOUSE_ID, "A");
 		planilha.addColunaEValor(Translator.NAME, "B");
 		planilha.addColunaEValor(Translator.CITY, "C");
@@ -333,13 +313,6 @@ public class ModelConfigFactory {
 		return planilhaMap;
 	}
 
-	
-	// --- INÍCIO DOS NOVOS MÉTODOS DE MAPEAMENTO ---
-	
-	/**
-	 * Mapeia as colunas da planilha de Endereços (address.xlsx) para as chaves do Translator.
-	 * Baseado na imagem 'image_056e8d.png'.
-	 */
 	private static HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> mapAddress() {
 		HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> planilhaMap = new HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel>();
 		PlanilhaModel planilha = new PlanilhaModel();
@@ -358,10 +331,6 @@ public class ModelConfigFactory {
 		return planilhaMap;
 	}
 	
-	/**
-	 * Mapeia as colunas da planilha de Transações Financeiras (financial-transaction.xlsx) para as chaves do Translator.
-	 * Baseado na imagem 'image_056f81.png'.
-	 */
 	private static HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> mapFinancialTransaction() {
 		HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> planilhaMap = new HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel>();
 		PlanilhaModel planilha = new PlanilhaModel();
@@ -390,10 +359,6 @@ public class ModelConfigFactory {
 		return planilhaMap;
 	}
 	
-	/**
-	 * Mapeia as colunas da planilha de Projetos (projects.xlsx) para as chaves do Translator.
-	 * Baseado na imagem 'image_056eab.png'.
-	 */
 	private static HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> mapProject() {
 		HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> planilhaMap = new HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel>();
 		PlanilhaModel planilha = new PlanilhaModel();
@@ -420,6 +385,4 @@ public class ModelConfigFactory {
 		return planilhaMap;
 	}
 	
-	// --- FIM DOS NOVOS MÉTODOS DE MAPEAMENTO ---
-
 }
