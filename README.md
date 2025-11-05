@@ -37,7 +37,7 @@ This diagram shows the "God Method" signature, proving the high coupling. The `C
 
 This diagram proves the low functional cohesion. The `OldCustomerImporter` class does all the work internally (parsing, mapping, creating) without delegating any responsibility.
 
-![Original "God Class" Sequence](main/resources/images/diagrama_sequencia_god_class.png)
+![Original "God Class" Sequence](main/resources/images/sequencia_god_class.png)
 
 ---
 
