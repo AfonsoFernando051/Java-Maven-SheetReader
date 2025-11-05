@@ -27,7 +27,17 @@ The original version (`importable.old`) is a classic example of a monolithic pro
 * **High Coupling & Low Cohesion:** Led to extreme rigidity (WMC=72.5) and fragility.
 * **No Extensibility:** Adding a new importer (e.g., "Address") would require duplicating hundreds of lines of code.
 
+#### Class Diagram (High Coupling)
+
+This diagram shows the "God Method" signature, proving the high coupling. The `Client` must know internal implementation details (the column letters), creating a fragile design.
+
 ![Original "God Class" Architecture](main/resources/images/diagrama_god_class.png)
+
+#### Sequence Diagram (Low Cohesion)
+
+This diagram proves the low functional cohesion. The `OldCustomerImporter` class does all the work internally (parsing, mapping, creating) without delegating any responsibility.
+
+![Original "God Class" Sequence](main/resources/images/diagrama_sequencia_god_class.png)
 
 ---
 
