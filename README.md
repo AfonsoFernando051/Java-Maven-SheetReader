@@ -10,37 +10,52 @@
 
 The project implements two distinct versions of the same functionality — reading and importing Excel spreadsheets:
 
-* **Original Version:** procedural logic, monolithic “God Classes,” and high coupling.
+* **Original Version:** procedural logic, monolithic “God Classes,” and high coupling. (Contained in `importable.old`)
 * **Refactored Version:** restructured using **design patterns** (Template Method, Factory Method, Strategy), focusing on **modularity and extensibility**.
 
 ---
 
 ## 🧱 **2. System Architecture**
 
-### 🔹 **Original Version**
+This section visually contrasts the "before" and "after" architectures, which is the core of this study.
 
-* Core classes: `OldProductImporter`, `OldCustomerImporter`
-* Procedural structure with high redundancy
-* Lack of abstraction and separation of responsibilities
+### 🔹 **Original Version (The "God Class" Architecture)**
 
-### 🔹 **Refactored Version**
+The original version (`importable.old`) is a classic example of a monolithic procedural design, resulting in a **Critical 'E' Maintainability** rating from SonarQube.
 
-* Design Patterns Implemented:
+* **Monolithic Classes:** `OldProductImporter` contained all logic: file I/O, sheet parsing, data validation, and model creation.
+* **High Coupling & Low Cohesion:** Led to extreme rigidity (WMC=72.5) and fragility.
+* **No Extensibility:** Adding a new importer (e.g., "Address") would require duplicating hundreds of lines of code.
 
-  * **Template Method** → defines generic import workflow (`AbstractImportSheetService`, `GenericPlanilhaProcessor`)
-  * **Factory Method** → dynamic instantiation of import services (`ImportServiceFactory`)
-  * **Strategy** → flexible model and validation strategies (`CustomerImportationModel`, `ProductImportationModel`)
-* Modular and interface-driven design, fully extensible.
+![Original "God Class" Architecture](src/main/resources/images/diagrama_god_class.png)
+
+---
+
+### 🔹 **Refactored Version (The Design Pattern Architecture)**
+
+The refactored version applies multiple design patterns to distribute complexity, follow SOLID principles, and achieve an **Excellent 'A' Maintainability** rating.
+
+* **Design Patterns Implemented:**
+    * **Template Method** → defines the generic import workflow skeleton (`GenericImportMapper`).
+    * **Factory Method** → `ModelConfigFactory` dynamically instantiates the correct import logic.
+    * **Strategy** → `CustomerImportationMapper` and `ProductImportationMapper` are concrete "strategies" for mapping data.
+* **SOLID Principles:**
+    * **SRP:** Each class has one job (a Factory creates, a Service orchestrates, a Mapper maps).
+    * **OCP:** The system is **open** to adding new importers (e.g., `InvoiceImportationMapper`) but **closed** for modification (no need to change `ImportSheetService`).
+
+#### Architecture Diagram (Factory, Strategy, Template)
+
+This diagram shows how the patterns collaborate to create a decoupled, extensible system.
+
+![Refactored Architecture with Design Patterns](src/main/resources/images/diagrama_arquitetura.png)
+
+#### Sequence Diagram (Low Coupling in Execution)
+
+This diagram proves the low coupling at runtime. The `Client` (Main) is completely isolated from the concrete `Mapper` implementations, interacting only with abstractions provided by the factories.
+
+![Refactored Execution Sequence Diagram](src/main/resources/images/diagrama_sequencia.png)
 
 📂 **Main Packages**
-
-```
-importable.config       → Configuration and enums
-importable.model        → Domain models (POJOs)
-importable.service      → Import services and factories
-importable.utils        → File utilities and I/O handlers
-importable.old          → Legacy procedural version
-```
 
 ---
 
