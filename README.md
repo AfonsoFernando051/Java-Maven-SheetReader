@@ -27,7 +27,7 @@ The original version (`importable.old`) is a classic example of a monolithic pro
 * **High Coupling & Low Cohesion:** Led to extreme rigidity (WMC=72.5) and fragility.
 * **No Extensibility:** Adding a new importer (e.g., "Address") would require duplicating hundreds of lines of code.
 
-![Original "God Class" Architecture](resources/images/diagrama_god_class.png)
+![Original "God Class" Architecture](main/resources/images/diagrama_god_class.png)
 
 ---
 
@@ -47,13 +47,13 @@ The refactored version applies multiple design patterns to distribute complexity
 
 This diagram shows how the patterns collaborate to create a decoupled, extensible system.
 
-![Refactored Architecture with Design Patterns](resources/images/diagrama_arquitetura.png)
+![Refactored Architecture with Design Patterns](main/resources/images/diagrama_arquitetura.png)
 
 #### Sequence Diagram (Low Coupling in Execution)
 
 This diagram proves the low coupling at runtime. The `Client` (Main) is completely isolated from the concrete `Mapper` implementations, interacting only with abstractions provided by the factories.
 
-![Refactored Execution Sequence Diagram](resources/images/diagrama_sequencia.png)
+![Refactored Execution Sequence Diagram](main/resources/images/diagrama_sequencia.png)
 
 📂 **Main Packages**
 
