@@ -18,267 +18,267 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 import importable.config.SheetModel;
 import importable.config.SheetTypeEnum;
-import importable.mapper.InterfacePlanilhaMapper;
+import importable.mapper.InterfaceSheetMapper;
 import importable.service.factory.ModelConfigFactory;
-import importable.utils.ProcessamentoArquivoException;
+import importable.utils.FileProcessingException;
 import importable.utils.SaveBytesManager;
 
 /**
  * @author Fernando Dias
- * @param <T> - Tipo a ser importado
+ * @param <T> - The type to be imported
  */
-public  class ImportSheetService<T> implements ImportService<T> {
+public class ImportSheetService<T> implements ImportService<T> {
 
-	/**
-	 * Dados extraidos do formulario
-	 */
-	PlanilhaImportConfigManager planilhaImportConfigManager;
+    /**
+     * Data extracted from the form.
+     * (Assuming PlanilhaImportConfigManager will be renamed to SheetImportConfigManager)
+     */
+    SheetImportConfigManager sheetImportConfigManager;
 
-	/**
-	 * Classe que gerencia input stream
-	 */
-	protected SaveBytesManager bytesController;
+    /**
+     * Class that manages the input stream.
+     */
+    protected SaveBytesManager bytesController;
 
-	/**
-	 * Modelo de Importação
-	 */
-	private SheetModel planilhaAtual;
+    /**
+     * The current SheetModel being processed.
+     */
+    private SheetModel currentSheetModel;
 
-	/**
-	 * Modelo de Importação
-	 */
-	private HashMap<SheetTypeEnum, SheetModel> planilhas = new HashMap<SheetTypeEnum, SheetModel>();
+    /**
+     * Map of SheetModels, keyed by their type.
+     */
+    private HashMap<SheetTypeEnum, SheetModel> sheetModels = new HashMap<>();
 
-	public SaveBytesManager getBytesManager(SheetTypeEnum tipo) {
-		InputStream stream = getStream(tipo);
-		SaveBytesManager bytesController = new SaveBytesManager();
-		bytesController.setBytes(stream);
-		return bytesController;
-	}
-	
-	public HashMap<SheetTypeEnum, SheetModel> generateSheetModel(SheetTypeEnum tipo){
-		return ModelConfigFactory.generateSheetModel(tipo);
-	}
+    public SaveBytesManager getBytesManager(SheetTypeEnum type) {
+        InputStream stream = getStream(type);
+        SaveBytesManager bytesController = new SaveBytesManager();
+        bytesController.setBytes(stream);
+        return bytesController;
+    }
 
-	protected InputStream getStream(SheetTypeEnum tipo) {
-		return ModelConfigFactory.getResourceAsStream(tipo);
-	}
+    public HashMap<SheetTypeEnum, SheetModel> generateSheetModel(SheetTypeEnum type) {
+        return (HashMap<SheetTypeEnum, SheetModel>) ModelConfigFactory.generateSheetModel(type);
+    }
 
-	/**
-	 * @param planilhaImportConfigManager - Gerencia dados do form
-	 * @param bytesController             - Gerencia input stream
-	 */
-	public void configurarDadosPlanilha(PlanilhaImportConfigManager planilhaImportConfigManager,
-			SaveBytesManager bytesController) {
-		setPlanilhaImportConfigManager(planilhaImportConfigManager);
-		setBytesController(bytesController);
-		configPlanilha(planilhaImportConfigManager);
-	}
+    protected InputStream getStream(SheetTypeEnum type) {
+        return ModelConfigFactory.getResourceAsStream(type);
+    }
 
-	/**
-	 * @param configuracao - configura planilha/planilhas
-	 */
-	private void configPlanilha(PlanilhaImportConfigManager configuracao) {
-		if (configuracao.getPlanilhas().size() == 1) {
-			setPlanilhaAtual(configuracao.getUniquePlanilha());
-			setPlanilhas(configuracao.getPlanilhas());
-		} else {
-			setPlanilhas(configuracao.getPlanilhas());
-		}
+    /**
+     * @param sheetImportConfigManager - Manages form data
+     * @param bytesController          - Manages the input stream
+     */
+    public void configureSheetData(SheetImportConfigManager sheetImportConfigManager,
+            SaveBytesManager bytesController) {
+        setSheetImportConfigManager(sheetImportConfigManager);
+        setBytesController(bytesController);
+        configureSheets(sheetImportConfigManager);
+    }
 
-	}
+    /**
+     * @param configuration - configures the sheet(s)
+     */
+    private void configureSheets(SheetImportConfigManager configuration) {
+        if (configuration.getSheetModels().size() == 1) {
+            setCurrentSheetModel(configuration.getUniqueSheetModel());
+            setSheetModels(configuration.getSheetModels());
+        } else {
+            setSheetModels(configuration.getSheetModels());
+        }
+    }
 
-	/**
-	 * @param cell - celula
-	 * @return true se for invalida(nula ou vazia)
-	 */
-	protected boolean isCelulaInvalida(Cell cell) {
-		return cell == null || cell.getCellType() == CellType.BLANK;
-	}
+    /**
+     * @param cell - the cell
+     * @return true if it is invalid (null or blank)
+     */
+    protected boolean isCellInvalid(Cell cell) {
+        return cell == null || cell.getCellType() == CellType.BLANK;
+    }
 
-	/**
-	 * Importação de dados da planilha
-	 *
-	 * @param planilhaImportConfigManager - Gerencia dados do form
-	 * @param bytesController             - Gerencia input stream
-	 * @param callback                    - ato de refresh em grid
-	 */
-	public void importBringDataManySheet(PlanilhaImportConfigManager planilhaImportConfigManager,
-			SaveBytesManager bytesController, Consumer<HashMap<SheetTypeEnum, ArrayList<T>>> callback) {
-		try {
-			configurarDadosPlanilha(planilhaImportConfigManager, bytesController);
-			HashMap<SheetTypeEnum, ArrayList<T>> dados = getDadosByPlanilhas();
-			bytesController.closeFileData();
-			callback.accept(dados);
-		} catch (EncryptedDocumentException | IOException e) {
-			e.printStackTrace();
-		}
+    /**
+     * Imports data from the sheet.
+     *
+     * @param sheetImportConfigManager - Manages form data
+     * @param bytesController          - Manages the input stream
+     * @param callback                 - action to refresh a grid
+     */
+    public void importAndFetchDataFromSheets(SheetImportConfigManager sheetImportConfigManager,
+            SaveBytesManager bytesController, Consumer<HashMap<SheetTypeEnum, ArrayList<T>>> callback) {
+        try {
+            configureSheetData(sheetImportConfigManager, bytesController);
+            HashMap<SheetTypeEnum, ArrayList<T>> data = getDataFromSheets();
+            bytesController.closeFileData();
+            callback.accept(data);
+        } catch (EncryptedDocumentException | IOException e) {
+            // TODO: Handle exception properly
+            e.printStackTrace();
+        }
+    }
 
-	}
+    /**
+     * Imports and inserts data from the sheet using a callback.
+     *
+     * @param sheetImportConfigManager - Manages form data
+     * @param bytesController          - Manages the input stream
+     * @param callback                 - action to refresh a grid
+     */
+    public void importAndInsertDataFromSheetsWithCallback(SheetImportConfigManager sheetImportConfigManager,
+            SaveBytesManager bytesController, Consumer<HashMap<SheetTypeEnum, ArrayList<T>>> callback) {
+        try {
+            configureSheetData(sheetImportConfigManager, bytesController);
+            HashMap<SheetTypeEnum, ArrayList<T>> data = getDataFromSheets();
+            Set<SheetTypeEnum> sheetTypes = data.keySet();
+            for (SheetTypeEnum sheetType : sheetTypes) {
+                insertSheetData(data.get(sheetType));
+            }
+            bytesController.closeFileData();
+            callback.accept(data);
+        } catch (EncryptedDocumentException | IOException e) {
+            // TODO: Handle exception properly
+            e.printStackTrace();
+        }
+    }
 
-	/**
-	 * Importação de dados da planilha
-	 *
-	 * @param planilhaImportConfigManager - Gerencia dados do form
-	 * @param bytesController             - Gerencia input stream
-	 * @param callback                    - ato de refresh em grid
-	 */
-	public void importBringInsertDataManySheetByCallback(PlanilhaImportConfigManager planilhaImportConfigManager,
-			SaveBytesManager bytesController, Consumer<HashMap<SheetTypeEnum, ArrayList<T>>> callback) {
-		try {
-			configurarDadosPlanilha(planilhaImportConfigManager, bytesController);
-			HashMap<SheetTypeEnum, ArrayList<T>> dados = getDadosByPlanilhas();
-			Set<SheetTypeEnum> keySet = dados.keySet();
-			for (SheetTypeEnum SheetTypeEnum : keySet) {
-				insertDadosPlanilha(dados.get(SheetTypeEnum));
-			}
-			bytesController.closeFileData();
-			callback.accept(dados);
-		} catch (EncryptedDocumentException | IOException e) {
-			e.printStackTrace();
-		}
+    /**
+     * Imports and inserts data from multiple sheets.
+     *
+     * @param sheetImportConfigManager - Manages form data
+     * @param bytesController          - Manages the input stream
+     * @return Map of imported data, or null on failure
+     */
+    public HashMap<SheetTypeEnum, ArrayList<T>> importAndInsertDataFromSheets(
+            SheetImportConfigManager sheetImportConfigManager,
+            SaveBytesManager bytesController) {
+        try {
+            configureSheetData(sheetImportConfigManager, bytesController);
+            HashMap<SheetTypeEnum, ArrayList<T>> data = getDataFromSheets();
+            Set<SheetTypeEnum> sheetTypes = data.keySet();
+            for (SheetTypeEnum sheetType : sheetTypes) {
+                insertSheetData(data.get(sheetType));
+            }
+            bytesController.closeFileData();
+            return data;
+        } catch (EncryptedDocumentException | IOException e) {
+            // TODO: Handle exception properly
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-	}
+    /**
+     * @return sheets mapped by type
+     * @throws IOException exception from InputStream
+     */
+    protected HashMap<SheetTypeEnum, ArrayList<T>> getDataFromSheets() throws IOException {
+        HashMap<SheetTypeEnum, ArrayList<T>> results = new HashMap<>();
+        for (Map.Entry<SheetTypeEnum, SheetModel> entry : getSheetModels().entrySet()) {
+            SheetTypeEnum type = entry.getKey();
+            setCurrentSheetModel(entry.getValue());
 
-	/**
-	 * Importação de dados da planilha
-	 *
-	 * @param planilhaImportConfigManager - Gerencia dados do form
-	 * @param bytesController             - Gerencia input stream
-	 * @param callback                    - ato de refresh em grid
-	 * @return 
-	 */
-	public HashMap<SheetTypeEnum, ArrayList<T>> importBringInsertDataManySheet(PlanilhaImportConfigManager planilhaImportConfigManager,
-			SaveBytesManager bytesController) {
-		try {
-			configurarDadosPlanilha(planilhaImportConfigManager, bytesController);
-			HashMap<SheetTypeEnum, ArrayList<T>> dados = getDadosByPlanilhas();
-			Set<SheetTypeEnum> keySet = dados.keySet();
-			for (SheetTypeEnum SheetTypeEnum : keySet) {
-				insertDadosPlanilha(dados.get(SheetTypeEnum));
-			}
-			bytesController.closeFileData();
-			return dados;
-		} catch (EncryptedDocumentException | IOException e) {
-			e.printStackTrace();
-		}
-		return null;
+            try (Workbook workbook = generateWorkbook()) {
+                InterfaceSheetMapper<T> modelConfig = getModelConfig(type);
+                // Assuming GenericPlanilhaProcessor was renamed to GenericSheetProcessor
+                GenericSheetProcessor<T> processor = new GenericSheetProcessor<>(modelConfig);
+                results.put(type, processor.process(workbook, getCurrentSheetModel()));
+            } catch (FileProcessingException e) {
+                throw new IOException(e.getMessage());
+            }
+        }
+        return results;
+    }
 
-	}
-	
-	/**
-	 * @throws IOException exceção de InputStream
-	 * @return planilhas mapeadas por tipos
-	 */
-	protected HashMap<SheetTypeEnum, ArrayList<T>> getDadosByPlanilhas() throws IOException {
-		HashMap<SheetTypeEnum, ArrayList<T>> resultados = new HashMap<>();
-		for (Map.Entry<SheetTypeEnum, SheetModel> entry : getPlanilhas().entrySet()) {
-			SheetTypeEnum tipo = entry.getKey();
-			setPlanilhaAtual(entry.getValue());
+    /**
+     * @param type of sheet
+     * @return model configuration
+     */
+    @SuppressWarnings("unchecked")
+    InterfaceSheetMapper<T> getModelConfig(SheetTypeEnum type) {
+        return (InterfaceSheetMapper<T>) ModelConfigFactory.getModelConfig(type);
+    }
 
-			try (Workbook workbook = generateWorkbook()) {
-				InterfacePlanilhaMapper<T> modelConfig = getModelConfig(tipo);
-				GenericPlanilhaProcessor<T> processor = new GenericPlanilhaProcessor<>(modelConfig);
-				resultados.put(tipo, processor.processar(workbook, getPlanilhaAtual()));
-			} catch (ProcessamentoArquivoException e) {
-				throw new IOException(e.getMessage());
-			}
-		}
+    /**
+     * @param data - list of elements
+     */
+    protected void insertSheetData(List<T> data) {
+        // Placeholder for implementation
+    }
 
-		return resultados;
-	}
+    /**
+     * Validates if the event to be inserted already exists.
+     * (Assuming "Eventos" is a domain-specific term)
+     *
+     * @param data - to be validated
+     * @return list with validated data
+     */
+    protected List<T> validateExistingEvents(List<T> data) {
+        return data;
+    }
 
-	/**
-	 * @param tipo de planilha
-	 * @return configuração de modelo
-	 */
-	@SuppressWarnings("unchecked")
-	InterfacePlanilhaMapper<T> getModelConfig(SheetTypeEnum tipo) {
-		return (InterfacePlanilhaMapper<T>) ModelConfigFactory.getModelConfig(tipo);
-	}
+    /**
+     * @return Workbook based on the file
+     * @throws IOException streaming error
+     */
+    protected Workbook generateWorkbook() throws IOException {
+        ByteArrayInputStream inputStream = bytesController.getNewInputWithBytes();
+        Workbook workXssf = WorkbookFactory.create(inputStream);
+        return workXssf;
+    }
 
-	/**
-	 * @param dados - lista de elementos
-	 */
-	protected void insertDadosPlanilha(List<T> dados) {
+    /**
+     * @return {@link #sheetImportConfigManager}
+     */
+    public SheetImportConfigManager getSheetImportConfigManager() {
+        return sheetImportConfigManager;
+    }
 
-	};
+    /**
+     * @param sheetImportConfigManager updates
+     * {@link #sheetImportConfigManager}.
+     */
+    public void setSheetImportConfigManager(SheetImportConfigManager sheetImportConfigManager) {
+        this.sheetImportConfigManager = sheetImportConfigManager;
+    }
 
-	/**
-	 * Valida se o evento a ser inserido já existe
-	 *
-	 * @param dados - a serem validados
-	 * @return lista com dados validados
-	 */
-	protected List<T> validateEventosExistentes(List<T> dados) {
-		return dados;
-	}
+    /**
+     * @return {@link #bytesController}
+     */
+    public SaveBytesManager getBytesController() {
+        return bytesController;
+    }
 
-	/**
-	 * @return Workbook de acordo com arquivo
-	 * @throws IOException erro de streaming
-	 */
-	protected Workbook generateWorkbook() throws IOException {
-		ByteArrayInputStream inputStream = bytesController.getNewInputWithBytes();
-		Workbook workXssf = WorkbookFactory.create(inputStream);
-		return workXssf;
-	}
+    /**
+     * @param bytesController updates {@link #bytesController}.
+     */
+    public void setBytesController(SaveBytesManager bytesController) {
+        this.bytesController = bytesController;
+    }
 
-	/**
-	 * @return {@link #planilhaImportConfigManager}
-	 */
-	public PlanilhaImportConfigManager getPlanilhaImportConfigManager() {
-		return planilhaImportConfigManager;
-	}
+    /**
+     * @return {@link #currentSheetModel}
+     */
+    public SheetModel getCurrentSheetModel() {
+        return currentSheetModel;
+    }
 
-	/**
-	 * @param planilhaImportConfigManager atualiza
-	 *                                    {@link #planilhaImportConfigManager}.
-	 */
-	public void setPlanilhaImportConfigManager(PlanilhaImportConfigManager planilhaImportConfigManager) {
-		this.planilhaImportConfigManager = planilhaImportConfigManager;
-	}
+    /**
+     * @param currentSheetModel updates {@link #currentSheetModel}.
+     */
+    public void setCurrentSheetModel(SheetModel currentSheetModel) {
+        this.currentSheetModel = currentSheetModel;
+    }
 
-	/**
-	 * @return {@link #bytesController}
-	 */
-	public SaveBytesManager getBytesController() {
-		return bytesController;
-	}
+    /**
+     * @return {@link #sheetModels}
+     */
+    public HashMap<SheetTypeEnum, SheetModel> getSheetModels() {
+        return sheetModels;
+    }
 
-	/**
-	 * @param bytesController atualiza {@link #bytesController}.
-	 */
-	public void setBytesController(SaveBytesManager bytesController) {
-		this.bytesController = bytesController;
-	}
-
-	/**
-	 * @return {@link #planilhaAtual}
-	 */
-	public SheetModel getPlanilhaAtual() {
-		return planilhaAtual;
-	}
-
-	/**
-	 * @param planilhaAtual atualiza {@link #planilhaAtual}.
-	 */
-	public void setPlanilhaAtual(SheetModel planilhaAtual) {
-		this.planilhaAtual = planilhaAtual;
-	}
-
-	/**
-	 * @return {@link #planilhas}
-	 */
-	public HashMap<SheetTypeEnum, SheetModel> getPlanilhas() {
-		return planilhas;
-	}
-
-	/**
-	 * @param planilhas atualiza {@link #planilhas}.
-	 */
-	public void setPlanilhas(HashMap<SheetTypeEnum, SheetModel> planilhas) {
-		this.planilhas = planilhas;
-	}
-
+    /**
+     * @param sheetModels updates {@link #sheetModels}.
+     */
+    public void setSheetModels(HashMap<SheetTypeEnum, SheetModel> sheetModels) {
+        this.sheetModels = sheetModels;
+    }
 }

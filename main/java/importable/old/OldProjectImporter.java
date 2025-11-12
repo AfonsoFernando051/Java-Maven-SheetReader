@@ -24,7 +24,7 @@ public class OldProjectImporter {
     /**
      * Importação de dados da planilha de Projetos (Project)
      */
-    public static List<Project> importarDadosPlanilha(String abaPlanilha,
+    public static List<Project> importSheetData(String abaPlanilha,
             boolean possuiCabecalho,
             String colunaId,
             String colunaName,

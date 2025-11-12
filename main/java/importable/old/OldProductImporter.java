@@ -20,7 +20,7 @@ public class OldProductImporter {
    * Importação de dados da planilha de produtos
  * @return 
    */
-  public static List<Product> importarDadosPlanilha(String abaPlanilha,
+  public static List<Product> importSheetData(String abaPlanilha,
                                      boolean possuiCabecalho,
                                      String colunaID,
                                      String colunaNome,

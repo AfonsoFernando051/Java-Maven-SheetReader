@@ -7,7 +7,7 @@ import java.util.function.Function;
 import importable.model.CompanyAsset;
 import importable.model.row.RowData;
 import importable.translator.Translator;
-import importable.utils.ProcessamentoArquivoException;
+import importable.utils.FileProcessingException;
 
 public class AssetImportationMapper extends GenericImportMapper<CompanyAsset> {
 
@@ -19,7 +19,7 @@ public class AssetImportationMapper extends GenericImportMapper<CompanyAsset> {
     public Function<RowData, ArrayList<CompanyAsset>> processRow() {
         ArrayList<CompanyAsset> modelos = new ArrayList<CompanyAsset>();
         return (row) -> {
-            CompanyAsset asset = criarInstancia();
+            CompanyAsset asset = createInstance();
             
             asset.setAssetTag(getStringValue(row, Translator.ASSET_TAG));
             asset.setDescription(getStringValue(row, Translator.DESCRIPTION));
@@ -38,7 +38,7 @@ public class AssetImportationMapper extends GenericImportMapper<CompanyAsset> {
     }
 
 	@Override
-	public void validate(CompanyAsset object, RowData row) throws ProcessamentoArquivoException {
+	public void validate(CompanyAsset object, RowData row) throws FileProcessingException {
 		// Validações
 	}
 }

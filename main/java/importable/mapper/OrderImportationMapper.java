@@ -7,7 +7,7 @@ import java.util.function.Function;
 import importable.model.Order;
 import importable.model.row.RowData;
 import importable.translator.Translator;
-import importable.utils.ProcessamentoArquivoException;
+import importable.utils.FileProcessingException;
 
 public class OrderImportationMapper extends GenericImportMapper<Order> {
 
@@ -19,7 +19,7 @@ public class OrderImportationMapper extends GenericImportMapper<Order> {
     public Function<RowData, ArrayList<Order>> processRow() {
         ArrayList<Order> modelos = new ArrayList<Order>();
         return (row) -> {
-            Order order = criarInstancia();
+            Order order = createInstance();
             
             order.setOrderId(getLongValue(row, Translator.ORDER_ID));
             order.setCustomerId(getLongValue(row, Translator.CUSTOMER_ID));
@@ -37,7 +37,7 @@ public class OrderImportationMapper extends GenericImportMapper<Order> {
     }
 
 	@Override
-	public void validate(Order object, RowData row) throws ProcessamentoArquivoException {
+	public void validate(Order object, RowData row) throws FileProcessingException {
 		// Validações
 	}
 }

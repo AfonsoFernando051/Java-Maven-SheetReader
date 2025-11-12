@@ -7,7 +7,7 @@ import java.util.function.Function;
 import importable.model.Project;
 import importable.model.row.RowData;
 import importable.translator.Translator;
-import importable.utils.ProcessamentoArquivoException;
+import importable.utils.FileProcessingException;
 
 public class ProjectImportationMapper extends GenericImportMapper<Project> {
 
@@ -19,7 +19,7 @@ public class ProjectImportationMapper extends GenericImportMapper<Project> {
     public Function<RowData, ArrayList<Project>> processRow() {
         ArrayList<Project> modelos = new ArrayList<>();
         return (row) -> {
-            Project project = criarInstancia();
+            Project project = createInstance();
 
             project.setId(getLongValue(row, Translator.ID));
             project.setName(getStringValue(row, Translator.NAME));
@@ -70,7 +70,7 @@ public class ProjectImportationMapper extends GenericImportMapper<Project> {
     }
 
     @Override
-    public void validate(Project project, RowData row) throws ProcessamentoArquivoException {
+    public void validate(Project project, RowData row) throws FileProcessingException {
         // Exemplo de validações:
         if (project.getName() == null || project.getName().isEmpty()) {
             // throw new ProcessamentoArquivoException("A coluna 'name' (Nome do Projeto) é obrigatória.", row.getLineNumber());

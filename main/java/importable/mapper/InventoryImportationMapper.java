@@ -6,7 +6,7 @@ import java.util.function.Function;
 import importable.model.Inventory;
 import importable.model.row.RowData;
 import importable.translator.Translator;
-import importable.utils.ProcessamentoArquivoException;
+import importable.utils.FileProcessingException;
 
 public class InventoryImportationMapper extends GenericImportMapper<Inventory> {
 
@@ -18,7 +18,7 @@ public class InventoryImportationMapper extends GenericImportMapper<Inventory> {
     public Function<RowData, ArrayList<Inventory>> processRow() {
         ArrayList<Inventory> modelos = new ArrayList<Inventory>();
         return (row) -> {
-            Inventory inventory = criarInstancia();
+            Inventory inventory = createInstance();
             
             inventory.setProductId(getLongValue(row, Translator.PRODUCT_ID));
             inventory.setWarehouseId(getLongValue(row, Translator.WAREHOUSE_ID));
@@ -31,6 +31,6 @@ public class InventoryImportationMapper extends GenericImportMapper<Inventory> {
     }
 
 	@Override
-	public void validate(Inventory object, RowData row) throws ProcessamentoArquivoException {
+	public void validate(Inventory object, RowData row) throws FileProcessingException {
 	}
 }

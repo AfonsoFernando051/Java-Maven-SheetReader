@@ -7,7 +7,7 @@ import java.util.function.Function;
 import importable.model.Employee;
 import importable.model.row.RowData;
 import importable.translator.Translator;
-import importable.utils.ProcessamentoArquivoException;
+import importable.utils.FileProcessingException;
 
 public class EmployeeImportationMapper extends GenericImportMapper<Employee> {
 
@@ -19,7 +19,7 @@ public class EmployeeImportationMapper extends GenericImportMapper<Employee> {
     public Function<RowData, ArrayList<Employee>> processRow() {
         ArrayList<Employee> modelos = new ArrayList<Employee>();
         return (row) -> {
-            Employee employee = criarInstancia();
+            Employee employee = createInstance();
             
             employee.setId(getLongValue(row, Translator.ID));
             employee.setName(getStringValue(row, Translator.NAME));
@@ -38,7 +38,7 @@ public class EmployeeImportationMapper extends GenericImportMapper<Employee> {
     }
 
 	@Override
-	public void validate(Employee object, RowData row) throws ProcessamentoArquivoException {
+	public void validate(Employee object, RowData row) throws FileProcessingException {
 		// Validações
 	}
 }

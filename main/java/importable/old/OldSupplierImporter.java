@@ -19,7 +19,7 @@ public class OldSupplierImporter {
     /**
      * Importação de dados da planilha de fornecedores
      */
-    public static List<Supplier> importarDadosPlanilha(String abaPlanilha,
+    public static List<Supplier> importSheetData(String abaPlanilha,
                                                        boolean possuiCabecalho,
                                                        String colunaID,
                                                        String colunaNomeEmpresa,

@@ -7,7 +7,7 @@ import java.util.function.Function;
 import importable.model.Task;
 import importable.model.row.RowData;
 import importable.translator.Translator;
-import importable.utils.ProcessamentoArquivoException;
+import importable.utils.FileProcessingException;
 
 public class TaskImportationMapper extends GenericImportMapper<Task> {
 
@@ -19,7 +19,7 @@ public class TaskImportationMapper extends GenericImportMapper<Task> {
     public Function<RowData, ArrayList<Task>> processRow() {
         ArrayList<Task> modelos = new ArrayList<Task>();
         return (row) -> {
-            Task task = criarInstancia();
+            Task task = createInstance();
             
             task.setTaskId(getLongValue(row, Translator.TASK_ID));
             task.setProjectId(getLongValue(row, Translator.PROJECT_ID));
@@ -38,7 +38,7 @@ public class TaskImportationMapper extends GenericImportMapper<Task> {
     }
 
 	@Override
-	public void validate(Task object, RowData row) throws ProcessamentoArquivoException {
+	public void validate(Task object, RowData row) throws FileProcessingException {
 		// Validações
 	}
 }

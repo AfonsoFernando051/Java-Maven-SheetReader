@@ -20,7 +20,7 @@ public class OldAddressImporter {
     /**
      * Importação de dados da planilha de Endereços (Address)
      */
-    public static List<Address> importarDadosPlanilha(String abaPlanilha,
+    public static List<Address> importSheetData(String abaPlanilha,
             boolean possuiCabecalho,
             String colunaLogradouro,
             String colunaNumero,

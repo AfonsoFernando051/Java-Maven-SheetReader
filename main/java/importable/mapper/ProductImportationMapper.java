@@ -7,7 +7,7 @@ import java.util.function.Function;
 import importable.model.Product;
 import importable.model.row.RowData;
 import importable.translator.Translator;
-import importable.utils.ProcessamentoArquivoException;
+import importable.utils.FileProcessingException;
 
 /**
  * @author Fernando Dias
@@ -22,7 +22,7 @@ public class ProductImportationMapper extends GenericImportMapper<Product> {
 	 public Function<RowData, ArrayList<Product>> processRow() {
 	     ArrayList<Product> modelos = new ArrayList<Product>();
 	     return (row) -> {
-	         Product product = criarInstancia();
+	         Product product = createInstance();
 	         
 	         product.setId(getLongValue(row, Translator.ID));
 	         product.setName(getStringValue(row, Translator.NAME));
@@ -42,7 +42,7 @@ public class ProductImportationMapper extends GenericImportMapper<Product> {
 	 }
 
 	@Override
-	public void validate(Product object, RowData row) throws ProcessamentoArquivoException {
+	public void validate(Product object, RowData row) throws FileProcessingException {
 		
 	}
 

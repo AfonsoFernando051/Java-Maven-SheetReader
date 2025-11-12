@@ -7,7 +7,7 @@ import java.util.function.Function;
 import importable.model.Shipment;
 import importable.model.row.RowData;
 import importable.translator.Translator;
-import importable.utils.ProcessamentoArquivoException;
+import importable.utils.FileProcessingException;
 
 public class ShipmentImportationMapper extends GenericImportMapper<Shipment> {
 
@@ -19,7 +19,7 @@ public class ShipmentImportationMapper extends GenericImportMapper<Shipment> {
     public Function<RowData, ArrayList<Shipment>> processRow() {
         ArrayList<Shipment> modelos = new ArrayList<Shipment>();
         return (row) -> {
-            Shipment shipment = criarInstancia();
+            Shipment shipment = createInstance();
             
             shipment.setShipmentId(getLongValue(row, Translator.SHIPMENT_ID));
             shipment.setOrderId(getLongValue(row, Translator.ORDER_ID));
@@ -38,6 +38,6 @@ public class ShipmentImportationMapper extends GenericImportMapper<Shipment> {
     }
 
 	@Override
-	public void validate(Shipment object, RowData row) throws ProcessamentoArquivoException {
+	public void validate(Shipment object, RowData row) throws FileProcessingException {
 	}
 }

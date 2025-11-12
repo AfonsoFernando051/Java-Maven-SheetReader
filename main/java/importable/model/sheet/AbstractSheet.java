@@ -1,93 +1,95 @@
 package importable.model.sheet;
 
 /**
+ * Abstract base class for an importable sheet cell.
+ *
  * @author Fernando Dias
  * @param <T> Kind of value
  */
 public abstract class AbstractSheet<T>
-  implements ImportableSheet<T> {
-	
-  /**
-   * Value from sheet
-   */
-  private T value;
+        implements ImportableSheet<T> {
 
-  /**
-   * Number of Line
-   */
-  private int lineNumber;
+    /**
+     * Value from the sheet cell.
+     */
+    private T value;
 
-  /**
-   * Coluna da planilha.
-   */
-  private String coluna;
+    /**
+     * Row number of the cell.
+     */
+    private int lineNumber;
 
-  /**
-   * Titulo Coluna da planilha.
-   */
-  private String tituloColuna;
+    /**
+     * The column identifier (e.g., "A", "B").
+     */
+    private String column;
 
-  /**
-   * @return {@link #value}
-   */
-  @Override
-  public T getValue() {
-    return value;
-  }
+    /**
+     * The title/header of the column.
+     */
+    private String columnTitle;
 
-  /**
-   * @param value atualiza {@link #value}.
-   */
-  @Override
-  public void setValue(T value) {
-    this.value = value;
-  }
+    /**
+     * @return {@link #value}
+     */
+    @Override
+    public T getValue() {
+        return value;
+    }
 
-  /**
-   * @return {@link #lineNumber}
-   */
-  public int getLineNumber() {
-	return lineNumber;
-  }
+    /**
+     * @param value updates {@link #value}.
+     */
+    @Override
+    public void setValue(T value) {
+        this.value = value;
+    }
 
-  /**
-   * @return {@link #lineNumber}
-   */
-  public void setLineNumber(int lineNumber) {
-	 this.lineNumber = lineNumber;
-  }
+    /**
+     * @return {@link #lineNumber}
+     */
+    public int getLineNumber() {
+        return lineNumber;
+    }
 
-  /**
-   * @return {@link #coluna}
-   */
-  public String getColuna() {
-    return coluna;
-  }
+    /**
+     * @param lineNumber updates {@link #lineNumber}.
+     */
+    public void setLineNumber(int lineNumber) {
+        this.lineNumber = lineNumber;
+    }
 
-  /**
-   * @param coluna atualiza {@link #coluna}.
-   */
-  public void setColuna(String coluna) {
-    this.coluna = coluna;
-  }
+    /**
+     * @return {@link #column}
+     */
+    public String getColumn() {
+        return column;
+    }
 
-  /**
-   * @return {@link #tituloColuna}
-   */
-  public String getTituloColuna() {
-    return tituloColuna;
-  }
+    /**
+     * @param column updates {@link #column}.
+     */
+    public void setColumn(String column) {
+        this.column = column;
+    }
 
-  /**
-   * @param tituloColuna atualiza {@link #tituloColuna}.
-   */
-  public void setTituloColuna(String tituloColuna) {
-    this.tituloColuna = tituloColuna;
-  }
+    /**
+     * @return {@link #columnTitle}
+     */
+    public String getColumnTitle() {
+        return columnTitle;
+    }
 
-  @Override
-  public String toString() {
-    return "AbstractSheet [value=" + value + ", numeroLinha=" + lineNumber
-        + ", coluna=" + coluna + ", tituloColuna=" + tituloColuna + "]";
-  }
+    /**
+     * @param columnTitle updates {@link #columnTitle}.
+     */
+    public void setColumnTitle(String columnTitle) {
+        this.columnTitle = columnTitle;
+    }
+
+    @Override
+    public String toString() {
+        return "AbstractSheet [value=" + value + ", lineNumber=" + lineNumber
+                + ", column=" + column + ", columnTitle=" + columnTitle + "]";
+    }
 }

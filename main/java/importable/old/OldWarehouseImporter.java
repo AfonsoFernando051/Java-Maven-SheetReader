@@ -19,7 +19,7 @@ public class OldWarehouseImporter {
 	/**
 	 * Importação de dados da planilha de Armazéns (Warehouse)
 	 */
-	public static List<Warehouse> importarDadosPlanilha(String abaPlanilha, boolean possuiCabecalho,
+	public static List<Warehouse> importSheetData(String abaPlanilha, boolean possuiCabecalho,
 			String colunaWarehouseId, String colunaNome, String colunaCidade, String colunaCapacidade, byte[] buf) {
 		try {
 			ByteArrayInputStream inputStream = new ByteArrayInputStream(buf);

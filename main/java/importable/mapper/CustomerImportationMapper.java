@@ -7,7 +7,7 @@ import java.util.function.Function;
 import importable.model.Customer;
 import importable.model.row.RowData;
 import importable.translator.Translator;
-import importable.utils.ProcessamentoArquivoException;
+import importable.utils.FileProcessingException;
 
 /**
  * Model class for importing Customer data from Excel spreadsheet using column identifiers
@@ -22,7 +22,7 @@ public class CustomerImportationMapper extends GenericImportMapper<Customer> {
     public Function<RowData, ArrayList<Customer>> processRow() {
         ArrayList<Customer> modelos = new ArrayList<Customer>();
         return (row) -> {
-            Customer customer = criarInstancia();
+            Customer customer = createInstance();
             
             customer.setId(getLongValue(row, Translator.ID));
             customer.setName(getStringValue(row,  Translator.NAME));
@@ -44,7 +44,7 @@ public class CustomerImportationMapper extends GenericImportMapper<Customer> {
     }
     
 	@Override
-	public void validate(Customer object, RowData row) throws ProcessamentoArquivoException {
+	public void validate(Customer object, RowData row) throws FileProcessingException {
 		
 	}
 }

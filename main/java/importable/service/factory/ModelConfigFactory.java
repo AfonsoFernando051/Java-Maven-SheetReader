@@ -2,16 +2,16 @@ package importable.service.factory;
 
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.Map; 
 
 import importable.config.SheetModel;
 import importable.config.SheetTypeEnum;
 import importable.mapper.AddressImportationMapper;
-// Imports dos Mappers
 import importable.mapper.AssetImportationMapper;
 import importable.mapper.CustomerImportationMapper;
 import importable.mapper.EmployeeImportationMapper;
 import importable.mapper.FinancialTransactionImportationMapper;
-import importable.mapper.InterfacePlanilhaMapper;
+import importable.mapper.InterfaceSheetMapper;
 import importable.mapper.InventoryImportationMapper;
 import importable.mapper.OrderImportationMapper;
 import importable.mapper.ProductImportationMapper;
@@ -33,55 +33,54 @@ import importable.model.Shipment;
 import importable.model.Supplier;
 import importable.model.Task;
 import importable.model.Warehouse;
-// Outros
 import importable.run.MainDP;
 import importable.translator.Translator;
 
 public class ModelConfigFactory {
 
 	/**
-	 * @param tipo de planilha
-	 * @return configuração de modelo
+	 * @param type sheet type
+	 * @return model configuration
 	 */
-	public static InterfacePlanilhaMapper<?> getModelConfig(SheetTypeEnum tipo) {
-		switch (tipo) {
+	public static InterfaceSheetMapper<?> getModelConfig(SheetTypeEnum type) {
+		switch (type) {
 		case PRODUCTS:
-			return (InterfacePlanilhaMapper<?>) new ProductImportationMapper(Product.class);
+			return (InterfaceSheetMapper<?>) new ProductImportationMapper(Product.class);
 		case CUSTOMERS:
-			return (InterfacePlanilhaMapper<?>) new CustomerImportationMapper(Customer.class);
+			return (InterfaceSheetMapper<?>) new CustomerImportationMapper(Customer.class);
 		case SUPPLIERS:
-			return (InterfacePlanilhaMapper<?>) new SupplierImportationMapper(Supplier.class);
+			return (InterfaceSheetMapper<?>) new SupplierImportationMapper(Supplier.class);
 		case EMPLOYEES:
-			return (InterfacePlanilhaMapper<?>) new EmployeeImportationMapper(Employee.class);
+			return (InterfaceSheetMapper<?>) new EmployeeImportationMapper(Employee.class);
 		case ORDERS:
-			return (InterfacePlanilhaMapper<?>) new OrderImportationMapper(Order.class);
+			return (InterfaceSheetMapper<?>) new OrderImportationMapper(Order.class);
 		case INVENTORY:
-			return (InterfacePlanilhaMapper<?>) new InventoryImportationMapper(Inventory.class);
+			return (InterfaceSheetMapper<?>) new InventoryImportationMapper(Inventory.class);
 		case SHIPMENTS:
-			return (InterfacePlanilhaMapper<?>) new ShipmentImportationMapper(Shipment.class);
+			return (InterfaceSheetMapper<?>) new ShipmentImportationMapper(Shipment.class);
 		case ASSETS:
-			return (InterfacePlanilhaMapper<?>) new AssetImportationMapper(CompanyAsset.class);
+			return (InterfaceSheetMapper<?>) new AssetImportationMapper(CompanyAsset.class);
 		case TASKS:
-			return (InterfacePlanilhaMapper<?>) new TaskImportationMapper(Task.class);
+			return (InterfaceSheetMapper<?>) new TaskImportationMapper(Task.class);
 		case WAREHOUSES:
-			return (InterfacePlanilhaMapper<?>) new WarehouseImportationMapper(Warehouse.class);
+			return (InterfaceSheetMapper<?>) new WarehouseImportationMapper(Warehouse.class);
 		case ADDRESS:
-			return (InterfacePlanilhaMapper<?>) new AddressImportationMapper(Address.class);
+			return (InterfaceSheetMapper<?>) new AddressImportationMapper(Address.class);
 		case FINANCIALTRANSACTION:
-			return (InterfacePlanilhaMapper<?>) new FinancialTransactionImportationMapper(FinancialTransaction.class);
+			return (InterfaceSheetMapper<?>) new FinancialTransactionImportationMapper(FinancialTransaction.class);
 		case PROJECT:
-			return (InterfacePlanilhaMapper<?>) new ProjectImportationMapper(Project.class);
+			return (InterfaceSheetMapper<?>) new ProjectImportationMapper(Project.class);
 		default:
-			throw new IllegalArgumentException("Serviço não encontrado para o tipo: " + tipo);
+			throw new IllegalArgumentException("Service not found for type: " + type);
 		}
 	}
 
 	/**
-	 * @param tipo de planilha
-	 * @return configuração de modelo
+	 * @param type sheet type
+	 * @return an InputStream for the resource file
 	 */
-	public static InputStream getResourceAsStream(SheetTypeEnum tipo) {
-		switch (tipo) {
+	public static InputStream getResourceAsStream(SheetTypeEnum type) {
+		switch (type) {
 		case PRODUCTS:
 			return MainDP.class.getClassLoader().getResourceAsStream("products.xlsx");
 		case CUSTOMERS:
@@ -109,16 +108,16 @@ public class ModelConfigFactory {
 		case PROJECT:
 			return MainDP.class.getClassLoader().getResourceAsStream("projects.xlsx");
 		default:
-			throw new IllegalArgumentException("Serviço não encontrado para o tipo: " + tipo);
+			throw new IllegalArgumentException("Service not found for type: " + type);
 		}
 	}
 
 	/**
-	 * @param tipo de planilha
-	 * @return configuração de modelo
+	 * @param type sheet type
+	 * @return a map with the SheetModel configuration
 	 */
-	public static HashMap<SheetTypeEnum, SheetModel> generateSheetModel(SheetTypeEnum tipo) {
-		switch (tipo) {
+	public static Map<SheetTypeEnum, SheetModel> generateSheetModel(SheetTypeEnum type) {
+		switch (type) {
 		case PRODUCTS:
 			return mapProducts();
 		case CUSTOMERS:
@@ -147,242 +146,243 @@ public class ModelConfigFactory {
 			return mapProject();
 			
 		default:
-			throw new IllegalArgumentException("Serviço não encontrado para o tipo: " + tipo);
+			throw new IllegalArgumentException("Service not found for type: " + type);
 		}
 	}
 
-	private static HashMap<SheetTypeEnum, SheetModel> mapCustomers() {
-		HashMap<SheetTypeEnum, SheetModel> planilhaMap = new HashMap<SheetTypeEnum, SheetModel>();
-		SheetModel planilha = new SheetModel();
-		planilha.setSheetName("0 - " + SheetTypeEnum.CUSTOMERS.name());
-		planilha.setLogicalType(SheetTypeEnum.CUSTOMERS);
+	private static Map<SheetTypeEnum, SheetModel> mapCustomers() {
+		Map<SheetTypeEnum, SheetModel> sheetModelMap = new HashMap<>();
+		SheetModel sheetModel = new SheetModel();
+		sheetModel.setSheetName("0 - " + SheetTypeEnum.CUSTOMERS.name());
+		sheetModel.setLogicalType(SheetTypeEnum.CUSTOMERS);
 
-		planilha.addColumnValue(Translator.ID, "A");
-		planilha.addColumnValue(Translator.NAME, "B");
-		planilha.addColumnValue(Translator.EMAIL, "D");
-		planilha.addColumnValue(Translator.CITY, "F");
-		planilha.addColumnValue(Translator.STATE, "G");
+		sheetModel.addColumnValue(Translator.ID, "A");
+		sheetModel.addColumnValue(Translator.NAME, "B");
+		sheetModel.addColumnValue(Translator.EMAIL, "D");
+		sheetModel.addColumnValue(Translator.CITY, "F");
+		sheetModel.addColumnValue(Translator.STATE, "G");
 
-		planilhaMap.put(SheetTypeEnum.CUSTOMERS, planilha);
-		return planilhaMap;
+		sheetModelMap.put(SheetTypeEnum.CUSTOMERS, sheetModel);
+		return sheetModelMap;
 	}
 
-	private static HashMap<SheetTypeEnum, SheetModel> mapProducts() {
-		HashMap<SheetTypeEnum, SheetModel> planilhaMap = new HashMap<SheetTypeEnum, SheetModel>();
-		SheetModel planilha = new SheetModel();
-		planilha.setSheetName("0 - " + SheetTypeEnum.PRODUCTS.name());
-		planilha.setLogicalType(SheetTypeEnum.PRODUCTS);
+	private static Map<SheetTypeEnum, SheetModel> mapProducts() {
+		Map<SheetTypeEnum, SheetModel> sheetModelMap = new HashMap<>();
+		SheetModel sheetModel = new SheetModel();
+		sheetModel.setSheetName("0 - " + SheetTypeEnum.PRODUCTS.name());
+		sheetModel.setLogicalType(SheetTypeEnum.PRODUCTS);
 
-		planilha.addColumnValue(Translator.ID, "A");
-		planilha.addColumnValue(Translator.NAME, "B");
-		planilha.addColumnValue(Translator.PRICE, "D"); 
-		planilha.addColumnValue(Translator.CATEGORY, "C");
+		sheetModel.addColumnValue(Translator.ID, "A");
+		sheetModel.addColumnValue(Translator.NAME, "B");
+		sheetModel.addColumnValue(Translator.PRICE, "D"); 
+		sheetModel.addColumnValue(Translator.CATEGORY, "C");
 
-		planilhaMap.put(SheetTypeEnum.PRODUCTS, planilha);
-		return planilhaMap;
+		sheetModelMap.put(SheetTypeEnum.PRODUCTS, sheetModel);
+		return sheetModelMap;
 	}
 
-	private static HashMap<SheetTypeEnum, SheetModel> mapSuppliers() {
-		HashMap<SheetTypeEnum, SheetModel> planilhaMap = new HashMap<SheetTypeEnum, SheetModel>();
-		SheetModel planilha = new SheetModel();
-		planilha.setSheetName("0 - " + SheetTypeEnum.SUPPLIERS.name());
-		planilha.setLogicalType(SheetTypeEnum.SUPPLIERS);
+	private static Map<SheetTypeEnum, SheetModel> mapSuppliers() {
+		Map<SheetTypeEnum, SheetModel> sheetModelMap = new HashMap<>();
+		SheetModel sheetModel = new SheetModel();
+		sheetModel.setSheetName("0 - " + SheetTypeEnum.SUPPLIERS.name());
+		sheetModel.setLogicalType(SheetTypeEnum.SUPPLIERS);
 
-		planilha.addColumnValue(Translator.ID, "A");
-		planilha.addColumnValue(Translator.COMPANY_NAME, "B"); 
-		planilha.addColumnValue(Translator.CONTACT_PERSON, "D"); 
-		planilha.addColumnValue(Translator.EMAIL, "E");
-		planilha.addColumnValue(Translator.ADDRESS, "G"); 
+		sheetModel.addColumnValue(Translator.ID, "A");
+		sheetModel.addColumnValue(Translator.COMPANY_NAME, "B"); 
+		sheetModel.addColumnValue(Translator.CONTACT_PERSON, "D"); 
+		sheetModel.addColumnValue(Translator.EMAIL, "E");
+		sheetModel.addColumnValue(Translator.ADDRESS, "G"); 
 
-		planilhaMap.put(SheetTypeEnum.SUPPLIERS, planilha);
-		return planilhaMap;
+		sheetModelMap.put(SheetTypeEnum.SUPPLIERS, sheetModel);
+		return sheetModelMap;
 	}
 
-	private static HashMap<SheetTypeEnum, SheetModel> mapEmployees() {
-		HashMap<SheetTypeEnum, SheetModel> planilhaMap = new HashMap<SheetTypeEnum, SheetModel>();
-		SheetModel planilha = new SheetModel();
-		planilha.setSheetName("0 - " + SheetTypeEnum.EMPLOYEES.name());
-		planilha.setLogicalType(SheetTypeEnum.EMPLOYEES);
+	private static Map<SheetTypeEnum, SheetModel> mapEmployees() {
+		Map<SheetTypeEnum, SheetModel> sheetModelMap = new HashMap<>();
+		SheetModel sheetModel = new SheetModel();
+		sheetModel.setSheetName("0 - " + SheetTypeEnum.EMPLOYEES.name());
+		sheetModel.setLogicalType(SheetTypeEnum.EMPLOYEES);
 
-		planilha.addColumnValue(Translator.ID, "A");
-		planilha.addColumnValue(Translator.NAME, "B");
-		planilha.addColumnValue(Translator.EMAIL, "C");
-		planilha.addColumnValue(Translator.DEPARTMENT, "D"); 
-		planilha.addColumnValue(Translator.POSITION, "E"); 
-		planilha.addColumnValue(Translator.HIRE_DATE, "F");
+		sheetModel.addColumnValue(Translator.ID, "A");
+		sheetModel.addColumnValue(Translator.NAME, "B");
+		sheetModel.addColumnValue(Translator.EMAIL, "C");
+		sheetModel.addColumnValue(Translator.DEPARTMENT, "D"); 
+		sheetModel.addColumnValue(Translator.POSITION, "E"); 
+		sheetModel.addColumnValue(Translator.HIRE_DATE, "F");
 
-		planilhaMap.put(SheetTypeEnum.EMPLOYEES, planilha);
-		return planilhaMap;
+		sheetModelMap.put(SheetTypeEnum.EMPLOYEES, sheetModel);
+		return sheetModelMap;
 	}
 
-	private static HashMap<SheetTypeEnum, SheetModel> mapOrders() {
-		HashMap<SheetTypeEnum, SheetModel> planilhaMap = new HashMap<SheetTypeEnum, SheetModel>();
-		SheetModel planilha = new SheetModel();
-		planilha.setSheetName("0 - " + SheetTypeEnum.ORDERS.name());
-		planilha.setLogicalType(SheetTypeEnum.ORDERS);
+	private static Map<SheetTypeEnum, SheetModel> mapOrders() {
+		Map<SheetTypeEnum, SheetModel> sheetModelMap = new HashMap<>();
+		SheetModel sheetModel = new SheetModel();
+		sheetModel.setSheetName("0 - " + SheetTypeEnum.ORDERS.name());
+		sheetModel.setLogicalType(SheetTypeEnum.ORDERS);
 
-		planilha.addColumnValue(Translator.ORDER_ID, "A");
-		planilha.addColumnValue(Translator.CUSTOMER_ID, "B");
-		planilha.addColumnValue(Translator.ORDER_DATE, "C");
-		planilha.addColumnValue(Translator.TOTAL_VALUE, "D"); 
-		planilha.addColumnValue(Translator.STATUS, "E");
+		sheetModel.addColumnValue(Translator.ORDER_ID, "A");
+		sheetModel.addColumnValue(Translator.CUSTOMER_ID, "B");
+		sheetModel.addColumnValue(Translator.ORDER_DATE, "C");
+		sheetModel.addColumnValue(Translator.TOTAL_VALUE, "D"); 
+		sheetModel.addColumnValue(Translator.STATUS, "E");
 
-		planilhaMap.put(SheetTypeEnum.ORDERS, planilha);
-		return planilhaMap;
+		sheetModelMap.put(SheetTypeEnum.ORDERS, sheetModel);
+		return sheetModelMap;
 	}
 
-	private static HashMap<SheetTypeEnum, SheetModel> mapInventory() {
-		HashMap<SheetTypeEnum, SheetModel> planilhaMap = new HashMap<SheetTypeEnum, SheetModel>();
-		SheetModel planilha = new SheetModel();
-		planilha.setSheetName("0 - " + SheetTypeEnum.INVENTORY.name());
-		planilha.setLogicalType(SheetTypeEnum.INVENTORY);
+	private static Map<SheetTypeEnum, SheetModel> mapInventory() {
+		Map<SheetTypeEnum, SheetModel> sheetModelMap = new HashMap<>();
+		SheetModel sheetModel = new SheetModel();
+		sheetModel.setSheetName("0 - " + SheetTypeEnum.INVENTORY.name());
+		sheetModel.setLogicalType(SheetTypeEnum.INVENTORY);
 
-		planilha.addColumnValue(Translator.PRODUCT_ID, "A"); 
-		planilha.addColumnValue(Translator.WAREHOUSE_ID, "B"); 
-		planilha.addColumnValue(Translator.QUANTITY, "C");
-		planilha.addColumnValue(Translator.LOCATION_CODE, "D"); 
+		sheetModel.addColumnValue(Translator.PRODUCT_ID, "A"); 
+		sheetModel.addColumnValue(Translator.WAREHOUSE_ID, "B"); 
+		sheetModel.addColumnValue(Translator.QUANTITY, "C");
+		sheetModel.addColumnValue(Translator.LOCATION_CODE, "D"); 
 
-		planilhaMap.put(SheetTypeEnum.INVENTORY, planilha);
-		return planilhaMap;
+		sheetModelMap.put(SheetTypeEnum.INVENTORY, sheetModel);
+		return sheetModelMap;
 	}
 
 
-	private static HashMap<SheetTypeEnum, SheetModel> mapShipments() {
-		HashMap<SheetTypeEnum, SheetModel> planilhaMap = new HashMap<SheetTypeEnum, SheetModel>();
-		SheetModel planilha = new SheetModel();
-		planilha.setSheetName("0 - " + SheetTypeEnum.SHIPMENTS.name());
-		planilha.setLogicalType(SheetTypeEnum.SHIPMENTS);
+	private static Map<SheetTypeEnum, SheetModel> mapShipments() {
+		Map<SheetTypeEnum, SheetModel> sheetModelMap = new HashMap<>();
+		SheetModel sheetModel = new SheetModel();
+		sheetModel.setSheetName("0 - " + SheetTypeEnum.SHIPMENTS.name());
+		sheetModel.setLogicalType(SheetTypeEnum.SHIPMENTS);
 
-		planilha.addColumnValue(Translator.SHIPMENT_ID, "A"); 
-		planilha.addColumnValue(Translator.ORDER_ID, "B");
-		planilha.addColumnValue(Translator.CARRIER, "C");
-		planilha.addColumnValue(Translator.TRACKING_CODE, "D");
-		planilha.addColumnValue(Translator.STATUS, "E");
-		planilha.addColumnValue(Translator.ESTIMATED_DELIVERY_DATE, "F");
+		sheetModel.addColumnValue(Translator.SHIPMENT_ID, "A"); 
+		sheetModel.addColumnValue(Translator.ORDER_ID, "B");
+		sheetModel.addColumnValue(Translator.CARRIER, "C");
+		sheetModel.addColumnValue(Translator.TRACKING_CODE, "D");
+		sheetModel.addColumnValue(Translator.STATUS, "E");
+		sheetModel.addColumnValue(Translator.ESTIMATED_DELIVERY_DATE, "F");
 
-		planilhaMap.put(SheetTypeEnum.SHIPMENTS, planilha);
-		return planilhaMap;
+		sheetModelMap.put(SheetTypeEnum.SHIPMENTS, sheetModel);
+		return sheetModelMap;
 	}
 
-	private static HashMap<SheetTypeEnum, SheetModel> mapAssets() {
-		HashMap<SheetTypeEnum, SheetModel> planilhaMap = new HashMap<SheetTypeEnum, SheetModel>();
-		SheetModel planilha = new SheetModel();
-		planilha.setSheetName("0 - " + SheetTypeEnum.ASSETS.name());
-		planilha.setLogicalType(SheetTypeEnum.ASSETS);
+	private static Map<SheetTypeEnum, SheetModel> mapAssets() {
+		Map<SheetTypeEnum, SheetModel> sheetModelMap = new HashMap<>();
+		SheetModel sheetModel = new SheetModel();
+		sheetModel.setSheetName("0 - " + SheetTypeEnum.ASSETS.name());
+		sheetModel.setLogicalType(SheetTypeEnum.ASSETS);
 
-		planilha.addColumnValue(Translator.ASSET_TAG, "A"); 
-		planilha.addColumnValue(Translator.DESCRIPTION, "B");
-		planilha.addColumnValue(Translator.CATEGORY, "C");
-		planilha.addColumnValue(Translator.EMPLOYEE_ID, "D");
-		planilha.addColumnValue(Translator.PURCHASE_DATE, "E"); 
-		planilha.addColumnValue(Translator.STATUS, "F");
+		sheetModel.addColumnValue(Translator.ASSET_TAG, "A"); 
+		sheetModel.addColumnValue(Translator.DESCRIPTION, "B");
+		sheetModel.addColumnValue(Translator.CATEGORY, "C");
+		sheetModel.addColumnValue(Translator.EMPLOYEE_ID, "D");
+		sheetModel.addColumnValue(Translator.PURCHASE_DATE, "E"); 
+		sheetModel.addColumnValue(Translator.STATUS, "F");
 
-		planilhaMap.put(SheetTypeEnum.ASSETS, planilha);
-		return planilhaMap;
+		sheetModelMap.put(SheetTypeEnum.ASSETS, sheetModel);
+		return sheetModelMap;
 	}
 
-	private static HashMap<SheetTypeEnum, SheetModel> mapTasks() {
-		HashMap<SheetTypeEnum, SheetModel> planilhaMap = new HashMap<SheetTypeEnum, SheetModel>();
-		SheetModel planilha = new SheetModel();
-		planilha.setSheetName("0 - " + SheetTypeEnum.TASKS.name());
-		planilha.setLogicalType(SheetTypeEnum.TASKS);
+	private static Map<SheetTypeEnum, SheetModel> mapTasks() {
+		Map<SheetTypeEnum, SheetModel> sheetModelMap = new HashMap<>();
+		SheetModel sheetModel = new SheetModel();
+		sheetModel.setSheetName("0 - " + SheetTypeEnum.TASKS.name());
+		sheetModel.setLogicalType(SheetTypeEnum.TASKS);
 
-		planilha.addColumnValue(Translator.TASK_ID, "A"); 
-		planilha.addColumnValue(Translator.PROJECT_ID, "B"); 
-		planilha.addColumnValue(Translator.DESCRIPTION, "C");
-		planilha.addColumnValue(Translator.ASSIGNEE_ID, "D");
-		planilha.addColumnValue(Translator.PRIORITY, "E");
-		planilha.addColumnValue(Translator.DUE_DATE, "F"); 
+		sheetModel.addColumnValue(Translator.TASK_ID, "A"); 
+		sheetModel.addColumnValue(Translator.PROJECT_ID, "B"); 
+		sheetModel.addColumnValue(Translator.DESCRIPTION, "C");
+		sheetModel.addColumnValue(Translator.ASSIGNEE_ID, "D");
+		sheetModel.addColumnValue(Translator.PRIORITY, "E");
+		sheetModel.addColumnValue(Translator.DUE_DATE, "F"); 
 
-		planilhaMap.put(SheetTypeEnum.TASKS, planilha);
-		return planilhaMap;
+		sheetModelMap.put(SheetTypeEnum.TASKS, sheetModel);
+		return sheetModelMap;
 	}
 
-	private static HashMap<SheetTypeEnum, SheetModel> mapWarehouses() {
-		HashMap<SheetTypeEnum, SheetModel> planilhaMap = new HashMap<SheetTypeEnum, SheetModel>();
-		SheetModel planilha = new SheetModel();
-		planilha.setSheetName("0 - " + SheetTypeEnum.WAREHOUSES.name());
-		planilha.setLogicalType(SheetTypeEnum.WAREHOUSES);
+	private static Map<SheetTypeEnum, SheetModel> mapWarehouses() {
+		Map<SheetTypeEnum, SheetModel> sheetModelMap = new HashMap<>();
+		SheetModel sheetModel = new SheetModel();
+		sheetModel.setSheetName("0 - " + SheetTypeEnum.WAREHOUSES.name());
+		sheetModel.setLogicalType(SheetTypeEnum.WAREHOUSES);
 
-		planilha.addColumnValue(Translator.WAREHOUSE_ID, "A");
-		planilha.addColumnValue(Translator.NAME, "B");
-		planilha.addColumnValue(Translator.CITY, "C");
-		planilha.addColumnValue(Translator.CAPACITY, "D"); // Assumindo Translator.CAPACITY
+		sheetModel.addColumnValue(Translator.WAREHOUSE_ID, "A");
+		sheetModel.addColumnValue(Translator.NAME, "B");
+		sheetModel.addColumnValue(Translator.CITY, "C");
+		sheetModel.addColumnValue(Translator.CAPACITY, "D"); // Assuming Translator.CAPACITY exists
 
-		planilhaMap.put(SheetTypeEnum.WAREHOUSES, planilha);
-		return planilhaMap;
+		sheetModelMap.put(SheetTypeEnum.WAREHOUSES, sheetModel);
+		return sheetModelMap;
 	}
 
-	private static HashMap<SheetTypeEnum, SheetModel> mapAddress() {
-		HashMap<SheetTypeEnum, SheetModel> planilhaMap = new HashMap<SheetTypeEnum, SheetModel>();
-		SheetModel planilha = new SheetModel();
-		planilha.setSheetName("0 - " + SheetTypeEnum.ADDRESS.name());
-		planilha.setLogicalType(SheetTypeEnum.ADDRESS);
+	private static Map<SheetTypeEnum, SheetModel> mapAddress() {
+		Map<SheetTypeEnum, SheetModel> sheetModelMap = new HashMap<>();
+		SheetModel sheetModel = new SheetModel();
+		sheetModel.setSheetName("0 - " + SheetTypeEnum.ADDRESS.name());
+		sheetModel.setLogicalType(SheetTypeEnum.ADDRESS);
 
-		planilha.addColumnValue(Translator.LOGRADOURO, "A");
-		planilha.addColumnValue(Translator.NUMERO, "B");
-		planilha.addColumnValue(Translator.COMPLEMENTO, "C");
-		planilha.addColumnValue(Translator.BAIRRO, "D");
-		planilha.addColumnValue(Translator.CIDADE, "E");
-		planilha.addColumnValue(Translator.ESTADO, "F");
-		planilha.addColumnValue(Translator.CEP, "G");
+		// NOTE: Translator keys are left as-is since the Translator class was not provided
+		sheetModel.addColumnValue(Translator.LOGRADOURO, "A");
+		sheetModel.addColumnValue(Translator.NUMERO, "B");
+		sheetModel.addColumnValue(Translator.COMPLEMENTO, "C");
+		sheetModel.addColumnValue(Translator.BAIRRO, "D");
+		sheetModel.addColumnValue(Translator.CIDADE, "E");
+		sheetModel.addColumnValue(Translator.ESTADO, "F");
+		sheetModel.addColumnValue(Translator.CEP, "G");
 
-		planilhaMap.put(SheetTypeEnum.ADDRESS, planilha);
-		return planilhaMap;
-	}
-	
-	private static HashMap<SheetTypeEnum, SheetModel> mapFinancialTransaction() {
-		HashMap<SheetTypeEnum, SheetModel> planilhaMap = new HashMap<SheetTypeEnum, SheetModel>();
-		SheetModel planilha = new SheetModel();
-		planilha.setSheetName("0 - " + SheetTypeEnum.FINANCIALTRANSACTION.name());
-		planilha.setLogicalType(SheetTypeEnum.FINANCIALTRANSACTION);
-
-		planilha.addColumnValue(Translator.ID, "A");
-		planilha.addColumnValue(Translator.TYPE, "B");
-		planilha.addColumnValue(Translator.CATEGORY, "C");
-		planilha.addColumnValue(Translator.DESCRIPTION, "D");
-		planilha.addColumnValue(Translator.AMOUNT, "E");
-		planilha.addColumnValue(Translator.CURRENCY, "F");
-		planilha.addColumnValue(Translator.TRANSACTION_DATE, "G");
-		planilha.addColumnValue(Translator.PAYMENT_METHOD, "H");
-		planilha.addColumnValue(Translator.STATUS, "I");
-		planilha.addColumnValue(Translator.SOURCE_ACCOUNT, "J");
-		planilha.addColumnValue(Translator.DESTINATION_ACCOUNT, "K");
-		planilha.addColumnValue(Translator.REFERENCE_NUMBER, "L");
-		planilha.addColumnValue(Translator.RELATED_ENTITY_ID, "M");
-		planilha.addColumnValue(Translator.RELATED_ENTITY_TYPE, "N");
-		planilha.addColumnValue(Translator.NOTES, "O");
-		planilha.addColumnValue(Translator.CREATED_BY, "P");
-		planilha.addColumnValue(Translator.RECORDED_DATE, "Q");
-
-		planilhaMap.put(SheetTypeEnum.FINANCIALTRANSACTION, planilha);
-		return planilhaMap;
+		sheetModelMap.put(SheetTypeEnum.ADDRESS, sheetModel);
+		return sheetModelMap;
 	}
 	
-	private static HashMap<SheetTypeEnum, SheetModel> mapProject() {
-		HashMap<SheetTypeEnum, SheetModel> planilhaMap = new HashMap<SheetTypeEnum, SheetModel>();
-		SheetModel planilha = new SheetModel();
-		planilha.setSheetName("0 - " + SheetTypeEnum.PROJECT.name());
-		planilha.setLogicalType(SheetTypeEnum.PROJECT);
+	private static Map<SheetTypeEnum, SheetModel> mapFinancialTransaction() {
+		Map<SheetTypeEnum, SheetModel> sheetModelMap = new HashMap<>();
+		SheetModel sheetModel = new SheetModel();
+		sheetModel.setSheetName("0 - " + SheetTypeEnum.FINANCIALTRANSACTION.name());
+		sheetModel.setLogicalType(SheetTypeEnum.FINANCIALTRANSACTION);
 
-		planilha.addColumnValue(Translator.ID, "A");
-		planilha.addColumnValue(Translator.NAME, "B");
-		planilha.addColumnValue(Translator.DESCRIPTION, "C");
-		planilha.addColumnValue(Translator.PROJECT_MANAGER, "D");
-		planilha.addColumnValue(Translator.STATUS, "E");
-		planilha.addColumnValue(Translator.PRIORITY, "F");
-		planilha.addColumnValue(Translator.START_DATE, "G");
-		planilha.addColumnValue(Translator.EXPECTED_END_DATE, "H");
-		planilha.addColumnValue(Translator.ACTUAL_END_DATE, "I");
-		planilha.addColumnValue(Translator.ALLOCATED_BUDGET, "J");
-		planilha.addColumnValue(Translator.ACTUAL_SPENT, "K");
-		planilha.addColumnValue(Translator.CLIENT, "L");
-		planilha.addColumnValue(Translator.CATEGORY, "M");
-		planilha.addColumnValue(Translator.COMPLETION_PERCENTAGE, "N");
-		planilha.addColumnValue(Translator.RISK_LEVEL, "O");
+		sheetModel.addColumnValue(Translator.ID, "A");
+		sheetModel.addColumnValue(Translator.TYPE, "B");
+		sheetModel.addColumnValue(Translator.CATEGORY, "C");
+		sheetModel.addColumnValue(Translator.DESCRIPTION, "D");
+		sheetModel.addColumnValue(Translator.AMOUNT, "E");
+		sheetModel.addColumnValue(Translator.CURRENCY, "F");
+		sheetModel.addColumnValue(Translator.TRANSACTION_DATE, "G");
+		sheetModel.addColumnValue(Translator.PAYMENT_METHOD, "H");
+		sheetModel.addColumnValue(Translator.STATUS, "I");
+		sheetModel.addColumnValue(Translator.SOURCE_ACCOUNT, "J");
+		sheetModel.addColumnValue(Translator.DESTINATION_ACCOUNT, "K");
+		sheetModel.addColumnValue(Translator.REFERENCE_NUMBER, "L");
+		sheetModel.addColumnValue(Translator.RELATED_ENTITY_ID, "M");
+		sheetModel.addColumnValue(Translator.RELATED_ENTITY_TYPE, "N");
+		sheetModel.addColumnValue(Translator.NOTES, "O");
+		sheetModel.addColumnValue(Translator.CREATED_BY, "P");
+		sheetModel.addColumnValue(Translator.RECORDED_DATE, "Q");
 
-		planilhaMap.put(SheetTypeEnum.PROJECT, planilha);
-		return planilhaMap;
+		sheetModelMap.put(SheetTypeEnum.FINANCIALTRANSACTION, sheetModel);
+		return sheetModelMap;
+	}
+	
+	private static Map<SheetTypeEnum, SheetModel> mapProject() {
+		Map<SheetTypeEnum, SheetModel> sheetModelMap = new HashMap<>();
+		SheetModel sheetModel = new SheetModel();
+		sheetModel.setSheetName("0 - " + SheetTypeEnum.PROJECT.name());
+		sheetModel.setLogicalType(SheetTypeEnum.PROJECT);
+
+		sheetModel.addColumnValue(Translator.ID, "A");
+		sheetModel.addColumnValue(Translator.NAME, "B");
+		sheetModel.addColumnValue(Translator.DESCRIPTION, "C");
+		sheetModel.addColumnValue(Translator.PROJECT_MANAGER, "D");
+		sheetModel.addColumnValue(Translator.STATUS, "E");
+		sheetModel.addColumnValue(Translator.PRIORITY, "F");
+		sheetModel.addColumnValue(Translator.START_DATE, "G");
+		sheetModel.addColumnValue(Translator.EXPECTED_END_DATE, "H");
+		sheetModel.addColumnValue(Translator.ACTUAL_END_DATE, "I");
+		sheetModel.addColumnValue(Translator.ALLOCATED_BUDGET, "J");
+		sheetModel.addColumnValue(Translator.ACTUAL_SPENT, "K");
+		sheetModel.addColumnValue(Translator.CLIENT, "L");
+		sheetModel.addColumnValue(Translator.CATEGORY, "M");
+		sheetModel.addColumnValue(Translator.COMPLETION_PERCENTAGE, "N");
+		sheetModel.addColumnValue(Translator.RISK_LEVEL, "O");
+
+		sheetModelMap.put(SheetTypeEnum.PROJECT, sheetModel);
+		return sheetModelMap;
 	}
 	
 }

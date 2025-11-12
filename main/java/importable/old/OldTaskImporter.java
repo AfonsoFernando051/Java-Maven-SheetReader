@@ -20,7 +20,7 @@ public class OldTaskImporter {
 	/**
 	 * Importação de dados da planilha de Tarefas (Tasks)
 	 */
-	public static List<Task> importarDadosPlanilha(String abaPlanilha, boolean possuiCabecalho, String colunaTaskId,
+	public static List<Task> importSheetData(String abaPlanilha, boolean possuiCabecalho, String colunaTaskId,
 			String colunaProjectId, String colunaDescricao, String colunaAssigneeId, String colunaPrioridade,
 			String colunaDataVencimento, byte[] buf) {
 		try {

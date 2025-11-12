@@ -7,7 +7,7 @@ import java.util.function.Function;
 import importable.model.FinancialTransaction;
 import importable.model.row.RowData;
 import importable.translator.Translator;
-import importable.utils.ProcessamentoArquivoException;
+import importable.utils.FileProcessingException;
 
 public class FinancialTransactionImportationMapper extends GenericImportMapper<FinancialTransaction> {
 
@@ -19,7 +19,7 @@ public class FinancialTransactionImportationMapper extends GenericImportMapper<F
     public Function<RowData, ArrayList<FinancialTransaction>> processRow() {
         ArrayList<FinancialTransaction> modelos = new ArrayList<>();
         return (row) -> {
-            FinancialTransaction transaction = criarInstancia();
+            FinancialTransaction transaction = createInstance();
 
             transaction.setId(getLongValue(row, Translator.ID));
             transaction.setType(getStringValue(row, Translator.TYPE));
@@ -59,7 +59,7 @@ public class FinancialTransactionImportationMapper extends GenericImportMapper<F
     }
 
     @Override
-    public void validate(FinancialTransaction transaction, RowData row) throws ProcessamentoArquivoException {
+    public void validate(FinancialTransaction transaction, RowData row) throws FileProcessingException {
         // Exemplo de validações de regra de negócio:
         if (transaction.getAmount() == null) {
             // Exemplo de como lançar um erro (depende da sua implementação)

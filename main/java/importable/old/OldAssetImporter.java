@@ -20,7 +20,7 @@ public class OldAssetImporter {
     /**
      * Importação de dados da planilha de Ativos da Empresa (CompanyAsset)
      */
-    public static List<CompanyAsset> importarDadosPlanilha(String abaPlanilha,
+    public static List<CompanyAsset> importSheetData(String abaPlanilha,
                                                            boolean possuiCabecalho,
                                                            String colunaAssetTag,
                                                            String colunaDescricao,

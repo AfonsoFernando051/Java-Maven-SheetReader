@@ -20,7 +20,7 @@ public class OldOrderImporter {
     /**
      * Importação de dados da planilha de pedidos
      */
-    public static List<Order> importarDadosPlanilha(String abaPlanilha,
+    public static List<Order> importSheetData(String abaPlanilha,
                                                     boolean possuiCabecalho,
                                                     String colunaOrderId,
                                                     String colunaCustomerId,

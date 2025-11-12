@@ -19,7 +19,7 @@ public class OldInventoryImporter {
     /**
      * Importação de dados da planilha de inventário
      */
-    public static List<Inventory> importarDadosPlanilha(String abaPlanilha,
+    public static List<Inventory> importSheetData(String abaPlanilha,
                                                         boolean possuiCabecalho,
                                                         String colunaProductId,
                                                         String colunaWarehouseId,

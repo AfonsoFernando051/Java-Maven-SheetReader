@@ -20,7 +20,7 @@ public class OldEmployeeImporter {
     /**
      * Importação de dados da planilha de funcionários
      */
-    public static List<Employee> importarDadosPlanilha(String abaPlanilha,
+    public static List<Employee> importSheetData(String abaPlanilha,
                                                        boolean possuiCabecalho,
                                                        String colunaID,
                                                        String colunaNome,

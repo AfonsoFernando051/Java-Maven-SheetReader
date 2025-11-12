@@ -25,7 +25,7 @@ public class OldFinancialTransactionImporter {
     /**
      * Importação de dados da planilha de Transações Financeiras (FinancialTransaction)
      */
-    public static List<FinancialTransaction> importarDadosPlanilha(String abaPlanilha,
+    public static List<FinancialTransaction> importSheetData(String abaPlanilha,
             boolean possuiCabecalho,
             String colunaId,
             String colunaType,

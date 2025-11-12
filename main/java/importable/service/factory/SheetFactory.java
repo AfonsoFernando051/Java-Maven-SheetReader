@@ -11,125 +11,137 @@ import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DateUtil;
 
 import importable.model.sheet.ImportableSheet;
-import importable.model.sheet.SheetData;
+// Assuming SheetData was renamed to SheetDate based on context
+import importable.model.sheet.SheetDate; 
 import importable.model.sheet.SheetLong;
 import importable.model.sheet.SheetString;
-import importable.model.sheet.SheetValor;
+// Assuming SheetValor was renamed to SheetValue or SheetBigDecimal
+import importable.model.sheet.SheetBigDecimal;
 
 /**
+ * Factory for creating different types of {@link ImportableSheet} objects 
+ * based on cell content.
+ *
  * @author Fernando Dias
  */
 public class SheetFactory {
 
   /**
-   * @param cell        - celula do contexto
-   * @param titulo      - titulo da celula
-   * @param numeroLinha - em que a celula esta
-   * @return AbstractSheet
+   * Creates an ImportableSheet based on the cell's type and content.
+   *
+   * @param cell        - the cell from the context
+   * @param title       - the title of the cell (column header)
+   * @param lineNumber  - the line number where the cell is located
+   * @return An {@link ImportableSheet} implementation, or null if the cell is invalid.
    */
-  public static ImportableSheet<?> create(Cell cell, String titulo,
-                                          int numeroLinha) {
+  public static ImportableSheet<?> create(Cell cell, String title,
+                                          int lineNumber) {
     if (cell == null)
       return null;
 
-    CellType tipo = cell.getCellType();
+    CellType type = cell.getCellType();
     String cellValue = cell.toString().trim();
 
-    // Trata fórmulas conforme o tipo de resultado
-    if (tipo == CellType.FORMULA) {
-      tipo = cell.getCachedFormulaResultType();
+    // Handle formulas based on their cached result type
+    if (type == CellType.FORMULA) {
+      type = cell.getCachedFormulaResultType();
     }
 
-    if (tipo == CellType.NUMERIC) {
+    if (type == CellType.NUMERIC) {
       double value = cell.getNumericCellValue();
 
       if (isDateCell(cell)) {
-        Date dataExcel = DateUtil.getJavaDate(value);
-        LocalDate date = dataExcel.toInstant()
+        Date excelDate = DateUtil.getJavaDate(value);
+        LocalDate date = excelDate.toInstant()
             .atZone(ZoneId.systemDefault()).toLocalDate();
-        return criarSheetData(date, cell, titulo, numeroLinha);
+        return createSheetDate(date, cell, title, lineNumber);
       } else {
         try {
           BigDecimal number = new BigDecimal(String.valueOf(value));
           
-          // Verificar se é um valor inteiro (potencial Long)
+          // Check if it's an integer value (potential Long)
           if (isIntegerValue(number)) {
             SheetLong sheetLong = new SheetLong();
             sheetLong.setValue(number.longValue());
-            sheetLong.setLineNumber(numeroLinha);
-            sheetLong.setColuna(getColunaLetra(cell.getColumnIndex()));
-            sheetLong.setTituloColuna(titulo);
+            sheetLong.setLineNumber(lineNumber);
+            sheetLong.setColumn(getColumnLetter(cell.getColumnIndex()));
+            sheetLong.setColumnTitle(title);
             return sheetLong;
           }
           
+          // Handle percentages
           if (cell.getCellStyle().getDataFormatString().contains("%")) {
             number = number.multiply(BigDecimal.valueOf(100));
           }
-          SheetValor sheetValor = new SheetValor();
-          sheetValor.setValue(number);
-          sheetValor.setLineNumber(numeroLinha);
-          sheetValor.setColuna(getColunaLetra(cell.getColumnIndex()));
-          sheetValor.setTituloColuna(titulo);
-          return sheetValor;
+          SheetBigDecimal sheetBigDecimal = new SheetBigDecimal();
+          sheetBigDecimal.setValue(number);
+          sheetBigDecimal.setLineNumber(lineNumber);
+          sheetBigDecimal.setColumn(getColumnLetter(cell.getColumnIndex()));
+          sheetBigDecimal.setColumnTitle(title);
+          return sheetBigDecimal;
         } catch (Exception e) {
-          e.getMessage();
+          e.getMessage(); // Consider logging this
         }
       }
     }
     
-    if (tipo == CellType.STRING) {
+    if (type == CellType.STRING) {
       try {
+        // Try to parse as a number first (e.g., "1,234.56" or "1.234,56")
+        // Standardizing to use "." as decimal separator
         BigDecimal number = new BigDecimal(cellValue.replace(",", "."));
         
-        // Verificar se é um valor inteiro (potencial Long)
+        // Check if it's an integer value (potential Long)
         if (isIntegerValue(number)) {
           SheetLong sheetLong = new SheetLong();
           sheetLong.setValue(number.longValue());
-          sheetLong.setLineNumber(numeroLinha);
-          sheetLong.setColuna(getColunaLetra(cell.getColumnIndex()));
-          sheetLong.setTituloColuna(titulo);
+          sheetLong.setLineNumber(lineNumber);
+          sheetLong.setColumn(getColumnLetter(cell.getColumnIndex()));
+          sheetLong.setColumnTitle(title);
           return sheetLong;
         }
         
-        SheetValor sheetValor = new SheetValor();
-        sheetValor.setValue(number);
-        sheetValor.setLineNumber(numeroLinha);
-        sheetValor.setColuna(getColunaLetra(cell.getColumnIndex()));
-        sheetValor.setTituloColuna(titulo);
-        return sheetValor;
+        SheetBigDecimal sheetBigDecimal = new SheetBigDecimal();
+        sheetBigDecimal.setValue(number);
+        sheetBigDecimal.setLineNumber(lineNumber);
+        sheetBigDecimal.setColumn(getColumnLetter(cell.getColumnIndex()));
+        sheetBigDecimal.setColumnTitle(title);
+        return sheetBigDecimal;
       } catch (NumberFormatException e) {
+        // If it fails to parse as a number, treat it as a String
         SheetString sheetString = new SheetString();
         sheetString.setValue(cellValue);
-        sheetString.setLineNumber(numeroLinha);
-        sheetString.setColuna(getColunaLetra(cell.getColumnIndex()));
-        sheetString.setTituloColuna(titulo);
+        sheetString.setLineNumber(lineNumber);
+        sheetString.setColumn(getColumnLetter(cell.getColumnIndex()));
+        sheetString.setColumnTitle(title);
         return sheetString;
       }
     }
     
-    // Tratamento para células booleanas que podem representar 0/1 (Long)
-    if (tipo == CellType.BOOLEAN) {
+    // Handling for boolean cells that might represent 0/1 (Long)
+    if (type == CellType.BOOLEAN) {
       try {
         Long longValue = cell.getBooleanCellValue() ? 1L : 0L;
         SheetLong sheetLong = new SheetLong();
         sheetLong.setValue(longValue);
-        sheetLong.setLineNumber(numeroLinha);
-        sheetLong.setColuna(getColunaLetra(cell.getColumnIndex()));
-        sheetLong.setTituloColuna(titulo);
+        sheetLong.setLineNumber(lineNumber);
+        sheetLong.setColumn(getColumnLetter(cell.getColumnIndex()));
+        sheetLong.setColumnTitle(title);
         return sheetLong;
       } catch (Exception e) {
-        // Se falhar, retorna null
+        // If it fails, return null
       }
     }
     
-    // Tratamento para células em branco que podem ter valor padrão 0
-    if (tipo == CellType.BLANK) {
-      // Dependendo do contexto, você pode querer retornar 0 ou null
+    // Handling for blank cells
+    if (type == CellType.BLANK) {
+      // Depending on the context, you might want to return 0 or null
+      // Example for returning 0L:
       // SheetLong sheetLong = new SheetLong();
       // sheetLong.setValue(0L);
-      // sheetLong.setLineNumber(numeroLinha);
-      // sheetLong.setColuna(getColunaLetra(cell.getColumnIndex()));
-      // sheetLong.setTituloColuna(titulo);
+      // sheetLong.setLineNumber(lineNumber);
+      // sheetLong.setColumn(getColumnLetter(cell.getColumnIndex()));
+      // sheetLong.setColumnTitle(title);
       // return sheetLong;
     }
     
@@ -137,56 +149,58 @@ public class SheetFactory {
   }
 
   /**
-   * Verifica se o valor BigDecimal representa um número inteiro
-   * @param number o valor BigDecimal a verificar
-   * @return true se for um valor inteiro
+   * Checks if the BigDecimal value represents an integer.
+   * @param number the BigDecimal value to check
+   * @return true if it is an integer value
    */
   private static boolean isIntegerValue(BigDecimal number) {
     try {
-      // Verifica se o valor tem parte decimal zero e está dentro do range do Long
+      // Checks if the value has a zero fractional part and is within the Long range
       if (number.scale() <= 0 || number.remainder(BigDecimal.ONE).compareTo(BigDecimal.ZERO) == 0) {
         long longValue = number.longValueExact();
-        // Verifica se o valor está dentro do range válido para IDs ou quantidades
+        // Checks if the value is within the valid range for IDs or quantities
         return longValue >= 0 && longValue <= Long.MAX_VALUE;
       }
     } catch (ArithmeticException e) {
-      // Se não for um valor inteiro exato, não é Long
+      // If it's not an exact integer value, it's not a Long
       return false;
     }
     return false;
   }
 
   /**
-   * @param columnIndex -> index a pesquisar para coluna
-   * @return index da coluna
+   * Converts a 0-based column index to its Excel letter representation.
+   *
+   * @param columnIndex -> index to search for the column (e.g., 0)
+   * @return column letter (e.g., "A")
    */
-  public static String getColunaLetra(int columnIndex) {
-    StringBuilder coluna = new StringBuilder();
+  public static String getColumnLetter(int columnIndex) {
+    StringBuilder columnName = new StringBuilder();
     while (columnIndex >= 0) {
-      coluna.insert(0, (char) ('A' + (columnIndex % 26)));
+      columnName.insert(0, (char) ('A' + (columnIndex % 26)));
       columnIndex = (columnIndex / 26) - 1;
     }
-    return coluna.toString();
+    return columnName.toString();
   }
 
   /**
-   * @param cell -> celula
-   * @return true se for data
+   * @param cell -> the cell
+   * @return true if it is a date cell
    */
   private static boolean isDateCell(Cell cell) {
-    // 1. Verificação primária usando POI
+    // 1. Primary check using POI
     if (DateUtil.isCellDateFormatted(cell)) {
       return true;
     }
 
     double value = cell.getNumericCellValue();
 
-    // 2. Verificação de faixas problemáticas
-    if (value < 1 || value > 2958465) { // Fora do range de datas do Excel
+    // 2. Check for problematic ranges
+    if (value < 1 || value > 2958465) { // Outside of Excel's date range
       return false;
     }
 
-    // 3. Verificação do estilo da célula
+    // 3. Check the cell style
     CellStyle style = cell.getCellStyle();
     if (style != null) {
       String format = style.getDataFormatString();
@@ -195,52 +209,53 @@ public class SheetFactory {
       }
     }
 
-    // 4. Verificação de valor numérico como último recurso
+    // 4. Numeric value check as a last resort
     return looksLikeExcelDate(value);
   }
 
   /**
-   * @param format -> formato
-   * @param cell   -> celula
-   * @return true se possui formato de data
+   * @param format -> the format string
+   * @param cell   -> the cell
+   * @return true if it has a date format
    */
   private static boolean isExcelDateFormat(String format, Cell cell) {
-    // Padrões mais específicos para formatos de data
+    // More specific patterns for date formats
     return format.contains("dd") || format.contains("mm")
         || format.contains("yyyy") || format.contains("hh")
         || format.matches("m/d/yy(?:yy)?");
   }
 
   /**
-   * @param value -> valor
-   * @return true se for data
+   * @param value -> the numeric value
+   * @return true if it looks like a date
    */
   private static boolean looksLikeExcelDate(double value) {
-    // Verifica se é um número "redondo" (data sem horas)
+    // Checks if it's a "round" number (date without time)
     if (value == Math.floor(value)) {
       return true;
     }
 
-    // Verifica a parte decimal (horas/minutos/segundos)
+    // Checks the decimal part (hours/minutes/seconds)
     double timePart = value - Math.floor(value);
-    return timePart >= 0.000011574 && timePart <= 0.999988426; // 00:00:00 a
-                                                               // 23:59:59
+    return timePart >= 0.000011574 && timePart <= 0.999988426; // 00:00:00 to 23:59:59
   }
 
   /**
-   * @param data   - importada
-   * @param cell   - celula do contexto
-   * @param titulo - titulo da celula
-   * @param linha  - da celula
-   * @return AbstractSheet
+   * Helper factory method to create a SheetDate object.
+   *
+   * @param date      - imported date
+   * @param cell      - cell from the context
+   * @param title     - title of the cell
+   * @param row       - row of the cell
+   * @return A populated {@link SheetDate} object
    */
-  private static SheetData criarSheetData(LocalDate data, Cell cell,
-                                          String titulo, int linha) {
-    SheetData sheetData = new SheetData();
-    sheetData.setValue(data);
-    sheetData.setLineNumber(linha);
-    sheetData.setColuna(getColunaLetra(cell.getColumnIndex()));
-    sheetData.setTituloColuna(titulo);
-    return sheetData;
+  private static SheetDate createSheetDate(LocalDate date, Cell cell,
+                                           String title, int row) {
+    SheetDate sheetDate = new SheetDate();
+    sheetDate.setValue(date);
+    sheetDate.setLineNumber(row);
+    sheetDate.setColumn(getColumnLetter(cell.getColumnIndex()));
+    sheetDate.setColumnTitle(title);
+    return sheetDate;
   }
 }

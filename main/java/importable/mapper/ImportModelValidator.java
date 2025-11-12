@@ -1,24 +1,24 @@
 package importable.mapper;
 
 import importable.model.row.RowData;
-import importable.utils.ProcessamentoArquivoException;
+// Assuming 'File' was a typo and should be the previously defined exception
+import importable.utils.FileProcessingException; 
 
 /**
- * Interface que define um contrato de validação para modelos de importação.
+ * Interface that defines a validation contract for import models.
  *
- * @param <T> Tipo do objeto validado
+ * @param <T> The type of the object being validated
  * @author Fernando Dias
  */
 public interface ImportModelValidator<T> {
 
-  /**
-   * Valida o objeto fornecido.
-   *
-   * @param object Objeto a ser validado
-   * @param row    -> linha a ser validada
-   * @throws ProcessamentoPlanilhaException se inválido
-   */
-  void validate(T object, RowData row)
-    throws ProcessamentoArquivoException;
-
+    /**
+     * Validates the provided object.
+     *
+     * @param object The object to be validated
+     * @param row    The row being validated
+     * @throws FileProcessingException if the object is invalid
+     */
+    void validate(T object, RowData row)
+            throws FileProcessingException; 
 }

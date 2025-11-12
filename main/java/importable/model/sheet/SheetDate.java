@@ -5,7 +5,7 @@ import java.time.LocalDate;
 /**
  * @author Fernando Dias
  */
-public class SheetData
+public class SheetDate
   extends AbstractSheet<LocalDate> {
 
 }

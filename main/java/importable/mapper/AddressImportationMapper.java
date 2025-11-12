@@ -6,7 +6,7 @@ import java.util.function.Function;
 import importable.model.Address;
 import importable.model.row.RowData;
 import importable.translator.Translator;
-import importable.utils.ProcessamentoArquivoException;
+import importable.utils.FileProcessingException;
 
 public class AddressImportationMapper extends GenericImportMapper<Address> {
 
@@ -18,7 +18,7 @@ public class AddressImportationMapper extends GenericImportMapper<Address> {
     public Function<RowData, ArrayList<Address>> processRow() {
         ArrayList<Address> modelos = new ArrayList<>();
         return (row) -> {
-            Address address = criarInstancia();
+            Address address = createInstance();
 
             address.setLogradouro(getStringValue(row, Translator.LOGRADOURO));
             address.setNumero(getStringValue(row, Translator.NUMERO));
@@ -34,7 +34,7 @@ public class AddressImportationMapper extends GenericImportMapper<Address> {
     }
 
     @Override
-    public void validate(Address address, RowData row) throws ProcessamentoArquivoException {
+    public void validate(Address address, RowData row) throws FileProcessingException {
         if (address.getLogradouro() == null || address.getLogradouro().isEmpty()) {
             // throw new ProcessamentoArquivoException("A coluna 'logradouro' é obrigatória.", row.getLineNumber());
         }
