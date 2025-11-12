@@ -94,11 +94,11 @@ public class GenericPlanilhaProcessor<T>
           ImportableSheet<?> sheet = SheetFactory
               .create(cell, titulo, row.getRowNum() + 1);
           DetailedSheet celula = new DetailedSheet(colunaKey, sheet);
-          linha.setNumeroLinha(row.getRowNum() + 1);
-          linha.addCelula(celula);
+          linha.setRowNumber(row.getRowNum() + 1);
+          linha.addCell(celula);
         }
       }
-      if (!linha.getCelulas().isEmpty()) {
+      if (!linha.getCells().isEmpty()) {
         resultadosLinha = createModelsByRows(linha);
       }
     } catch (Exception e) {

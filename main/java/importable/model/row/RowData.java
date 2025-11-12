@@ -1,99 +1,108 @@
 package importable.model.row;
 
 import java.util.ArrayList;
-
+import java.util.List; // Added List interface
 import importable.model.sheet.DetailedSheet;
 import importable.model.sheet.ImportableSheet;
 
 /**
- * Classe criada para abstrair a ideia de linha de uma planilha, de forma que
- * agrupe uma lista de celulas e estas sejam manuseadas pelo desenvolvedor para
- * abstrair informações e criar modelos de importação
+ * Represents the abstraction of a spreadsheet row.
+ * <p>
+ * This class groups a list of cells, allowing the developer to
+ * handle them, abstract information, and build import models.
  *
  * @author Fernando Dias
  */
 public class RowData {
 
-  /**
-   * Numero da linha
-   */
-  private int numeroLinha;
+    /**
+     * The row number (1-based).
+     */
+    private int rowNumber;
 
-  /**
-   * Lista de celulas da linhas
-   */
-  ArrayList<DetailedSheet> celulas = new ArrayList<DetailedSheet>();
+    /**
+     * The list of cells in this row.
+     */
+    List<DetailedSheet> cells = new ArrayList<>(); // Use List interface
 
-  /**
-   * Obtém o número da linha na planilha (baseado em 1).
-   *
-   * @return o número da linha
-   */
-  public int getNumeroLinha() {
-    return numeroLinha;
-  }
-
-  /**
-   * Obtém o número da linha na planilha (baseado em 1).
-   *
-   * @param numeroLinha -> que identifica a linha
-   */
-  public void setNumeroLinha(int numeroLinha) {
-    this.numeroLinha = numeroLinha;
-  }
-
-  /**
-   * @param celula -> Adicionada na lista de celulas
-   */
-  public void addCelula(DetailedSheet celula) {
-    this.celulas.add(celula);
-  }
-
-  /**
-   * @return {@link #celulas}
-   */
-  public ArrayList<DetailedSheet> getCelulas() {
-    return celulas;
-  }
-
-  /**
-   * @param celulas atualiza {@link #celulas}.
-   */
-  public void setCelulas(ArrayList<DetailedSheet> celulas) {
-    this.celulas = celulas;
-  }
-
-  /**
-   * @param identificador da celula
-   * @return valor da celula por identificador
-   */
-  public ImportableSheet<?> getCelulaByIdentificador(String identificador) {
-    for (DetailedSheet celulaData : celulas) {
-      if (celulaData.getIdentificador().equals(identificador)) {
-        return celulaData.getSheetData();
-      }
-    }
-    return null;
-  }
-
-  /**
-   * Verifica se existe alguma célula com o identificador especificado na linha
-   *
-   * @param identificador O identificador da coluna a ser verificado
-   * @return true se a linha contém uma célula com o identificador, false caso
-   *         contrário
-   */
-  public boolean containsIdentificador(String identificador) {
-    if (identificador == null || celulas == null || celulas.isEmpty()) {
-      return false;
+    /**
+     * Gets the row number in the sheet (1-based).
+     *
+     * @return the row number
+     */
+    public int getRowNumber() {
+        return rowNumber;
     }
 
-    for (DetailedSheet celula : celulas) {
-      if (identificador.equals(celula.getIdentificador())) {
-        return true;
-      }
+    /**
+     * Sets the row number.
+     *
+     * @param rowNumber the number that identifies the row
+     */
+    public void setRowNumber(int rowNumber) {
+        this.rowNumber = rowNumber;
     }
-    return false;
-  }
 
+    /**
+     * Adds a cell to the row's cell list.
+     *
+     * @param cell The {@link DetailedSheet} to be added.
+     */
+    public void addCell(DetailedSheet cell) {
+        this.cells.add(cell);
+    }
+
+    /**
+     * @return {@link #cells}
+     */
+    public List<DetailedSheet> getCells() {
+        return cells;
+    }
+
+    /**
+     * @param cells updates {@link #cells}.
+     */
+    public void setCells(List<DetailedSheet> cells) {
+        this.cells = cells;
+    }
+
+    /**
+     * Gets the cell's data by its identifier.
+     * <p>
+     * (Note: Assumes {@link DetailedSheet#getIdentificador()} will be refactored to {@code getIdentifier()})
+     *
+     * @param identifier The identifier of the cell
+     * @return the {@link ImportableSheet} data for the cell, or null if not found.
+     */
+    public ImportableSheet<?> getCellByIdentifier(String identifier) {
+        for (DetailedSheet cellData : cells) {
+            // Assuming getIdentificador() will be refactored to getIdentifier()
+            if (cellData.getIdentifier().equals(identifier)) {
+                return cellData.getSheetData();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Checks if a cell with the specified identifier exists in the row.
+     * <p>
+     * (Note: Assumes {@link DetailedSheet#getIdentificador()} will be refactored to {@code getIdentifier()})
+     *
+     * @param identifier The column identifier to check for.
+     * @return true if the row contains a cell with the identifier, false otherwise.
+     */
+    public boolean containsIdentifier(String identifier) {
+        if (identifier == null || cells == null || cells.isEmpty()) {
+            return false;
+        }
+
+        for (DetailedSheet cell : cells) {
+            // Assuming getIdentificador() will be refactored to getIdentifier()
+            if (identifier.equals(cell.getIdentifier())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -1,71 +1,68 @@
 package importable.model.sheet;
 
 /**
- * Container que armazena uma célula da planilha junto com seus metadados
- * associados. Inclui a célula em si, o título da coluna, a letra/nome da coluna
- * e o número da linha.
+ * A container that stores a spreadsheet cell along with its associated metadata.
  * <p>
- * Utilizado no processamento de planilhas para manter o contexto completo de
- * cada célula.
- * </p>
+ * This is used during sheet processing to maintain the complete context
+ * of each cell, including its identifier and the cell data itself.
  *
  * @author Fernando Dias
  */
 public class DetailedSheet {
 
-  /**
-   * Identificador da Célula
-   */
-  private final String identificador;
+    /**
+     * The cell's identifier (e.g., column name or key).
+     */
+    private final String identifier;
 
-  /**
-   * Célula do contexto
-   */
-  private ImportableSheet<?> sheetData;
+    /**
+     * The actual cell data.
+     */
+    private ImportableSheet<?> sheetData;
 
-  /**
-   * Constrói um novo container de célula com todos os metadados.
-   *
-   * @param identificador identifica a celula com valor do mapa
-   * @param sheetData     a célula da planilha (não pode ser nula)
-   * @throws IllegalArgumentException se cell for nulo
-   */
-  public DetailedSheet(String identificador, ImportableSheet<?> sheetData) {
-    if (sheetData == null) {
-      throw new IllegalArgumentException("Célula não pode ser nula");
+    /**
+     * Constructs a new cell container with all its metadata.
+     *
+     * @param identifier identifies the cell using a map key/value
+     * @param sheetData  the spreadsheet cell data (cannot be null)
+     * @throws IllegalArgumentException if sheetData is null
+     */
+    public DetailedSheet(String identifier, ImportableSheet<?> sheetData) {
+        if (sheetData == null) {
+            // Translated error message
+            throw new IllegalArgumentException("Sheet data cannot be null");
+        }
+        this.identifier = identifier;
+        this.setSheetData(sheetData);
     }
-    this.identificador = identificador;
-    this.setSheetData(sheetData);
-  }
 
-  /**
-   * @return {@link #identificador}
-   */
-  public String getIdentificador() {
-    return identificador;
-  }
+    /**
+     * @return {@link #identifier}
+     */
+    public String getIdentifier() {
+        return identifier;
+    }
 
-  /**
-   * @return {@link #sheetData}
-   */
-  public ImportableSheet<?> getSheetData() {
-    return sheetData;
-  }
+    /**
+     * @return {@link #sheetData}
+     */
+    public ImportableSheet<?> getSheetData() {
+        return sheetData;
+    }
 
-  /**
-   * @param sheetData atualiza {@link #sheetData}.
-   */
-  public void setSheetData(ImportableSheet<?> sheetData) {
-    this.sheetData = sheetData;
-  }
+    /**
+     * @param sheetData updates {@link #sheetData}.
+     */
+    public void setSheetData(ImportableSheet<?> sheetData) {
+        this.sheetData = sheetData;
+    }
 
-  @Override
-  public String toString() {
-    String id = identificador != null ? identificador : "";
-    String valor = (sheetData != null
-        && sheetData.getValue() != null) ? sheetData.getValue().toString()
-                                         : "";
-    return id + " - " + valor;
-  }
-
+    @Override
+    public String toString() {
+        String id = identifier != null ? identifier : "";
+        String value = (sheetData != null
+                && sheetData.getValue() != null) ? sheetData.getValue().toString()
+                : "";
+        return id + " - " + value;
+    }
 }

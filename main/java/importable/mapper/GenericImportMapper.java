@@ -60,17 +60,17 @@ public abstract class GenericImportMapper<T>
       } catch (ProcessamentoArquivoException e) {
     	  String mensagem =  String
           .format("Erro de processamento na linha {}: {}",
-                 row.getNumeroLinha(), e.getMessage());
+                 row.getRowNumber(), e.getMessage());
     	  throw new ProcessamentoArquivoException(mensagem, e);
       } catch (ClassCastException e) {
         String mensagem = String
             .format("Erro de tipo inesperado ao processar linha %d: %s",
-                    row.getNumeroLinha(), e.getMessage());
+                    row.getRowNumber(), e.getMessage());
         throw new ProcessamentoArquivoException(mensagem, e);
       } catch (Exception e) {
         String mensagem = String
             .format("Erro inesperado ao processar linha %d: %s",
-                    row.getNumeroLinha(), e.getMessage());
+                    row.getRowNumber(), e.getMessage());
         throw new ProcessamentoArquivoException(mensagem, e);
       }
     };
@@ -141,30 +141,30 @@ public abstract class GenericImportMapper<T>
   }
   
   protected Long getLongValue(RowData row, String columnIdentifier) {
-	     return row.getCelulaByIdentificador(columnIdentifier) != null ? 
-	         Long.valueOf(row.getCelulaByIdentificador(columnIdentifier).getValue().toString()) : null;
+	     return row.getCellByIdentifier(columnIdentifier) != null ? 
+	         Long.valueOf(row.getCellByIdentifier(columnIdentifier).getValue().toString()) : null;
 	 }
 	 
   protected String getStringValue(RowData row, String columnIdentifier) {
-	     return row.getCelulaByIdentificador(columnIdentifier) != null ? 
-	         row.getCelulaByIdentificador(columnIdentifier).getValue().toString() : null;
+	     return row.getCellByIdentifier(columnIdentifier) != null ? 
+	         row.getCellByIdentifier(columnIdentifier).getValue().toString() : null;
 	 }
 	 
   protected Double getDoubleValue(RowData row, String columnIdentifier) {
-	     return row.getCelulaByIdentificador(columnIdentifier) != null ? 
-	         Double.valueOf(row.getCelulaByIdentificador(columnIdentifier).getValue().toString()) : null;
+	     return row.getCellByIdentifier(columnIdentifier) != null ? 
+	         Double.valueOf(row.getCellByIdentifier(columnIdentifier).getValue().toString()) : null;
 	 }
 
   protected Integer getIntegerValue(RowData row, String columnIdentifier) {
-	     return row.getCelulaByIdentificador(columnIdentifier) != null ? 
-	         Integer.valueOf(row.getCelulaByIdentificador(columnIdentifier).getValue().toString()) : null;
+	     return row.getCellByIdentifier(columnIdentifier) != null ? 
+	         Integer.valueOf(row.getCellByIdentifier(columnIdentifier).getValue().toString()) : null;
 	 }
   protected LocalDate getLocalDateValue(RowData row, String columnIdentifier) {
-	    if (row.getCelulaByIdentificador(columnIdentifier) == null) {
+	    if (row.getCellByIdentifier(columnIdentifier) == null) {
 	        return null;
 	    }
 	    
-	    Object value = row.getCelulaByIdentificador(columnIdentifier).getValue();
+	    Object value = row.getCellByIdentifier(columnIdentifier).getValue();
 	    
 	    if (value == null) {
 	        return null;
