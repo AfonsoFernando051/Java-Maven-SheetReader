@@ -3,7 +3,7 @@ package importable.config;
 /**
  * @author Fernando Dias
  */
-public enum TipoPlanilhaImportacaoEnum {
+public enum SheetTypeEnum {
 
   /**
    * Customers Sheets

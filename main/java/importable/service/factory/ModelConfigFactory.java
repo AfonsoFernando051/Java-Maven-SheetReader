@@ -3,8 +3,8 @@ package importable.service.factory;
 import java.io.InputStream;
 import java.util.HashMap;
 
-import importable.config.PlanilhaModel;
-import importable.config.TipoPlanilhaImportacaoEnum;
+import importable.config.SheetModel;
+import importable.config.SheetTypeEnum;
 import importable.mapper.AddressImportationMapper;
 // Imports dos Mappers
 import importable.mapper.AssetImportationMapper;
@@ -43,7 +43,7 @@ public class ModelConfigFactory {
 	 * @param tipo de planilha
 	 * @return configuração de modelo
 	 */
-	public static InterfacePlanilhaMapper<?> getModelConfig(TipoPlanilhaImportacaoEnum tipo) {
+	public static InterfacePlanilhaMapper<?> getModelConfig(SheetTypeEnum tipo) {
 		switch (tipo) {
 		case PRODUCTS:
 			return (InterfacePlanilhaMapper<?>) new ProductImportationMapper(Product.class);
@@ -80,7 +80,7 @@ public class ModelConfigFactory {
 	 * @param tipo de planilha
 	 * @return configuração de modelo
 	 */
-	public static InputStream getResourceAsStream(TipoPlanilhaImportacaoEnum tipo) {
+	public static InputStream getResourceAsStream(SheetTypeEnum tipo) {
 		switch (tipo) {
 		case PRODUCTS:
 			return MainDP.class.getClassLoader().getResourceAsStream("products.xlsx");
@@ -117,7 +117,7 @@ public class ModelConfigFactory {
 	 * @param tipo de planilha
 	 * @return configuração de modelo
 	 */
-	public static HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> generatePlanilhaModel(TipoPlanilhaImportacaoEnum tipo) {
+	public static HashMap<SheetTypeEnum, SheetModel> generateSheetModel(SheetTypeEnum tipo) {
 		switch (tipo) {
 		case PRODUCTS:
 			return mapProducts();
@@ -151,237 +151,237 @@ public class ModelConfigFactory {
 		}
 	}
 
-	private static HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> mapCustomers() {
-		HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> planilhaMap = new HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel>();
-		PlanilhaModel planilha = new PlanilhaModel();
-		planilha.setNomeIdentificador("0 - " + TipoPlanilhaImportacaoEnum.CUSTOMERS.name());
-		planilha.setTipoLogico(TipoPlanilhaImportacaoEnum.CUSTOMERS);
+	private static HashMap<SheetTypeEnum, SheetModel> mapCustomers() {
+		HashMap<SheetTypeEnum, SheetModel> planilhaMap = new HashMap<SheetTypeEnum, SheetModel>();
+		SheetModel planilha = new SheetModel();
+		planilha.setSheetName("0 - " + SheetTypeEnum.CUSTOMERS.name());
+		planilha.setLogicalType(SheetTypeEnum.CUSTOMERS);
 
-		planilha.addColunaEValor(Translator.ID, "A");
-		planilha.addColunaEValor(Translator.NAME, "B");
-		planilha.addColunaEValor(Translator.EMAIL, "D");
-		planilha.addColunaEValor(Translator.CITY, "F");
-		planilha.addColunaEValor(Translator.STATE, "G");
+		planilha.addColumnValue(Translator.ID, "A");
+		planilha.addColumnValue(Translator.NAME, "B");
+		planilha.addColumnValue(Translator.EMAIL, "D");
+		planilha.addColumnValue(Translator.CITY, "F");
+		planilha.addColumnValue(Translator.STATE, "G");
 
-		planilhaMap.put(TipoPlanilhaImportacaoEnum.CUSTOMERS, planilha);
+		planilhaMap.put(SheetTypeEnum.CUSTOMERS, planilha);
 		return planilhaMap;
 	}
 
-	private static HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> mapProducts() {
-		HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> planilhaMap = new HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel>();
-		PlanilhaModel planilha = new PlanilhaModel();
-		planilha.setNomeIdentificador("0 - " + TipoPlanilhaImportacaoEnum.PRODUCTS.name());
-		planilha.setTipoLogico(TipoPlanilhaImportacaoEnum.PRODUCTS);
+	private static HashMap<SheetTypeEnum, SheetModel> mapProducts() {
+		HashMap<SheetTypeEnum, SheetModel> planilhaMap = new HashMap<SheetTypeEnum, SheetModel>();
+		SheetModel planilha = new SheetModel();
+		planilha.setSheetName("0 - " + SheetTypeEnum.PRODUCTS.name());
+		planilha.setLogicalType(SheetTypeEnum.PRODUCTS);
 
-		planilha.addColunaEValor(Translator.ID, "A");
-		planilha.addColunaEValor(Translator.NAME, "B");
-		planilha.addColunaEValor(Translator.PRICE, "D"); 
-		planilha.addColunaEValor(Translator.CATEGORY, "C");
+		planilha.addColumnValue(Translator.ID, "A");
+		planilha.addColumnValue(Translator.NAME, "B");
+		planilha.addColumnValue(Translator.PRICE, "D"); 
+		planilha.addColumnValue(Translator.CATEGORY, "C");
 
-		planilhaMap.put(TipoPlanilhaImportacaoEnum.PRODUCTS, planilha);
+		planilhaMap.put(SheetTypeEnum.PRODUCTS, planilha);
 		return planilhaMap;
 	}
 
-	private static HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> mapSuppliers() {
-		HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> planilhaMap = new HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel>();
-		PlanilhaModel planilha = new PlanilhaModel();
-		planilha.setNomeIdentificador("0 - " + TipoPlanilhaImportacaoEnum.SUPPLIERS.name());
-		planilha.setTipoLogico(TipoPlanilhaImportacaoEnum.SUPPLIERS);
+	private static HashMap<SheetTypeEnum, SheetModel> mapSuppliers() {
+		HashMap<SheetTypeEnum, SheetModel> planilhaMap = new HashMap<SheetTypeEnum, SheetModel>();
+		SheetModel planilha = new SheetModel();
+		planilha.setSheetName("0 - " + SheetTypeEnum.SUPPLIERS.name());
+		planilha.setLogicalType(SheetTypeEnum.SUPPLIERS);
 
-		planilha.addColunaEValor(Translator.ID, "A");
-		planilha.addColunaEValor(Translator.COMPANY_NAME, "B"); 
-		planilha.addColunaEValor(Translator.CONTACT_PERSON, "D"); 
-		planilha.addColunaEValor(Translator.EMAIL, "E");
-		planilha.addColunaEValor(Translator.ADDRESS, "G"); 
+		planilha.addColumnValue(Translator.ID, "A");
+		planilha.addColumnValue(Translator.COMPANY_NAME, "B"); 
+		planilha.addColumnValue(Translator.CONTACT_PERSON, "D"); 
+		planilha.addColumnValue(Translator.EMAIL, "E");
+		planilha.addColumnValue(Translator.ADDRESS, "G"); 
 
-		planilhaMap.put(TipoPlanilhaImportacaoEnum.SUPPLIERS, planilha);
+		planilhaMap.put(SheetTypeEnum.SUPPLIERS, planilha);
 		return planilhaMap;
 	}
 
-	private static HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> mapEmployees() {
-		HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> planilhaMap = new HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel>();
-		PlanilhaModel planilha = new PlanilhaModel();
-		planilha.setNomeIdentificador("0 - " + TipoPlanilhaImportacaoEnum.EMPLOYEES.name());
-		planilha.setTipoLogico(TipoPlanilhaImportacaoEnum.EMPLOYEES);
+	private static HashMap<SheetTypeEnum, SheetModel> mapEmployees() {
+		HashMap<SheetTypeEnum, SheetModel> planilhaMap = new HashMap<SheetTypeEnum, SheetModel>();
+		SheetModel planilha = new SheetModel();
+		planilha.setSheetName("0 - " + SheetTypeEnum.EMPLOYEES.name());
+		planilha.setLogicalType(SheetTypeEnum.EMPLOYEES);
 
-		planilha.addColunaEValor(Translator.ID, "A");
-		planilha.addColunaEValor(Translator.NAME, "B");
-		planilha.addColunaEValor(Translator.EMAIL, "C");
-		planilha.addColunaEValor(Translator.DEPARTMENT, "D"); 
-		planilha.addColunaEValor(Translator.POSITION, "E"); 
-		planilha.addColunaEValor(Translator.HIRE_DATE, "F");
+		planilha.addColumnValue(Translator.ID, "A");
+		planilha.addColumnValue(Translator.NAME, "B");
+		planilha.addColumnValue(Translator.EMAIL, "C");
+		planilha.addColumnValue(Translator.DEPARTMENT, "D"); 
+		planilha.addColumnValue(Translator.POSITION, "E"); 
+		planilha.addColumnValue(Translator.HIRE_DATE, "F");
 
-		planilhaMap.put(TipoPlanilhaImportacaoEnum.EMPLOYEES, planilha);
+		planilhaMap.put(SheetTypeEnum.EMPLOYEES, planilha);
 		return planilhaMap;
 	}
 
-	private static HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> mapOrders() {
-		HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> planilhaMap = new HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel>();
-		PlanilhaModel planilha = new PlanilhaModel();
-		planilha.setNomeIdentificador("0 - " + TipoPlanilhaImportacaoEnum.ORDERS.name());
-		planilha.setTipoLogico(TipoPlanilhaImportacaoEnum.ORDERS);
+	private static HashMap<SheetTypeEnum, SheetModel> mapOrders() {
+		HashMap<SheetTypeEnum, SheetModel> planilhaMap = new HashMap<SheetTypeEnum, SheetModel>();
+		SheetModel planilha = new SheetModel();
+		planilha.setSheetName("0 - " + SheetTypeEnum.ORDERS.name());
+		planilha.setLogicalType(SheetTypeEnum.ORDERS);
 
-		planilha.addColunaEValor(Translator.ORDER_ID, "A");
-		planilha.addColunaEValor(Translator.CUSTOMER_ID, "B");
-		planilha.addColunaEValor(Translator.ORDER_DATE, "C");
-		planilha.addColunaEValor(Translator.TOTAL_VALUE, "D"); 
-		planilha.addColunaEValor(Translator.STATUS, "E");
+		planilha.addColumnValue(Translator.ORDER_ID, "A");
+		planilha.addColumnValue(Translator.CUSTOMER_ID, "B");
+		planilha.addColumnValue(Translator.ORDER_DATE, "C");
+		planilha.addColumnValue(Translator.TOTAL_VALUE, "D"); 
+		planilha.addColumnValue(Translator.STATUS, "E");
 
-		planilhaMap.put(TipoPlanilhaImportacaoEnum.ORDERS, planilha);
+		planilhaMap.put(SheetTypeEnum.ORDERS, planilha);
 		return planilhaMap;
 	}
 
-	private static HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> mapInventory() {
-		HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> planilhaMap = new HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel>();
-		PlanilhaModel planilha = new PlanilhaModel();
-		planilha.setNomeIdentificador("0 - " + TipoPlanilhaImportacaoEnum.INVENTORY.name());
-		planilha.setTipoLogico(TipoPlanilhaImportacaoEnum.INVENTORY);
+	private static HashMap<SheetTypeEnum, SheetModel> mapInventory() {
+		HashMap<SheetTypeEnum, SheetModel> planilhaMap = new HashMap<SheetTypeEnum, SheetModel>();
+		SheetModel planilha = new SheetModel();
+		planilha.setSheetName("0 - " + SheetTypeEnum.INVENTORY.name());
+		planilha.setLogicalType(SheetTypeEnum.INVENTORY);
 
-		planilha.addColunaEValor(Translator.PRODUCT_ID, "A"); 
-		planilha.addColunaEValor(Translator.WAREHOUSE_ID, "B"); 
-		planilha.addColunaEValor(Translator.QUANTITY, "C");
-		planilha.addColunaEValor(Translator.LOCATION_CODE, "D"); 
+		planilha.addColumnValue(Translator.PRODUCT_ID, "A"); 
+		planilha.addColumnValue(Translator.WAREHOUSE_ID, "B"); 
+		planilha.addColumnValue(Translator.QUANTITY, "C");
+		planilha.addColumnValue(Translator.LOCATION_CODE, "D"); 
 
-		planilhaMap.put(TipoPlanilhaImportacaoEnum.INVENTORY, planilha);
+		planilhaMap.put(SheetTypeEnum.INVENTORY, planilha);
 		return planilhaMap;
 	}
 
 
-	private static HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> mapShipments() {
-		HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> planilhaMap = new HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel>();
-		PlanilhaModel planilha = new PlanilhaModel();
-		planilha.setNomeIdentificador("0 - " + TipoPlanilhaImportacaoEnum.SHIPMENTS.name());
-		planilha.setTipoLogico(TipoPlanilhaImportacaoEnum.SHIPMENTS);
+	private static HashMap<SheetTypeEnum, SheetModel> mapShipments() {
+		HashMap<SheetTypeEnum, SheetModel> planilhaMap = new HashMap<SheetTypeEnum, SheetModel>();
+		SheetModel planilha = new SheetModel();
+		planilha.setSheetName("0 - " + SheetTypeEnum.SHIPMENTS.name());
+		planilha.setLogicalType(SheetTypeEnum.SHIPMENTS);
 
-		planilha.addColunaEValor(Translator.SHIPMENT_ID, "A"); 
-		planilha.addColunaEValor(Translator.ORDER_ID, "B");
-		planilha.addColunaEValor(Translator.CARRIER, "C");
-		planilha.addColunaEValor(Translator.TRACKING_CODE, "D");
-		planilha.addColunaEValor(Translator.STATUS, "E");
-		planilha.addColunaEValor(Translator.ESTIMATED_DELIVERY_DATE, "F");
+		planilha.addColumnValue(Translator.SHIPMENT_ID, "A"); 
+		planilha.addColumnValue(Translator.ORDER_ID, "B");
+		planilha.addColumnValue(Translator.CARRIER, "C");
+		planilha.addColumnValue(Translator.TRACKING_CODE, "D");
+		planilha.addColumnValue(Translator.STATUS, "E");
+		planilha.addColumnValue(Translator.ESTIMATED_DELIVERY_DATE, "F");
 
-		planilhaMap.put(TipoPlanilhaImportacaoEnum.SHIPMENTS, planilha);
+		planilhaMap.put(SheetTypeEnum.SHIPMENTS, planilha);
 		return planilhaMap;
 	}
 
-	private static HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> mapAssets() {
-		HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> planilhaMap = new HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel>();
-		PlanilhaModel planilha = new PlanilhaModel();
-		planilha.setNomeIdentificador("0 - " + TipoPlanilhaImportacaoEnum.ASSETS.name());
-		planilha.setTipoLogico(TipoPlanilhaImportacaoEnum.ASSETS);
+	private static HashMap<SheetTypeEnum, SheetModel> mapAssets() {
+		HashMap<SheetTypeEnum, SheetModel> planilhaMap = new HashMap<SheetTypeEnum, SheetModel>();
+		SheetModel planilha = new SheetModel();
+		planilha.setSheetName("0 - " + SheetTypeEnum.ASSETS.name());
+		planilha.setLogicalType(SheetTypeEnum.ASSETS);
 
-		planilha.addColunaEValor(Translator.ASSET_TAG, "A"); 
-		planilha.addColunaEValor(Translator.DESCRIPTION, "B");
-		planilha.addColunaEValor(Translator.CATEGORY, "C");
-		planilha.addColunaEValor(Translator.EMPLOYEE_ID, "D");
-		planilha.addColunaEValor(Translator.PURCHASE_DATE, "E"); 
-		planilha.addColunaEValor(Translator.STATUS, "F");
+		planilha.addColumnValue(Translator.ASSET_TAG, "A"); 
+		planilha.addColumnValue(Translator.DESCRIPTION, "B");
+		planilha.addColumnValue(Translator.CATEGORY, "C");
+		planilha.addColumnValue(Translator.EMPLOYEE_ID, "D");
+		planilha.addColumnValue(Translator.PURCHASE_DATE, "E"); 
+		planilha.addColumnValue(Translator.STATUS, "F");
 
-		planilhaMap.put(TipoPlanilhaImportacaoEnum.ASSETS, planilha);
+		planilhaMap.put(SheetTypeEnum.ASSETS, planilha);
 		return planilhaMap;
 	}
 
-	private static HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> mapTasks() {
-		HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> planilhaMap = new HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel>();
-		PlanilhaModel planilha = new PlanilhaModel();
-		planilha.setNomeIdentificador("0 - " + TipoPlanilhaImportacaoEnum.TASKS.name());
-		planilha.setTipoLogico(TipoPlanilhaImportacaoEnum.TASKS);
+	private static HashMap<SheetTypeEnum, SheetModel> mapTasks() {
+		HashMap<SheetTypeEnum, SheetModel> planilhaMap = new HashMap<SheetTypeEnum, SheetModel>();
+		SheetModel planilha = new SheetModel();
+		planilha.setSheetName("0 - " + SheetTypeEnum.TASKS.name());
+		planilha.setLogicalType(SheetTypeEnum.TASKS);
 
-		planilha.addColunaEValor(Translator.TASK_ID, "A"); 
-		planilha.addColunaEValor(Translator.PROJECT_ID, "B"); 
-		planilha.addColunaEValor(Translator.DESCRIPTION, "C");
-		planilha.addColunaEValor(Translator.ASSIGNEE_ID, "D");
-		planilha.addColunaEValor(Translator.PRIORITY, "E");
-		planilha.addColunaEValor(Translator.DUE_DATE, "F"); 
+		planilha.addColumnValue(Translator.TASK_ID, "A"); 
+		planilha.addColumnValue(Translator.PROJECT_ID, "B"); 
+		planilha.addColumnValue(Translator.DESCRIPTION, "C");
+		planilha.addColumnValue(Translator.ASSIGNEE_ID, "D");
+		planilha.addColumnValue(Translator.PRIORITY, "E");
+		planilha.addColumnValue(Translator.DUE_DATE, "F"); 
 
-		planilhaMap.put(TipoPlanilhaImportacaoEnum.TASKS, planilha);
+		planilhaMap.put(SheetTypeEnum.TASKS, planilha);
 		return planilhaMap;
 	}
 
-	private static HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> mapWarehouses() {
-		HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> planilhaMap = new HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel>();
-		PlanilhaModel planilha = new PlanilhaModel();
-		planilha.setNomeIdentificador("0 - " + TipoPlanilhaImportacaoEnum.WAREHOUSES.name());
-		planilha.setTipoLogico(TipoPlanilhaImportacaoEnum.WAREHOUSES);
+	private static HashMap<SheetTypeEnum, SheetModel> mapWarehouses() {
+		HashMap<SheetTypeEnum, SheetModel> planilhaMap = new HashMap<SheetTypeEnum, SheetModel>();
+		SheetModel planilha = new SheetModel();
+		planilha.setSheetName("0 - " + SheetTypeEnum.WAREHOUSES.name());
+		planilha.setLogicalType(SheetTypeEnum.WAREHOUSES);
 
-		planilha.addColunaEValor(Translator.WAREHOUSE_ID, "A");
-		planilha.addColunaEValor(Translator.NAME, "B");
-		planilha.addColunaEValor(Translator.CITY, "C");
-		planilha.addColunaEValor(Translator.CAPACITY, "D"); // Assumindo Translator.CAPACITY
+		planilha.addColumnValue(Translator.WAREHOUSE_ID, "A");
+		planilha.addColumnValue(Translator.NAME, "B");
+		planilha.addColumnValue(Translator.CITY, "C");
+		planilha.addColumnValue(Translator.CAPACITY, "D"); // Assumindo Translator.CAPACITY
 
-		planilhaMap.put(TipoPlanilhaImportacaoEnum.WAREHOUSES, planilha);
+		planilhaMap.put(SheetTypeEnum.WAREHOUSES, planilha);
 		return planilhaMap;
 	}
 
-	private static HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> mapAddress() {
-		HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> planilhaMap = new HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel>();
-		PlanilhaModel planilha = new PlanilhaModel();
-		planilha.setNomeIdentificador("0 - " + TipoPlanilhaImportacaoEnum.ADDRESS.name());
-		planilha.setTipoLogico(TipoPlanilhaImportacaoEnum.ADDRESS);
+	private static HashMap<SheetTypeEnum, SheetModel> mapAddress() {
+		HashMap<SheetTypeEnum, SheetModel> planilhaMap = new HashMap<SheetTypeEnum, SheetModel>();
+		SheetModel planilha = new SheetModel();
+		planilha.setSheetName("0 - " + SheetTypeEnum.ADDRESS.name());
+		planilha.setLogicalType(SheetTypeEnum.ADDRESS);
 
-		planilha.addColunaEValor(Translator.LOGRADOURO, "A");
-		planilha.addColunaEValor(Translator.NUMERO, "B");
-		planilha.addColunaEValor(Translator.COMPLEMENTO, "C");
-		planilha.addColunaEValor(Translator.BAIRRO, "D");
-		planilha.addColunaEValor(Translator.CIDADE, "E");
-		planilha.addColunaEValor(Translator.ESTADO, "F");
-		planilha.addColunaEValor(Translator.CEP, "G");
+		planilha.addColumnValue(Translator.LOGRADOURO, "A");
+		planilha.addColumnValue(Translator.NUMERO, "B");
+		planilha.addColumnValue(Translator.COMPLEMENTO, "C");
+		planilha.addColumnValue(Translator.BAIRRO, "D");
+		planilha.addColumnValue(Translator.CIDADE, "E");
+		planilha.addColumnValue(Translator.ESTADO, "F");
+		planilha.addColumnValue(Translator.CEP, "G");
 
-		planilhaMap.put(TipoPlanilhaImportacaoEnum.ADDRESS, planilha);
-		return planilhaMap;
-	}
-	
-	private static HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> mapFinancialTransaction() {
-		HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> planilhaMap = new HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel>();
-		PlanilhaModel planilha = new PlanilhaModel();
-		planilha.setNomeIdentificador("0 - " + TipoPlanilhaImportacaoEnum.FINANCIALTRANSACTION.name());
-		planilha.setTipoLogico(TipoPlanilhaImportacaoEnum.FINANCIALTRANSACTION);
-
-		planilha.addColunaEValor(Translator.ID, "A");
-		planilha.addColunaEValor(Translator.TYPE, "B");
-		planilha.addColunaEValor(Translator.CATEGORY, "C");
-		planilha.addColunaEValor(Translator.DESCRIPTION, "D");
-		planilha.addColunaEValor(Translator.AMOUNT, "E");
-		planilha.addColunaEValor(Translator.CURRENCY, "F");
-		planilha.addColunaEValor(Translator.TRANSACTION_DATE, "G");
-		planilha.addColunaEValor(Translator.PAYMENT_METHOD, "H");
-		planilha.addColunaEValor(Translator.STATUS, "I");
-		planilha.addColunaEValor(Translator.SOURCE_ACCOUNT, "J");
-		planilha.addColunaEValor(Translator.DESTINATION_ACCOUNT, "K");
-		planilha.addColunaEValor(Translator.REFERENCE_NUMBER, "L");
-		planilha.addColunaEValor(Translator.RELATED_ENTITY_ID, "M");
-		planilha.addColunaEValor(Translator.RELATED_ENTITY_TYPE, "N");
-		planilha.addColunaEValor(Translator.NOTES, "O");
-		planilha.addColunaEValor(Translator.CREATED_BY, "P");
-		planilha.addColunaEValor(Translator.RECORDED_DATE, "Q");
-
-		planilhaMap.put(TipoPlanilhaImportacaoEnum.FINANCIALTRANSACTION, planilha);
+		planilhaMap.put(SheetTypeEnum.ADDRESS, planilha);
 		return planilhaMap;
 	}
 	
-	private static HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> mapProject() {
-		HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> planilhaMap = new HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel>();
-		PlanilhaModel planilha = new PlanilhaModel();
-		planilha.setNomeIdentificador("0 - " + TipoPlanilhaImportacaoEnum.PROJECT.name());
-		planilha.setTipoLogico(TipoPlanilhaImportacaoEnum.PROJECT);
+	private static HashMap<SheetTypeEnum, SheetModel> mapFinancialTransaction() {
+		HashMap<SheetTypeEnum, SheetModel> planilhaMap = new HashMap<SheetTypeEnum, SheetModel>();
+		SheetModel planilha = new SheetModel();
+		planilha.setSheetName("0 - " + SheetTypeEnum.FINANCIALTRANSACTION.name());
+		planilha.setLogicalType(SheetTypeEnum.FINANCIALTRANSACTION);
 
-		planilha.addColunaEValor(Translator.ID, "A");
-		planilha.addColunaEValor(Translator.NAME, "B");
-		planilha.addColunaEValor(Translator.DESCRIPTION, "C");
-		planilha.addColunaEValor(Translator.PROJECT_MANAGER, "D");
-		planilha.addColunaEValor(Translator.STATUS, "E");
-		planilha.addColunaEValor(Translator.PRIORITY, "F");
-		planilha.addColunaEValor(Translator.START_DATE, "G");
-		planilha.addColunaEValor(Translator.EXPECTED_END_DATE, "H");
-		planilha.addColunaEValor(Translator.ACTUAL_END_DATE, "I");
-		planilha.addColunaEValor(Translator.ALLOCATED_BUDGET, "J");
-		planilha.addColunaEValor(Translator.ACTUAL_SPENT, "K");
-		planilha.addColunaEValor(Translator.CLIENT, "L");
-		planilha.addColunaEValor(Translator.CATEGORY, "M");
-		planilha.addColunaEValor(Translator.COMPLETION_PERCENTAGE, "N");
-		planilha.addColunaEValor(Translator.RISK_LEVEL, "O");
+		planilha.addColumnValue(Translator.ID, "A");
+		planilha.addColumnValue(Translator.TYPE, "B");
+		planilha.addColumnValue(Translator.CATEGORY, "C");
+		planilha.addColumnValue(Translator.DESCRIPTION, "D");
+		planilha.addColumnValue(Translator.AMOUNT, "E");
+		planilha.addColumnValue(Translator.CURRENCY, "F");
+		planilha.addColumnValue(Translator.TRANSACTION_DATE, "G");
+		planilha.addColumnValue(Translator.PAYMENT_METHOD, "H");
+		planilha.addColumnValue(Translator.STATUS, "I");
+		planilha.addColumnValue(Translator.SOURCE_ACCOUNT, "J");
+		planilha.addColumnValue(Translator.DESTINATION_ACCOUNT, "K");
+		planilha.addColumnValue(Translator.REFERENCE_NUMBER, "L");
+		planilha.addColumnValue(Translator.RELATED_ENTITY_ID, "M");
+		planilha.addColumnValue(Translator.RELATED_ENTITY_TYPE, "N");
+		planilha.addColumnValue(Translator.NOTES, "O");
+		planilha.addColumnValue(Translator.CREATED_BY, "P");
+		planilha.addColumnValue(Translator.RECORDED_DATE, "Q");
 
-		planilhaMap.put(TipoPlanilhaImportacaoEnum.PROJECT, planilha);
+		planilhaMap.put(SheetTypeEnum.FINANCIALTRANSACTION, planilha);
+		return planilhaMap;
+	}
+	
+	private static HashMap<SheetTypeEnum, SheetModel> mapProject() {
+		HashMap<SheetTypeEnum, SheetModel> planilhaMap = new HashMap<SheetTypeEnum, SheetModel>();
+		SheetModel planilha = new SheetModel();
+		planilha.setSheetName("0 - " + SheetTypeEnum.PROJECT.name());
+		planilha.setLogicalType(SheetTypeEnum.PROJECT);
+
+		planilha.addColumnValue(Translator.ID, "A");
+		planilha.addColumnValue(Translator.NAME, "B");
+		planilha.addColumnValue(Translator.DESCRIPTION, "C");
+		planilha.addColumnValue(Translator.PROJECT_MANAGER, "D");
+		planilha.addColumnValue(Translator.STATUS, "E");
+		planilha.addColumnValue(Translator.PRIORITY, "F");
+		planilha.addColumnValue(Translator.START_DATE, "G");
+		planilha.addColumnValue(Translator.EXPECTED_END_DATE, "H");
+		planilha.addColumnValue(Translator.ACTUAL_END_DATE, "I");
+		planilha.addColumnValue(Translator.ALLOCATED_BUDGET, "J");
+		planilha.addColumnValue(Translator.ACTUAL_SPENT, "K");
+		planilha.addColumnValue(Translator.CLIENT, "L");
+		planilha.addColumnValue(Translator.CATEGORY, "M");
+		planilha.addColumnValue(Translator.COMPLETION_PERCENTAGE, "N");
+		planilha.addColumnValue(Translator.RISK_LEVEL, "O");
+
+		planilhaMap.put(SheetTypeEnum.PROJECT, planilha);
 		return planilhaMap;
 	}
 	

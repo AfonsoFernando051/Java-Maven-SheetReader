@@ -1,6 +1,6 @@
 package importable.service.factory;
 
-import importable.config.TipoPlanilhaImportacaoEnum;
+import importable.config.SheetTypeEnum;
 import importable.model.Address;
 import importable.model.CompanyAsset;
 import importable.model.Customer;
@@ -54,7 +54,7 @@ public class ImportServiceFactory {
 		throw new IllegalArgumentException("Serviço não encontrado para a classe: " + entityClass);
 	}
 
-	public static ImportService<?> getServiceByType(TipoPlanilhaImportacaoEnum tipo) {
+	public static ImportService<?> getServiceByType(SheetTypeEnum tipo) {
 		switch (tipo) {
 		case PRODUCTS:
 			return (ImportService<?>) new ImportSheetService<Product>();

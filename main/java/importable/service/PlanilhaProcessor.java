@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.apache.poi.ss.usermodel.Workbook;
 
-import importable.config.PlanilhaModel;
+import importable.config.SheetModel;
 
 /**
  * @author Fernando Dias
@@ -21,7 +21,7 @@ public interface PlanilhaProcessor<T> {
    * @return valores importados
    * @throws IOException Exception de stream
    */
-  List<T> processar(Workbook workbook, PlanilhaModel planilha)
+  List<T> processar(Workbook workbook, SheetModel planilha)
     throws IOException;
 
 

@@ -15,7 +15,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import importable.config.PlanilhaModel;
+import importable.config.SheetModel;
 import importable.mapper.InterfacePlanilhaMapper;
 import importable.model.row.RowData;
 import importable.model.sheet.DetailedSheet;
@@ -53,11 +53,11 @@ public class GenericPlanilhaProcessor<T>
 
   @Override
   public ArrayList<T> processar(Workbook workbook,
-                                PlanilhaModel configPlanilha)
+                                SheetModel configPlanilha)
     throws IOException {
     ArrayList<T> resultados = new ArrayList<>();
     int abaIndex = Character
-        .getNumericValue(configPlanilha.getNomeIdentificador().charAt(0));
+        .getNumericValue(configPlanilha.getSheetName().charAt(0));
     Sheet sheet = workbook.getSheetAt(abaIndex);
 
     for (Row row : sheet) {
@@ -76,12 +76,12 @@ public class GenericPlanilhaProcessor<T>
    * @param planilha -> do contexto
    * @return lista processada pela linha
    */
-  private ArrayList<T> processarLinha(Row row, PlanilhaModel planilha) {
+  private ArrayList<T> processarLinha(Row row, SheetModel planilha) {
     ArrayList<T> resultadosLinha = new ArrayList<>();
     try {
       // Processa linhas de dados
       RowData linha = new RowData();
-      for (Map.Entry<String, String> entry : planilha.getColunaEValor()
+      for (Map.Entry<String, String> entry : planilha.getColumnValueMap()
           .entrySet()) {
 
         String colunaKey = entry.getKey();
@@ -201,30 +201,28 @@ public class GenericPlanilhaProcessor<T>
    * @param planilha -> Atual
    * @return true se a linha eh valida
    */
-  public boolean linhaImportacaoInvalida(Row row, PlanilhaModel planilha) {
+  public boolean linhaImportacaoInvalida(Row row, SheetModel planilha) {
     if (row == null) {
       return true;
     }
     int rowNum = row.getRowNum() + 1;
     int posInicio = getLinha(planilha, Translator.LINE_START);
 
-    if (!planilha.getLinhaEValor()
+    if (!planilha.getRowValueMap()
         .containsKey(Translator.HEADER)) {
       boolean isCabecalho = row.getRowNum() == 0;
       if (isCabecalho) {
-        // Processa linha de cabeçalho
-        planilha.addLinhaEValor(Translator.HEADER, "0");
-        planilha.setCabecalho(0);
+        planilha.addRowValue(Translator.HEADER, "0");
+        planilha.setHeaderRow(0);
         preencherCabecalho(row, planilha);
         return true;
       }
     } else {
       int posCabecalho = getLinha(planilha, Translator.HEADER);
-      planilha.setCabecalho(posCabecalho);
+      planilha.setHeaderRow(posCabecalho);
       boolean isCabecalho = row.getRowNum() + 1 == posCabecalho;
 
       if (isCabecalho) {
-        // Processa linha de cabeçalho
         preencherCabecalho(row, planilha);
         return true;
       }
@@ -233,7 +231,7 @@ public class GenericPlanilhaProcessor<T>
       }
     }
 
-    if (planilha.getLinhaEValor().containsKey(Translator.END_LINE)) {
+    if (planilha.getRowValueMap().containsKey(Translator.END_LINE)) {
       int posFim = getLinha(planilha, Translator.END_LINE);
       return rowNum < posInicio || rowNum > posFim;
     }
@@ -245,9 +243,9 @@ public class GenericPlanilhaProcessor<T>
    * @param row      -> linha
    * @param planilha do contexto
    */
-  protected void preencherCabecalho(Row row, PlanilhaModel planilha) {
-    if (planilha.getCabecalho() == row.getRowNum()) {
-      for (Map.Entry<String, String> entry : planilha.getColunaEValor()
+  protected void preencherCabecalho(Row row, SheetModel planilha) {
+    if (planilha.getHeaderRow() == row.getRowNum()) {
+      for (Map.Entry<String, String> entry : planilha.getColumnValueMap()
           .entrySet()) {
         if (entry.getValue() == null || (entry.getValue() != null
             && entry.getValue().matches("\\d+"))) {
@@ -272,8 +270,8 @@ public class GenericPlanilhaProcessor<T>
    * @param letra    a chave da coluna
    * @return índice da coluna como inteiro
    */
-  public int colunaToIndice(PlanilhaModel planilha, String letra) {
-    String valor = planilha.getColunaEValor().get(letra);
+  public int colunaToIndice(SheetModel planilha, String letra) {
+    String valor = planilha.getColumnValueMap().get(letra);
     if (valor != null) {
       valor = valor.trim();
       // Verifica se é numérico
@@ -296,13 +294,12 @@ public class GenericPlanilhaProcessor<T>
    * @param letra    a chave da coluna
    * @return índice da coluna como inteiro
    */
-  public int getLinha(PlanilhaModel planilha, String letra) {
-    String valor = planilha.getLinhaEValor().get(letra);
+  public int getLinha(SheetModel planilha, String letra) {
+    String valor = planilha.getRowValueMap().get(letra);
 
     try {
       if (valor != null) {
         valor = valor.trim();
-        // Verifica se é numérico
         if (valor.matches("\\d+")) {
           return Integer.parseInt(valor);
         }

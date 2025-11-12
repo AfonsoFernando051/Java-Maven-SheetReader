@@ -16,8 +16,8 @@ import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
-import importable.config.PlanilhaModel;
-import importable.config.TipoPlanilhaImportacaoEnum;
+import importable.config.SheetModel;
+import importable.config.SheetTypeEnum;
 import importable.mapper.InterfacePlanilhaMapper;
 import importable.service.factory.ModelConfigFactory;
 import importable.utils.ProcessamentoArquivoException;
@@ -42,25 +42,25 @@ public  class ImportSheetService<T> implements ImportService<T> {
 	/**
 	 * Modelo de Importação
 	 */
-	private PlanilhaModel planilhaAtual;
+	private SheetModel planilhaAtual;
 
 	/**
 	 * Modelo de Importação
 	 */
-	private HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> planilhas = new HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel>();
+	private HashMap<SheetTypeEnum, SheetModel> planilhas = new HashMap<SheetTypeEnum, SheetModel>();
 
-	public SaveBytesManager getBytesManager(TipoPlanilhaImportacaoEnum tipo) {
+	public SaveBytesManager getBytesManager(SheetTypeEnum tipo) {
 		InputStream stream = getStream(tipo);
 		SaveBytesManager bytesController = new SaveBytesManager();
 		bytesController.setBytes(stream);
 		return bytesController;
 	}
 	
-	public HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> generatePlanilhaModel(TipoPlanilhaImportacaoEnum tipo){
-		return ModelConfigFactory.generatePlanilhaModel(tipo);
+	public HashMap<SheetTypeEnum, SheetModel> generateSheetModel(SheetTypeEnum tipo){
+		return ModelConfigFactory.generateSheetModel(tipo);
 	}
 
-	protected InputStream getStream(TipoPlanilhaImportacaoEnum tipo) {
+	protected InputStream getStream(SheetTypeEnum tipo) {
 		return ModelConfigFactory.getResourceAsStream(tipo);
 	}
 
@@ -104,10 +104,10 @@ public  class ImportSheetService<T> implements ImportService<T> {
 	 * @param callback                    - ato de refresh em grid
 	 */
 	public void importBringDataManySheet(PlanilhaImportConfigManager planilhaImportConfigManager,
-			SaveBytesManager bytesController, Consumer<HashMap<TipoPlanilhaImportacaoEnum, ArrayList<T>>> callback) {
+			SaveBytesManager bytesController, Consumer<HashMap<SheetTypeEnum, ArrayList<T>>> callback) {
 		try {
 			configurarDadosPlanilha(planilhaImportConfigManager, bytesController);
-			HashMap<TipoPlanilhaImportacaoEnum, ArrayList<T>> dados = getDadosByPlanilhas();
+			HashMap<SheetTypeEnum, ArrayList<T>> dados = getDadosByPlanilhas();
 			bytesController.closeFileData();
 			callback.accept(dados);
 		} catch (EncryptedDocumentException | IOException e) {
@@ -124,13 +124,13 @@ public  class ImportSheetService<T> implements ImportService<T> {
 	 * @param callback                    - ato de refresh em grid
 	 */
 	public void importBringInsertDataManySheetByCallback(PlanilhaImportConfigManager planilhaImportConfigManager,
-			SaveBytesManager bytesController, Consumer<HashMap<TipoPlanilhaImportacaoEnum, ArrayList<T>>> callback) {
+			SaveBytesManager bytesController, Consumer<HashMap<SheetTypeEnum, ArrayList<T>>> callback) {
 		try {
 			configurarDadosPlanilha(planilhaImportConfigManager, bytesController);
-			HashMap<TipoPlanilhaImportacaoEnum, ArrayList<T>> dados = getDadosByPlanilhas();
-			Set<TipoPlanilhaImportacaoEnum> keySet = dados.keySet();
-			for (TipoPlanilhaImportacaoEnum tipoPlanilhaImportacaoEnum : keySet) {
-				insertDadosPlanilha(dados.get(tipoPlanilhaImportacaoEnum));
+			HashMap<SheetTypeEnum, ArrayList<T>> dados = getDadosByPlanilhas();
+			Set<SheetTypeEnum> keySet = dados.keySet();
+			for (SheetTypeEnum SheetTypeEnum : keySet) {
+				insertDadosPlanilha(dados.get(SheetTypeEnum));
 			}
 			bytesController.closeFileData();
 			callback.accept(dados);
@@ -148,14 +148,14 @@ public  class ImportSheetService<T> implements ImportService<T> {
 	 * @param callback                    - ato de refresh em grid
 	 * @return 
 	 */
-	public HashMap<TipoPlanilhaImportacaoEnum, ArrayList<T>> importBringInsertDataManySheet(PlanilhaImportConfigManager planilhaImportConfigManager,
+	public HashMap<SheetTypeEnum, ArrayList<T>> importBringInsertDataManySheet(PlanilhaImportConfigManager planilhaImportConfigManager,
 			SaveBytesManager bytesController) {
 		try {
 			configurarDadosPlanilha(planilhaImportConfigManager, bytesController);
-			HashMap<TipoPlanilhaImportacaoEnum, ArrayList<T>> dados = getDadosByPlanilhas();
-			Set<TipoPlanilhaImportacaoEnum> keySet = dados.keySet();
-			for (TipoPlanilhaImportacaoEnum tipoPlanilhaImportacaoEnum : keySet) {
-				insertDadosPlanilha(dados.get(tipoPlanilhaImportacaoEnum));
+			HashMap<SheetTypeEnum, ArrayList<T>> dados = getDadosByPlanilhas();
+			Set<SheetTypeEnum> keySet = dados.keySet();
+			for (SheetTypeEnum SheetTypeEnum : keySet) {
+				insertDadosPlanilha(dados.get(SheetTypeEnum));
 			}
 			bytesController.closeFileData();
 			return dados;
@@ -170,10 +170,10 @@ public  class ImportSheetService<T> implements ImportService<T> {
 	 * @throws IOException exceção de InputStream
 	 * @return planilhas mapeadas por tipos
 	 */
-	protected HashMap<TipoPlanilhaImportacaoEnum, ArrayList<T>> getDadosByPlanilhas() throws IOException {
-		HashMap<TipoPlanilhaImportacaoEnum, ArrayList<T>> resultados = new HashMap<>();
-		for (Map.Entry<TipoPlanilhaImportacaoEnum, PlanilhaModel> entry : getPlanilhas().entrySet()) {
-			TipoPlanilhaImportacaoEnum tipo = entry.getKey();
+	protected HashMap<SheetTypeEnum, ArrayList<T>> getDadosByPlanilhas() throws IOException {
+		HashMap<SheetTypeEnum, ArrayList<T>> resultados = new HashMap<>();
+		for (Map.Entry<SheetTypeEnum, SheetModel> entry : getPlanilhas().entrySet()) {
+			SheetTypeEnum tipo = entry.getKey();
 			setPlanilhaAtual(entry.getValue());
 
 			try (Workbook workbook = generateWorkbook()) {
@@ -193,7 +193,7 @@ public  class ImportSheetService<T> implements ImportService<T> {
 	 * @return configuração de modelo
 	 */
 	@SuppressWarnings("unchecked")
-	InterfacePlanilhaMapper<T> getModelConfig(TipoPlanilhaImportacaoEnum tipo) {
+	InterfacePlanilhaMapper<T> getModelConfig(SheetTypeEnum tipo) {
 		return (InterfacePlanilhaMapper<T>) ModelConfigFactory.getModelConfig(tipo);
 	}
 
@@ -256,28 +256,28 @@ public  class ImportSheetService<T> implements ImportService<T> {
 	/**
 	 * @return {@link #planilhaAtual}
 	 */
-	public PlanilhaModel getPlanilhaAtual() {
+	public SheetModel getPlanilhaAtual() {
 		return planilhaAtual;
 	}
 
 	/**
 	 * @param planilhaAtual atualiza {@link #planilhaAtual}.
 	 */
-	public void setPlanilhaAtual(PlanilhaModel planilhaAtual) {
+	public void setPlanilhaAtual(SheetModel planilhaAtual) {
 		this.planilhaAtual = planilhaAtual;
 	}
 
 	/**
 	 * @return {@link #planilhas}
 	 */
-	public HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> getPlanilhas() {
+	public HashMap<SheetTypeEnum, SheetModel> getPlanilhas() {
 		return planilhas;
 	}
 
 	/**
 	 * @param planilhas atualiza {@link #planilhas}.
 	 */
-	public void setPlanilhas(HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> planilhas) {
+	public void setPlanilhas(HashMap<SheetTypeEnum, SheetModel> planilhas) {
 		this.planilhas = planilhas;
 	}
 

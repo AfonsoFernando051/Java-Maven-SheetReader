@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner; // 1. Import the Scanner class
 
-import importable.config.PlanilhaModel;
-import importable.config.TipoPlanilhaImportacaoEnum;
+import importable.config.SheetModel;
+import importable.config.SheetTypeEnum;
 import importable.model.CompanyAsset;
 import importable.model.Customer;
 import importable.model.Employee;
@@ -69,12 +69,12 @@ public class OriginalMain {
 
 	private static void readDataWithDesignPatterns() {
 		System.out.println("--- Using Factory and Strategy patterns to decouple the import logic ---");
-		for (TipoPlanilhaImportacaoEnum sheet : TipoPlanilhaImportacaoEnum.values()) {
+		for (SheetTypeEnum sheet : SheetTypeEnum.values()) {
 			PlanilhaImportConfigManager planilhasManager = new PlanilhaImportConfigManager();
 			ImportService<?> service = ImportServiceFactory.getServiceByType(sheet);
-			HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> planilhaModel = service.generatePlanilhaModel(sheet);
+			HashMap<SheetTypeEnum, SheetModel> planilhaModel = service.generateSheetModel(sheet);
 			planilhasManager.setPlanilhas(planilhaModel);
-			HashMap<TipoPlanilhaImportacaoEnum, ?> result = service.importBringInsertDataManySheet(planilhasManager, service.getBytesManager(sheet));
+			HashMap<SheetTypeEnum, ?> result = service.importBringInsertDataManySheet(planilhasManager, service.getBytesManager(sheet));
 			ArrayList<?> arrayList = (ArrayList<?>) result.get(sheet);
 			System.out.println("--- Imported " + arrayList.size() + " records from " + sheet.name() + " ---");
 			for (Object object : arrayList) {

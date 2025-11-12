@@ -35,7 +35,6 @@ public class AddressImportationMapper extends GenericImportMapper<Address> {
 
     @Override
     public void validate(Address address, RowData row) throws ProcessamentoArquivoException {
-        // Exemplo de validações:
         if (address.getLogradouro() == null || address.getLogradouro().isEmpty()) {
             // throw new ProcessamentoArquivoException("A coluna 'logradouro' é obrigatória.", row.getLineNumber());
         }

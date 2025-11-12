@@ -4,22 +4,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.function.Consumer;
 
-import importable.config.PlanilhaModel;
-import importable.config.TipoPlanilhaImportacaoEnum;
+import importable.config.SheetModel;
+import importable.config.SheetTypeEnum;
 import importable.utils.SaveBytesManager;
 
 public interface ImportService<T> {
 
 	public void importBringDataManySheet(PlanilhaImportConfigManager planilhaImportConfigManager,
-			SaveBytesManager bytesController, Consumer<HashMap<TipoPlanilhaImportacaoEnum, ArrayList<T>>> callback);
+			SaveBytesManager bytesController, Consumer<HashMap<SheetTypeEnum, ArrayList<T>>> callback);
 
 	public void importBringInsertDataManySheetByCallback(PlanilhaImportConfigManager planilhaImportConfigManager,
-			SaveBytesManager bytesController, Consumer<HashMap<TipoPlanilhaImportacaoEnum, ArrayList<T>>> callback);
+			SaveBytesManager bytesController, Consumer<HashMap<SheetTypeEnum, ArrayList<T>>> callback);
 
-	public HashMap<TipoPlanilhaImportacaoEnum, PlanilhaModel> generatePlanilhaModel(TipoPlanilhaImportacaoEnum tipo);
+	public HashMap<SheetTypeEnum, SheetModel> generateSheetModel(SheetTypeEnum tipo);
 
-	public SaveBytesManager getBytesManager(TipoPlanilhaImportacaoEnum tipo);
+	public SaveBytesManager getBytesManager(SheetTypeEnum tipo);
 
-	public HashMap<TipoPlanilhaImportacaoEnum, ArrayList<T>> importBringInsertDataManySheet(PlanilhaImportConfigManager planilhaImportConfigManager,SaveBytesManager bytesController);
+	public HashMap<SheetTypeEnum, ArrayList<T>> importBringInsertDataManySheet(PlanilhaImportConfigManager planilhaImportConfigManager,SaveBytesManager bytesController);
 
 }
