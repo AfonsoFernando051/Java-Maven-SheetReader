@@ -309,7 +309,6 @@ public class SWTImportRunner {
 
             System.out.println();
         } catch (Exception e) {
-            // A exceção será impressa no PrintStream capturado
             e.printStackTrace();
         }
     }
