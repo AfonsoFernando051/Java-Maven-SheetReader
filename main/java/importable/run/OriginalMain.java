@@ -75,7 +75,7 @@ public class OriginalMain {
 	/**
 	 * Runs the import process using Factory and Strategy patterns.
 	 */
-	private static void readDataWithDesignPatterns() {
+	 static void readDataWithDesignPatterns() {
 		System.out.println("--- Using Factory and Strategy patterns to decouple the import logic ---");
 		for (SheetTypeEnum sheet : SheetTypeEnum.values()) {
 			// Use the translated class and variable names
@@ -101,7 +101,7 @@ public class OriginalMain {
 	/**
 	 * Runs the import process using rigid, hardcoded static methods.
 	 */
-	private static void readDataWithoutDesignPatterns() {
+	static void readDataWithoutDesignPatterns() {
 		System.out.println("--- Using static methods with hardcoded values. Very rigid. ---");
 		try {
 			// Use the new class name to get the resource
