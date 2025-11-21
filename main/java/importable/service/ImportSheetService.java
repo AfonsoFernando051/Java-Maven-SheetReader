@@ -178,7 +178,6 @@ public class ImportSheetService<T> implements ImportService<T> {
 
             try (Workbook workbook = generateWorkbook()) {
                 InterfaceSheetMapper<T> modelConfig = getModelConfig(type);
-                // Assuming GenericPlanilhaProcessor was renamed to GenericSheetProcessor
                 GenericSheetProcessor<T> processor = new GenericSheetProcessor<>(modelConfig);
                 results.put(type, processor.process(workbook, getCurrentSheetModel()));
             } catch (FileProcessingException e) {
