@@ -213,7 +213,7 @@ This project was developed as part of an academic case study for a **Bachelor’
 
 ### 📄 **Academic Article**
 * [cite_start]**Title:** *Impacto dos Padrões de Projeto na Escalabilidade: Uma Análise Quantitativa de Custo-Benefício e Manutenibilidade em Java* [cite: 1]
-* **Link:** [📄 **Read the Full Paper (PDF)**](src/docs/Impacto_dos_Padrões_de_Projeto_na_Escalabilidade__Uma_Análise_Quantitativa_de_Custo_Benefício_e_Manutenibilidade_em_Java.pdf)
+* **Link:** [📄 **Read the Full Paper (PDF)**](./docs/Impacto_dos_Padrões_de_Projeto_na_Escalabilidade__Uma_Análise_Quantitativa_de_Custo_Benefício_e_Manutenibilidade_em_Java.pdf)
     * *Note: The full quantitative analysis and methodology described in this README are available in the article above.*
 * [cite_start]**Abstract:** Investigates the practical application of design patterns (Factory, Strategy, Template Method) in data processing systems, demonstrating quantitative gains in cohesion, coupling, and scalability[cite: 6, 8, 9].
 
