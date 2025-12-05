@@ -31,13 +31,13 @@ A versão original (`importable.old`) é um exemplo clássico de design procedur
 
 Este diagrama mostra a assinatura do "Método Deus", provando o alto acoplamento. O `Client` precisa conhecer detalhes internos de implementação (as letras das colunas), criando um design frágil.
 
-![Arquitetura Original "God Class"](src/main/resources/images/diagrama_god_class.png)
+![Arquitetura Original "God Class"](main/resources/images/diagrama_god_class.png)
 
 #### Diagrama de Sequência (Baixa Coesão)
 
 Este diagrama prova a baixa coesão funcional. A classe `OldCustomerImporter` faz todo o trabalho internamente (parsear, mapear, criar) sem delegar nenhuma responsabilidade.
 
-![Sequência Original "God Class"](src/main/resources/images/sequencia_god_class.png)
+![Sequência Original "God Class"](main/resources/images/sequencia_god_class.png)
 
 ---
 
@@ -57,13 +57,13 @@ A versão refatorada aplica múltiplos padrões de projeto para distribuir a com
 
 Este diagrama mostra como os padrões colaboram para criar um sistema desacoplado e extensível.
 
-![Arquitetura Refatorada com Padrões de Projeto](src/main/resources/images/diagrama_arquitetura.png)
+![Arquitetura Refatorada com Padrões de Projeto](main/resources/images/diagrama_arquitetura.png)
 
 #### Diagrama de Sequência (Baixo Acoplamento na Execução)
 
 Este diagrama prova o baixo acoplamento em tempo de execução. O `Client` (Main) está completamente isolado das implementações concretas de `Mapper`, interagindo apenas com abstrações fornecidas pelas factories.
 
-![Diagrama de Sequência da Execução Refatorada](src/main/resources/images/diagrama_sequencia.png)
+![Diagrama de Sequência da Execução Refatorada](main/resources/images/diagrama_sequencia.png)
 
 📂 **Pacotes Principais**
 
