@@ -189,7 +189,7 @@ java -cp target/SheetReader-1.0.jar importable.run.Main
 
 # Executar versão original (sem padrões de projeto)
 java -cp target/SheetReader-1.0.jar importable.old.OldProductImporter
-
+```
 ---
 
 ## 📈 **8. Tendências das Métricas CKJM**
